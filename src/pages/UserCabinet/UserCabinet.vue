@@ -1,10 +1,19 @@
 <template>
   <div class="q-pa-md">
     <q-layout view="hHh Lpr lff" class="shadow-2 rounded-borders">
-      <q-header elevated class="bg-white text-black">
+      <q-header elevated class="bg-white text-black q-px-lg">
         <q-toolbar>
           <q-btn flat @click="leftDrawerOpen = !leftDrawerOpen" round dense icon="menu" />
           <q-toolbar-title>Mebel to'lov rejasi</q-toolbar-title>
+
+          <q-btn
+            round
+            color="primary"
+            dense
+            @click="confirm = !confirm"
+            icon="mdi-account-arrow-right-outline"
+          />
+
         </q-toolbar>
       </q-header>
 
@@ -45,6 +54,20 @@
         </q-page>
       </q-page-container>
     </q-layout>
+
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="mdi-exclamation-thick" color="negative" text-color="white" size="md"/>
+          <span class="q-ml-sm">Siz kabinetdan haqiqatdan chiqmoqchimisiz!!!</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Turn on Wifi" color="primary" @click="leftCabninet" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -59,6 +82,7 @@ export default {
       leftDrawerOpen: false,
       userModules: [],
       routeName: "",
+      confirm: false
     }
   },
   computed: {
@@ -74,11 +98,8 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'setUserInfo',
-      'setUserLangCode',
-      'setUserImg',
-      "setCurLocale",
       "setCurrentRouteName",
+      "clearUser"
     ]),
     ...mapGetters([
       "getUserCategories",
@@ -89,6 +110,10 @@ export default {
     getModules(){
       this.userModules.splice(0, this.userModules.length, ...this.$store.getters.getUserCategories.main_user_cabinet_layout.children.filter(item => item.show));
     },
+    leftCabninet() {
+      this.clearUser();
+      this.$router.push('/')
+    }
 
   },
   mounted() {
