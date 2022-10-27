@@ -1,10 +1,10 @@
 <template>
   <div class="q-pa-md">
     <q-layout view="hHh Lpr lff" class="shadow-2 rounded-borders">
-      <q-header elevated class="bg-primary">
+      <q-header elevated class="bg-white text-black">
         <q-toolbar>
           <q-btn flat @click="leftDrawerOpen = !leftDrawerOpen" round dense icon="menu" />
-          <q-toolbar-title>Header</q-toolbar-title>
+          <q-toolbar-title>Mebel to'lov rejasi</q-toolbar-title>
         </q-toolbar>
       </q-header>
 
@@ -13,17 +13,17 @@
         show-if-above
         :breakpoint="500"
         bordered
-        content-class="bg-secondary"
+        content-class="bg-white shadow-2"
       >
         <q-scroll-area class="fit">
-          <q-list class="">
-
+          <q-list class="q-mt-lg">
             <q-item
-              v-for="module in userModules"
+              v-for="(module, index, arr) in userModules"
               :key="module.name"
+              :active="changeRouteName===module.name"
               clickable
               v-ripple
-              active-class="bg-teal-8 text-white text-bold text-italic"
+              active-class="bg-teal-8 text-white"
               :to="module.path"
               class="q-mb-lg"
             >
@@ -35,7 +35,6 @@
                 {{ $t(module.meta.title) }}
               </q-item-section>
             </q-item>
-
           </q-list>
         </q-scroll-area>
       </q-drawer>
@@ -62,6 +61,17 @@ export default {
       routeName: "",
     }
   },
+  computed: {
+    changeRouteName(){
+      if( this.$store.getters.getCurrentRouteName==='main-user-cabinet-layout'){
+        // this.$router.push("/my-facts")
+        this.routeName = 'clients';
+        return this.routeName;
+      }
+      this.routeName = this.$store.getters.getCurrentRouteName;
+      return this.routeName;
+    },
+  },
   methods: {
     ...mapMutations([
       'setUserInfo',
@@ -78,7 +88,8 @@ export default {
 
     getModules(){
       this.userModules.splice(0, this.userModules.length, ...this.$store.getters.getUserCategories.main_user_cabinet_layout.children.filter(item => item.show));
-    }
+    },
+
   },
   mounted() {
     this.getModules()

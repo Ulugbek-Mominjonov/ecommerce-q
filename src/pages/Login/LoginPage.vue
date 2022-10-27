@@ -188,7 +188,7 @@ export default {
               // this.setRouterPath('/main-user-cabinet-layout')
               // this.$emit('changeTab', '0')
               this.$router.push({
-                path: '/main-user-cabinet-layout',
+                path: '/clients',
               }).finally(() => {
               })
             }).catch(error => {
