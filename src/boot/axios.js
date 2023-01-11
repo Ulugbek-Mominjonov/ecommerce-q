@@ -4,7 +4,6 @@ import {cfghttp} from '../utils/constants'
 
 export default ({app, router, store, Vue}) => {
   Axios.defaults.timeout = cfghttp.BASE_TIMEOUT;
-// для передачи coockie и Authorization
   Axios.defaults.withCredentials = false;
 
   Axios.interceptors.response.use(
@@ -61,7 +60,7 @@ export default ({app, router, store, Vue}) => {
     function (request) {
 
       if (store.state.user !== null) {
-        request.headers.Authorization = `Bearer ${store.state.user.accessToken}`;
+        request.headers.Authorization = `Bearer ${store.state.token}`;
       }
       store.commit("incrementAjaxRequestsCnt");
       return request;
@@ -76,6 +75,11 @@ export default ({app, router, store, Vue}) => {
   };
   Vue.prototype.$axios = Axios;
 }
-
-
-
+//
+//
+//
+//
+// import Vue from 'vue'
+// import axios from 'axios'
+//
+// Vue.prototype.$axios = axios

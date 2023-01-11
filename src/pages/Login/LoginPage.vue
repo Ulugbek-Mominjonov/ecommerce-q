@@ -110,12 +110,13 @@
 import {urls} from "src/utils/constants";
 import {mapMutations} from 'vuex';
 import {mapGetters} from 'vuex';
+import qs from 'qs';
 
 export default {
   name: "LoginPage",
   data() {
     return {
-      title: 'Авторизация',
+      title: 'Tizimga kirish',
       email: '',
       username: '',
       password: '',
@@ -140,18 +141,18 @@ export default {
       'clearUserActions',
     ]),
     required (val) {
-      return  (val && val.length > 0 || 'Поле должно быть заполнено')
+      return  (val && val.length > 0 || 'Bu maydon to\'ldirilishi kerak')
     },
     diffPassword (val) {
       const val2 = this.$refs.password.value
-      return (val && (val===val2) || 'Пароль не совпадает!')
+      return (val && (val===val2) || 'Parol mos kelmadi')
     },
     short(val) {
-      return  (val && val.length > 3 || 'Значение слишком короткое')
+      return  (val && val.length > 1 || 'Parol juda qisqa')
     },
     isEmail (val) {
       const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/
-      return (emailPattern.test(val) || 'Введите корректный email')
+      return (emailPattern.test(val) || 'To\'g\'ri email kiriting')
     },
     submit () {
       if (this.register){
@@ -167,11 +168,14 @@ export default {
       if (!this.register)
         if (!this.$refs.username.hasError && (!this.$refs.password.hasError))
         {
-          this.$axios.post(urls.LOGIN, {
-            username: this.username,
-            password: this.password
-          })
-            .then(response => {
+          this.$axios.post(urls.LOGIN, qs.stringify({
+            username: this.username, //gave the values directly for testing
+            password: this.password,
+          }), {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            }
+          }).then(response => {
               console.log(response)
               if (!response.data) {
                 return;
@@ -188,7 +192,7 @@ export default {
               // this.setRouterPath('/main-user-cabinet-layout')
               // this.$emit('changeTab', '0')
               this.$router.push({
-                path: '/clients',
+                path: '/worker-types',
               }).finally(() => {
               })
             }).catch(error => {
@@ -205,8 +209,8 @@ export default {
     },
     switchTypeForm(){
       this.register = !this.register
-      this.title = this.register ? 'Новый пользователь' : 'Авторизация'
-      this.btnLabel = this.register ? 'Регистрация' : 'Вход'
+      this.title = this.register ? 'Yangi xodim' : 'Tizimga kirish'
+      this.btnLabel = this.register ? 'Ro\'yhatdan o\'tish' : 'Tizimga kirish'
     },
     switchVisibility() {
       this.visibility = !this.visibility

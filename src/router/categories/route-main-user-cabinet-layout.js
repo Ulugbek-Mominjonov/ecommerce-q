@@ -1,12 +1,12 @@
  const pages = [
    {
-      path: "/clients",
-      name: "clients",
+      path: "/worker-types",
+      name: "worker-types",
       show: true,
-      component: ()=> import("../../pages/UserCabinet/PageClients"),
+      component: ()=> import("pages/UserCabinet/PageWorkerTypes.vue"),
       meta:{
-        title: "Mijozlar",
-        icon: 'mdi-file-document-outline'
+        title: "Xodimlari turlari",
+        icon: 'mdi-account'
       }
     },
    {

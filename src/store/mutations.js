@@ -29,6 +29,7 @@ export function resetAjaxRequestsCnt(state, val) {
 
 export function setUser(state, val) {
   state.user = val;
+  state.token = val.accessToken
 }
 
 export function clearUser(state) {
@@ -55,7 +56,7 @@ export function clearUserActions(state) {
 export function clearUserSession(state) {
   state.userActions.splice(0, state.userActions.length);
   state.user = null;
-  state.path = null;
+  state.token = null;
 }
 
 export function setBaseLeftDrawer(state, val) {

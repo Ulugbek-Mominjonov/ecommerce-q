@@ -17,5 +17,6 @@ export default {
   path: '',
   PARAMS:{},
   PARAMCONTROL: new Array(),
-  curLocale: "uz"
+  curLocale: "uz",
+  token: ""
 }

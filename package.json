@@ -1,8 +1,8 @@
 {
-  "name": "quasar-ecommerce",
+  "name": "x-shop",
   "version": "0.0.1",
-  "description": "quasar-ecommerce",
-  "productName": "quasar-ecommerce",
+  "description": "x-shop",
+  "productName": "x-shop",
   "author": "Fp_Orifov_Jafar",
   "private": true,
   "scripts": {

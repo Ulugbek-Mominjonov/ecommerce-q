@@ -119,9 +119,9 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `eco-control-web`,
-        short_name: `eco-control-web`,
-        description: `eco-control-web`,
+        name: `x-shop`,
+        short_name: `x-shop`,
+        description: `x-shop`,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -186,7 +186,7 @@ module.exports = function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'eco-control-web'
+        appId: 'x-shop'
       },
 
       // More info: https://v1.quasar.dev/quasar-cli/developing-electron-apps/node-integration

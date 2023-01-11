@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <q-layout view="hHh Lpr lff" class="shadow-2 rounded-borders">
-      <q-header elevated class="bg-white text-black q-px-lg">
+      <q-header elevated class="q-px-lg">
         <q-toolbar>
           <q-btn flat @click="leftDrawerOpen = !leftDrawerOpen" round dense icon="menu" />
           <q-toolbar-title>Mebel to'lov rejasi</q-toolbar-title>
@@ -24,7 +24,7 @@
         bordered
         content-class="bg-white shadow-2"
       >
-        <q-scroll-area class="fit">
+        <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
           <q-list class="q-mt-lg">
             <q-item
               v-for="(module, index, arr) in userModules"
@@ -46,10 +46,20 @@
             </q-item>
           </q-list>
         </q-scroll-area>
+
+        <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+          <div class="absolute-bottom bg-transparent">
+            <q-avatar size="56px" class="q-mb-sm">
+              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+            </q-avatar>
+            <div class="text-weight-bold">{{getUser().user.workers.fullName}}</div>
+            <div>{{getUser().user.workers.phone}}</div>
+          </div>
+        </q-img>
       </q-drawer>
 
       <q-page-container>
-        <q-page padding>
+        <q-page style="padding-right: 20px;">
           <router-view/>
         </q-page>
       </q-page-container>

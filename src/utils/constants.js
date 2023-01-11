@@ -6,10 +6,11 @@ export const cfghttp = {
 }
 
 export const prf = {
-  BASE_API: 'http://65.108.83.140:8282/api/v1',
+  BASE_API: 'http://localhost:8585/api/v1',
 };
 
 export const urls = {
-  LOGIN: prf.BASE_API + "/jwt/access",
+  LOGIN: prf.BASE_API + "/login",
+  WORKER_TYPES: prf.BASE_API + "/worker-types",
 }
 // 'http://65.108.83.140:8282/api/v1'

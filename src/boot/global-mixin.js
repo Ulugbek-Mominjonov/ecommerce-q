@@ -18,32 +18,9 @@ export default ({app, router, store, Vue}) => {
 
       },
       methods: {
-        pagedGet(url, pagination, filter, config) {
-          const p = url + this.parsePaginationQuery(pagination) + this.tableFilterQuery(filter);
+        pagedGet(url, filter, config) {
+          const p = url + this.tableFilterQuery(filter);
           return this.$axios.get(encodeURI(p), config);
-        },
-        parsePaginationQuery(pagination) {
-          let queryArray = [];
-
-          if (!pagination) {
-            return "";
-          }
-          if (pagination.sortBy) {
-            queryArray.push('sortBy=' + pagination.sortBy);
-
-          }
-          if (pagination.descending !== undefined)
-            queryArray.push('descending=' + pagination.descending);
-
-          if (pagination.page)
-            queryArray.push('page=' + pagination.page);
-          if (pagination.rowsPerPage)
-            queryArray.push('perPage=' + pagination.rowsPerPage);
-
-          if (queryArray.length !== 0)
-            return ';' + queryArray.join(';');
-          else return ""
-
         },
         tableFilterQuery(filter) {
           if (!filter) return '';
