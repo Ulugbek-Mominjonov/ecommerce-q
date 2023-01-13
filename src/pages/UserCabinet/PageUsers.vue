@@ -1,7 +1,7 @@
 <template>
   <div class="fit full-height">
     <module-header/>
-    <worker-types/>
+    <users/>
   </div>
 </template>
 
@@ -9,9 +9,11 @@
 import {mapGetters, mapMutations} from "vuex";
 import ModuleHeader from "components/ModuleHeader.vue";
 import WorkerTypes from "components/WorkerTypes.vue";
+import Workers from "components/Workers.vue";
+import Users from "components/Users.vue";
 export default {
-  name: "PageWorkerTypes",
-  components: {WorkerTypes, ModuleHeader},
+  name: "PageUsers",
+  components: {Users, ModuleHeader},
   methods: {
     ...mapGetters([
       'getUser'

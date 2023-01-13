@@ -23,7 +23,7 @@
           <div class="q-pa-md q-gutter-md">
             <q-chip dense square size="10" :color="modelId?'primary':'accent'" text-color="white" icon="mdi-key"
             >
-              {{this.$t('captions.l_id')+': '+(modelId===null?this.$t('system.new'):modelId)}}
+              {{this.$t('xshop_captions.l_id')+': '+(modelId===null?this.$t('system.new'):modelId)}}
             </q-chip>
           </div>
           <q-space/>

@@ -23,8 +23,6 @@ export default {
       this.refreshData({
         filter: this.filter
       })
-      let el = this.$store.state.currentRouteName
-      Cookies.set(el, JSON.stringify(this.filter), {expires: '30min'})
     },
     refreshData(props) {
       this.loading = true;
@@ -33,7 +31,6 @@ export default {
           if (!response)
             return;
 
-          this.pagination = props.pagination;
           this.pagination.rowsNumber = response.data.totalElements;
           this.data.splice(0, this.data.length, ...response.data.content);
         })

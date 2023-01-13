@@ -10,12 +10,22 @@
       }
     },
    {
-     path: "/products",
-     name: "products",
+     path: "/workers",
+     name: "workers",
      show: true,
-     component: ()=> import("../../pages/UserCabinet/PageProducts"),
+     component: ()=> import("../../pages/UserCabinet/PageWorkers.vue"),
      meta:{
-       title: "Mahsulotlar",
+       title: "Xodimlar",
+       icon: 'mdi-file-document-outline'
+     }
+   },
+   {
+     path: "/users",
+     name: "users",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageUsers.vue"),
+     meta:{
+       title: "xshop_captions.l_users",
        icon: 'mdi-file-document-outline'
      }
    },

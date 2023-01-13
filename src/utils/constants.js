@@ -11,6 +11,9 @@ export const prf = {
 
 export const urls = {
   LOGIN: prf.BASE_API + "/login",
+  ROLES: prf.BASE_API + "/roles",
   WORKER_TYPES: prf.BASE_API + "/worker-types",
+  WORKERS: prf.BASE_API + "/workers",
+  USERS: prf.BASE_API + "/users",
 }
 // 'http://65.108.83.140:8282/api/v1'

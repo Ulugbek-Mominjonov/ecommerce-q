@@ -29,6 +29,23 @@
         {{$t('system.no_matching_found')}}
       </template>
 
+      <template v-slot:body-cell-modifyDate="props">
+        <q-td :props="props">
+          <div v-if="props.row.modifyDate">
+            {{$dateutil.formatDate(props.row.modifyDate, 'DD.MM.YYYY')}}
+          </div>
+          <div v-else>
+            --.--.----
+          </div>
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-createdDate="props">
+        <q-td :props="props">
+          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
+        </q-td>
+      </template>
+
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
@@ -44,12 +61,13 @@
         </q-td>
       </template>
 
+
       <template v-slot:top="props">
-        <q-input v-model="filter.name" :placeholder="$t('xshop_captions.l_worker_type')"
-                 :label="$t('xshop_captions.l_worker_type')"
+        <q-input v-model="filter.fullName" :placeholder="$t('xshop_captions.l_worker_name')"
+                 :label="$t('xshop_captions.l_worker_name')"
                  class="q-pa-md col-4" dense outlined>
           <template v-slot:append>
-            <q-icon v-if="filter.name" name="close" color="primary" @click.stop="filter.name = ''"
+            <q-icon v-if="filter.fullName" name="close" color="primary" @click.stop="filter.fullName = ''"
                     class="cursor-pointer"/>
           </template>
         </q-input>
@@ -105,45 +123,55 @@
                            :on-validation-error="onValidationError">
 
       <div class="row">
-
-<!--        <q-select-->
-<!--          v-model="bean.regions_id"-->
-<!--          emit-value-->
-<!--          map-options-->
-<!--          :options="regions"-->
-<!--          option-value="id"-->
-<!--          option-label="name"-->
-<!--          :label="$t('captions.l_region')"-->
-<!--          transition-show="flip-up"-->
-<!--          transition-hide="flip-down"-->
-<!--          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense-->
-<!--          lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"-->
-<!--        >-->
-<!--          <template v-slot:append>-->
-<!--            <q-icon name="close" color="primary" @click.stop="bean.regions_id = null"-->
-<!--                    class="cursor-pointer"/>-->
-<!--          </template>-->
-<!--          <template v-slot:selected-item="props">-->
-<!--            <div>{{props.opt.name}}</div>-->
-<!--          </template>-->
-<!--        </q-select>-->
-
-
-        <q-input v-model="bean.nameUz" :placeholder="$t('xshop_captions.l_name_uz')"
-                 :label="$t('xshop_captions.l_name_uz')"
-                 class="q-pa-md col-12" dense
+        <q-input v-model="bean.fullName" :placeholder="$t('xshop_captions.l_fullname')"
+                 :label="$t('xshop_captions.l_fullname')"
+                 class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.nameRu" :placeholder="$t('xshop_captions.l_name_ru')"
-                 :label="$t('xshop_captions.l_name_ru')"
-                 class="q-pa-md col-12" dense
+        <q-input v-model="bean.phone" :placeholder="$t('xshop_captions.l_phone')"
+                 :label="$t('xshop_captions.l_phone')"
+                 mask="+### (##) ### ## ##"
+                 unmasked-value
+                 fill-mask
+                 class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.name_uk" :placeholder="$t('xshop_captions.l_name_bg')"
-                 :label="$t('xshop_captions.l_name_bg')"
-                 class="q-pa-md col-12" dense
+        <q-input v-model="bean.passportSeries" :placeholder="$t('xshop_captions.l_p_seria')"
+                 :label="$t('xshop_captions.l_p_seria')"
+                 class="q-pa-md q-pr-none col-5 col-md-3" dense
+                 mask="AA"
+                 hint="AA"
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
+        <q-input v-model="bean.passportNumber" :placeholder="$t('xshop_captions.l_p_number')"
+                 :label="$t('xshop_captions.l_p_number')"
+                 class="q-pa-md q-pl-none col-7 col-md-9" dense
+                 mask="#######"
+                 hint="1234567"
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
+
+        <q-select
+          v-model="bean.workerTypesId"
+          emit-value
+          map-options
+          :options="workerTypes"
+          option-value="id"
+          option-label="nameUz"
+          :label="$t('xshop_captions.l_worker_type')"
+          transition-show="flip-up"
+          transition-hide="flip-down"
+          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
+          lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
+        >
+          <template v-slot:append>
+            <q-icon name="close" color="primary" @click.stop="bean.workerTypesId = null"
+                    class="cursor-pointer"/>
+          </template>
+          <template v-slot:selected-item="props">
+            <div>{{props.opt.nameUz}}</div>
+          </template>
+        </q-select>
       </div>
 
     </standart-input-dialog>
@@ -159,12 +187,12 @@ import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
 
 export default {
-  name: "WorkerTypes",
+  name: "Workers",
   components: {StandartInputDialog},
   mixins: [StandartTable],
   data() {
     return {
-      apiUrl: urls.WORKER_TYPES,
+      apiUrl: urls.WORKERS,
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -172,16 +200,18 @@ export default {
       cardCheckField: 'name',
       beanDefault: {
         id: null,
-        nameUz: '',
-        nameRu: '',
-        nameBg: '',
+        fullName: '',
+        phone: '',
+        passportSeries: '',
+        passportNumber: null,
+        workerTypesId: null
       },
       formDialog: false,
       filter: {
         sort: 'id',
         page: 0,
         size: 10,
-        name: ""
+        fullName: ""
       },
       columns: [
         {
@@ -191,43 +221,45 @@ export default {
           sortable: true, align: 'left',
           classes: 'col-1'
         },
-        // {
-        //   name: 'name',
-        //   field: row => row.name,
-        //   label: this.$t('captions.l_name'),
-        //   format: val => `${val}`,
-        //   sortable: true,
-        //   align: 'left',
-        //   classes: 'col-1 text-bold',
-        // },
 
         {
-          name: 'nameUz',
-          field: row => row.nameUz,
-          label: this.$t('xshop_captions.l_name_uz'),
+          name: 'fullName',
+          field: row => row.fullName,
+          label: this.$t('xshop_captions.l_fio'),
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1 text-bold',
+        },
+        {
+          name: 'phone',
+          field: row => this.phone_format(row.phone),
+          label: this.$t('xshop_captions.l_phone'),
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'nameRu',
-          field: row => row.nameRu,
-          label: this.$t('xshop_captions.l_name_ru'),
+          name: 'passport',
+          field: row => `${row.passportSeries} ${row.passportNumber}`,
+          label: this.$t('xshop_captions.l_pasport'),
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
+
         {
-          name: 'NameBg',
-          field: row => row.nameBg,
-          label: this.$t('xshop_captions.l_name_bg'),
+          name: 'workerType',
+          field: row => row.workerTypes.nameUz,
+          label: this.$t('xshop_captions.l_worker_type'),
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
+
         {
           name: 'modifyDate',
           field: row => row.modifiedDate,
@@ -257,11 +289,30 @@ export default {
         rowsPerPage: 10,
         rowsNumber: 0
       },
+      workerTypes: []
     }
   },
   methods: {
+    getWorkerTypes() {
+      this.$axios.get(urls.WORKER_TYPES + '/all')
+        .then(res => {
+          console.log(res)
+          this.workerTypes.splice(0, this.workerTypes.length, ...res.data)
+        }).catch(err => {
+          this.showError(err)
+      }).finally(() => {})
+    },
+
+    rowEdit(row) {
+      for (let k in row) {
+        this.$set(this.bean, k, row[k]);
+      }
+      this.$set(this.bean, 'workerTypesId', row.workerTypes.id);
+      this.showForm();
+    },
   },
   mounted() {
+    this.getWorkerTypes()
   }
 }
 </script>
