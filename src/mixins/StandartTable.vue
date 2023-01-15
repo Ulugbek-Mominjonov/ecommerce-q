@@ -14,7 +14,6 @@ export default {
   },
   mounted() {
     this.refreshData({
-      pagination: this.pagination,
       filter: this.filter
     })
   },
@@ -31,7 +30,7 @@ export default {
           if (!response)
             return;
 
-          this.pagination.rowsNumber = response.data.totalElements;
+          this.filter.rowsNumber = response.data.totalElements;
           this.data.splice(0, this.data.length, ...response.data.content);
         })
         .catch(e => {

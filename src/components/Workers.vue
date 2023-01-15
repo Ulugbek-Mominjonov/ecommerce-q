@@ -9,7 +9,6 @@
       :columns="columns"
       :loading="loading"
       :filter="filter"
-      :pagination="pagination"
       @request="refreshData"
       selection="single"
       :selected.sync="selectedRows"
@@ -22,8 +21,6 @@
       :dense="$q.screen.lt.md"
       :grid="$q.screen.xs"
       class="sticky-first-column-table sticky-last-column-table q-mt-lg"
-
-
     >
       <template v-slot:no-data="props">
         {{$t('system.no_matching_found')}}
@@ -116,6 +113,16 @@
 <!--          </q-card>-->
 <!--        </div>-->
 <!--      </template>-->
+      <template v-slot:bottom>
+        <div class="row justify-center q-mt-md">
+          <q-pagination
+            v-model="filter.page"
+            color="grey-8"
+            :max="pagesNumber"
+            size="sm"
+          />
+        </div>
+      </template>
     </q-table>
 
     <!--DIALOG-->
@@ -208,9 +215,10 @@ export default {
       },
       formDialog: false,
       filter: {
-        sort: 'id',
         page: 0,
-        size: 10,
+        rowsPerPage: 1,
+        rowsNumber: 0,
+        descending: false,
         fullName: ""
       },
       columns: [
@@ -282,14 +290,12 @@ export default {
       ],
       data: [],
       regions: [],
-      pagination: {
-        sortBy: 'id',
-        descending: false,
-        page: 1,
-        rowsPerPage: 10,
-        rowsNumber: 0
-      },
       workerTypes: []
+    }
+  },
+  computed: {
+    pagesNumber () {
+      return Math.ceil(this.filter.rowsNumber / this.filter.rowsPerPage)
     }
   },
   methods: {
