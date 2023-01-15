@@ -9,6 +9,7 @@
       :columns="columns"
       :loading="loading"
       :filter="filter"
+      :pagination="filter"
       @request="refreshData"
       selection="single"
       :selected.sync="selectedRows"
@@ -116,7 +117,7 @@
       <template v-slot:bottom>
         <div class="row justify-center q-mt-md">
           <q-pagination
-            v-model="filter.page"
+            v-model="model"
             color="grey-8"
             :max="pagesNumber"
             size="sm"
@@ -290,7 +291,8 @@ export default {
       ],
       data: [],
       regions: [],
-      workerTypes: []
+      workerTypes: [],
+      model: 1
     }
   },
   computed: {
@@ -317,7 +319,14 @@ export default {
       this.showForm();
     },
   },
+  watch: {
+    model(newval) {
+      this.$set(this.filter, 'page', newval-1);
+    }
+  },
   mounted() {
+    console.log(1111)
+    this.model = 1
     this.getWorkerTypes()
   }
 }

@@ -9,6 +9,7 @@
       :columns="columns"
       :loading="loading"
       :filter="filter"
+      :pagination="filter"
       @request="refreshData"
       selection="single"
       :selected.sync="selectedRows"

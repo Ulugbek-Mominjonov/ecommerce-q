@@ -8,9 +8,6 @@ export default {
   },
   created() {
     let el = this.$store.state.currentRouteName
-    if (Cookies.get(el) !== null) {
-      this.filter = Cookies.get(el)
-    }
   },
   mounted() {
     this.refreshData({
@@ -29,7 +26,7 @@ export default {
         .then(response => {
           if (!response)
             return;
-
+          // this.filter = props.filter;
           this.filter.rowsNumber = response.data.totalElements;
           this.data.splice(0, this.data.length, ...response.data.content);
         })

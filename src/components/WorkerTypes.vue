@@ -9,6 +9,7 @@
       :columns="columns"
       :loading="loading"
       :filter="filter"
+      :pagination="filter"
       @request="refreshData"
       selection="single"
       :selected.sync="selectedRows"
@@ -263,7 +264,7 @@ export default {
   },
   computed: {
     pagesNumber () {
-      return Math.ceil(this.filter.rowsNumber / this.filter.rowsPerPage)
+      return Math.ceil(this.filter.rowsNumber / this.filter.rowsPerPage - 1)
     }
   },
   methods: {
