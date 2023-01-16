@@ -27,23 +27,6 @@
         {{$t('system.no_matching_found')}}
       </template>
 
-      <template v-slot:body-cell-modifyDate="props">
-        <q-td :props="props">
-          <div v-if="props.row.modifiedDate">
-            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
-          </div>
-          <div v-else>
-            --.--.----
-          </div>
-        </q-td>
-      </template>
-
-      <template v-slot:body-cell-createdDate="props">
-        <q-td :props="props">
-          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
-        </q-td>
-      </template>
-
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
@@ -59,13 +42,12 @@
         </q-td>
       </template>
 
-
       <template v-slot:top="props">
-        <q-input v-model="filter.fullName" :placeholder="$t('xshop_captions.l_worker_name')"
-                 :label="$t('xshop_captions.l_worker_name')"
+        <q-input v-model="filter.fullName" :placeholder="$t('xshop_captions.l_fullname')"
+                 :label="$t('xshop_captions.l_fullname')"
                  class="q-pa-md col-4" dense outlined>
           <template v-slot:append>
-            <q-icon v-if="filter.fullName" name="close" color="primary" @click.stop="filter.fullName = ''"
+            <q-icon v-if="filter.name" name="close" color="primary" @click.stop="filter.name = ''"
                     class="cursor-pointer"/>
           </template>
         </q-input>
@@ -83,37 +65,23 @@
         </q-btn>
       </template>
 
-<!--      <template v-slot:item="props">-->
-<!--        <div-->
-<!--          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"-->
-<!--        >-->
-<!--          <q-card :class="props.selected ? 'row-selected' : ''">-->
-<!--            <q-card-section>-->
-<!--              <q-checkbox dense v-model="props.selected" :label="props.row[cardCheckField]"/>-->
-<!--            </q-card-section>-->
-<!--            <q-separator/>-->
-<!--            <q-list dense>-->
-<!--              <q-item v-for="col in props.cols.filter(col_ => col_.name !== actionsColumnName)" :key="col.name">-->
-<!--                <q-item-section>-->
-<!--                  <q-item-label>{{ col.label }}</q-item-label>-->
-<!--                </q-item-section>-->
-<!--                <q-item-section side>-->
-<!--                  <q-item-label caption>{{ col.value }}</q-item-label>-->
-<!--                </q-item-section>-->
-<!--              </q-item>-->
-<!--            </q-list>-->
-<!--            <q-separator/>-->
-<!--            <q-card-section class="row justify-end"-->
-<!--                            v-if="props.cols.filter(col => col.name === actionsColumnName).length>0">-->
-<!--              <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">-->
-<!--              </q-btn>-->
-<!--              <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">-->
-<!--              </q-btn>-->
-<!--            </q-card-section>-->
+      <template v-slot:body-cell-modifyDate="props">
+        <q-td :props="props">
+          <div v-if="props.row.modifiedDate">
+            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
+          </div>
+          <div v-else>
+            --.--.----
+          </div>
+        </q-td>
+      </template>
 
-<!--          </q-card>-->
-<!--        </div>-->
-<!--      </template>-->
+      <template v-slot:body-cell-createdDate="props">
+        <q-td :props="props">
+          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
+        </q-td>
+      </template>
+
       <template v-slot:bottom>
         <div class="full-width row justify-center q-mt-md">
           <q-pagination
@@ -158,28 +126,6 @@
                  hint="1234567"
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-
-        <q-select
-          v-model="bean.workerTypesId"
-          emit-value
-          map-options
-          :options="workerTypes"
-          option-value="id"
-          option-label="nameUz"
-          :label="$t('xshop_captions.l_worker_type')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
-          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
-          lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
-        >
-          <template v-slot:append>
-            <q-icon name="close" color="primary" @click.stop="bean.workerTypesId = null"
-                    class="cursor-pointer"/>
-          </template>
-          <template v-slot:selected-item="props">
-            <div>{{props.opt.nameUz}}</div>
-          </template>
-        </q-select>
       </div>
 
     </standart-input-dialog>
@@ -195,12 +141,12 @@ import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
 
 export default {
-  name: "Workers",
+  name: "Founders",
   components: {StandartInputDialog},
   mixins: [StandartTable],
   data() {
     return {
-      apiUrl: urls.WORKERS,
+      apiUrl: urls.FOUNDERS,
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -208,11 +154,9 @@ export default {
       cardCheckField: 'name',
       beanDefault: {
         id: null,
-        fullName: '',
-        phone: '',
-        passportSeries: '',
-        passportNumber: null,
-        workerTypesId: null
+        nameUz: '',
+        nameRu: '',
+        nameBg: '',
       },
       formDialog: false,
       filter: {
@@ -230,7 +174,6 @@ export default {
           sortable: true, align: 'left',
           classes: 'col-1'
         },
-
         {
           name: 'fullName',
           field: row => row.fullName,
@@ -258,17 +201,6 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-
-        {
-          name: 'workerType',
-          field: row => row.workerTypes.nameUz,
-          label: this.$t('xshop_captions.l_worker_type'),
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-
         {
           name: 'modifyDate',
           field: row => row.modifiedDate,
@@ -291,7 +223,6 @@ export default {
       ],
       data: [],
       regions: [],
-      workerTypes: [],
       model: 1
     }
   },
@@ -301,23 +232,6 @@ export default {
     }
   },
   methods: {
-    getWorkerTypes() {
-      this.$axios.get(urls.WORKER_TYPES + '/all')
-        .then(res => {
-          console.log(res)
-          this.workerTypes.splice(0, this.workerTypes.length, ...res.data)
-        }).catch(err => {
-          this.showError(err)
-      }).finally(() => {})
-    },
-
-    rowEdit(row) {
-      for (let k in row) {
-        this.$set(this.bean, k, row[k]);
-      }
-      this.$set(this.bean, 'workerTypesId', row.workerTypes.id);
-      this.showForm();
-    },
   },
   watch: {
     model(newval) {
@@ -325,7 +239,6 @@ export default {
     }
   },
   mounted() {
-    this.getWorkerTypes()
   }
 }
 </script>

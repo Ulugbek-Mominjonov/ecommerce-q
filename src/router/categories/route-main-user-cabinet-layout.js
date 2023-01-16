@@ -30,12 +30,23 @@
      }
    },
    {
-     path: "/ware-house",
-     name: "ware-house",
+     path: "/founders",
+     name: "founders",
      show: true,
-     component: ()=> import("../../pages/UserCabinet/PageWareHouse"),
+     component: ()=> import("../../pages/UserCabinet/PageFounders.vue"),
      meta:{
-       title: "Omborxona",
+       title: "xshop_captions.l_founders",
+       icon: 'mdi-file-document-outline'
+     }
+   },
+
+   {
+     path: "/founders-transactions",
+     name: "foundersTransactions",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageFoundersTransactions.vue"),
+     meta:{
+       title: "xshop_captions.l_founder_transactions",
        icon: 'mdi-file-document-outline'
      }
    },

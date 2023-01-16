@@ -27,32 +27,6 @@
         {{$t('system.no_matching_found')}}
       </template>
 
-      <template v-slot:body-cell-modifyDate="props">
-        <q-td :props="props">
-          <div v-if="props.row.modifyDate">
-            {{$dateutil.formatDate(props.row.modifyDate, 'DD.MM.YYYY')}}
-          </div>
-          <div v-else>
-            --.--.----
-          </div>
-        </q-td>
-      </template>
-
-      <template v-slot:body-cell-createdDate="props">
-        <q-td :props="props">
-          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
-        </q-td>
-      </template>
-
-      <template v-slot:body-cell-roles="props">
-        <q-td :props="props">
-          <template v-for="(item, index, arr) in props.row.roles">
-            <span>{{item.name}}</span>
-            <span v-if="index !== props.row.roles.length - 1">,</span>
-          </template>
-        </q-td>
-      </template>
-
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
@@ -68,13 +42,46 @@
         </q-td>
       </template>
 
-
       <template v-slot:top="props">
-        <q-input v-model="filter.workersFullName" :placeholder="$t('xshop_captions.l_worker_name')"
-                 :label="$t('xshop_captions.l_worker_name')"
-                 class="q-pa-md col-4" dense outlined>
+        <date-input
+          v-model="filter.fromDate"
+          :label="$t('xshop_captions.l_from_date')"
+          class="q-pa-sm col-2 text-white"
+        />
+        <date-input
+          v-model="filter.toDate"
+          :label="$t('xshop_captions.l_to_date')"
+          class="q-pa-sm col-2 text-white"
+        />
+
+        <q-select
+          v-model="filter.income"
+          emit-value
+          map-options
+          :options="transactionsTypes"
+          option-value="id"
+          option-label="name"
+          :label="$t('xshop_captions.l_transactions_type')"
+          transition-show="flip-up"
+          transition-hide="flip-down"
+          outlined
+          class="q-pa-sm col-2 col-md-2" dense
+          lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
+        >
           <template v-slot:append>
-            <q-icon v-if="filter.workersFullName" name="close" color="primary" @click.stop="filter.workersFullName = ''"
+            <q-icon v-if="filter.income !== null" name="close" color="primary" @click.stop="filter.income = null"
+                    class="cursor-pointer"/>
+          </template>
+          <template v-slot:selected-item="props">
+            <div>{{props.opt.name}}</div>
+          </template>
+        </q-select>
+        <q-input v-model="filter.amount" :placeholder="$t('xshop_captions.l_amount')"
+                 :label="$t('xshop_captions.l_amount')"
+                 type="number"
+                 class="q-pa-sm col-2" dense outlined>
+          <template v-slot:append>
+            <q-icon v-if="filter.amount" name="close" color="primary" @click.stop="filter.amount = ''"
                     class="cursor-pointer"/>
           </template>
         </q-input>
@@ -92,37 +99,44 @@
         </q-btn>
       </template>
 
-<!--      <template v-slot:item="props">-->
-<!--        <div-->
-<!--          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"-->
-<!--        >-->
-<!--          <q-card :class="props.selected ? 'row-selected' : ''">-->
-<!--            <q-card-section>-->
-<!--              <q-checkbox dense v-model="props.selected" :label="props.row[cardCheckField]"/>-->
-<!--            </q-card-section>-->
-<!--            <q-separator/>-->
-<!--            <q-list dense>-->
-<!--              <q-item v-for="col in props.cols.filter(col_ => col_.name !== actionsColumnName)" :key="col.name">-->
-<!--                <q-item-section>-->
-<!--                  <q-item-label>{{ col.label }}</q-item-label>-->
-<!--                </q-item-section>-->
-<!--                <q-item-section side>-->
-<!--                  <q-item-label caption>{{ col.value }}</q-item-label>-->
-<!--                </q-item-section>-->
-<!--              </q-item>-->
-<!--            </q-list>-->
-<!--            <q-separator/>-->
-<!--            <q-card-section class="row justify-end"-->
-<!--                            v-if="props.cols.filter(col => col.name === actionsColumnName).length>0">-->
-<!--              <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">-->
-<!--              </q-btn>-->
-<!--              <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">-->
-<!--              </q-btn>-->
-<!--            </q-card-section>-->
+      <template v-slot:body-cell-incomeAmount="props">
+        <q-td :props="props">
+          <div v-if="props.row.income">
+            {{number_format_old(props.row.amount, 0, '.', ' ')}}
+          </div>
+          <div v-else>
+            0
+          </div>
+        </q-td>
+      </template>
+      <template v-slot:body-cell-outcomeAmount="props">
+        <q-td :props="props">
+          <div v-if="!props.row.income">
+            {{number_format_old(props.row.amount, 0, '.', ' ')}}
+          </div>
+          <div v-else>
+            0
+          </div>
+        </q-td>
+      </template>
 
-<!--          </q-card>-->
-<!--        </div>-->
-<!--      </template>-->
+      <template v-slot:body-cell-modifyDate="props">
+        <q-td :props="props">
+          <div v-if="props.row.modifiedDate">
+            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
+          </div>
+          <div v-else>
+            --.--.----
+          </div>
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-createdDate="props">
+        <q-td :props="props">
+          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
+        </q-td>
+      </template>
+
       <template v-slot:bottom>
         <div class="full-width row justify-center q-mt-md">
           <q-pagination
@@ -140,54 +154,48 @@
                            :on-validation-error="onValidationError">
 
       <div class="row">
-        <q-input v-model="bean.username" placeholder="username"
-                 label="username"
-                 class="q-pa-md col-12 col-md-6" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-        <q-input v-model="bean.password" placeholder="password"
-                 label="password"
-                 class="q-pa-md col-12 col-md-6" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-
         <q-select
-          v-model="bean.workersId"
+          v-model="bean.foundersId"
           emit-value
           map-options
-          :options="workers"
+          :options="founders"
           option-value="id"
           option-label="fullName"
-          :label="$t('xshop_captions.l_worker')"
+          :label="$t('xshop_captions.l_founders')"
           transition-show="flip-up"
           transition-hide="flip-down"
-          class="q-pa-md col-xs-12 col-sm-12 col-md-6 col-lg-6" dense
+          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon v-if="bean.workersId" name="close" color="primary" @click.stop="bean.workersId = null"
+            <q-icon name="close" color="primary" @click.stop="bean.foundersId = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
             <div>{{props.opt.fullName}}</div>
           </template>
         </q-select>
-
+        <q-input v-model="bean.amount" :placeholder="$t('xshop_captions.l_amount')"
+                 :label="$t('xshop_captions.l_amount')"
+                 type="number"
+                 class="q-pa-md col-12 col-md-6" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
         <q-select
-          v-model="bean.rolesId"
+          v-model="bean.income"
           emit-value
           map-options
-          :options="roles"
+          :options="transactionsTypes"
           option-value="id"
           option-label="name"
-          :label="$t('xshop_captions.l_role')"
+          :label="$t('xshop_captions.l_transactions_type')"
           transition-show="flip-up"
           transition-hide="flip-down"
-          class="q-pa-md col-xs-12 col-sm-12 col-md-6 col-lg-6" dense
-          lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
+          class="q-pa-md col-12 col-md-6" dense
+          lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon v-if="bean.rolesId" name="close" color="primary" @click.stop="bean.rolesId = null"
+            <q-icon name="close" color="primary" @click.stop="bean.income = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
@@ -207,14 +215,15 @@ import {mapMutations} from 'vuex';
 import {mapState} from 'vuex';
 import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
+import DateInput from "components/base/DateInput.vue";
 
 export default {
-  name: "Users",
-  components: {StandartInputDialog},
+  name: "FoundersTransactions",
+  components: {DateInput, StandartInputDialog},
   mixins: [StandartTable],
   data() {
     return {
-      apiUrl: urls.USERS,
+      apiUrl: urls.FOUNDERS_TRANSACTIONS,
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -222,10 +231,9 @@ export default {
       cardCheckField: 'name',
       beanDefault: {
         id: null,
-        username: '',
-        password: '',
-        workersId: '',
-        rolesId: null,
+        amount: null,
+        income: null,
+        foundersId: null,
       },
       formDialog: false,
       filter: {
@@ -233,7 +241,10 @@ export default {
         rowsPerPage: 5,
         rowsNumber: 0,
         descending: false,
-        workersFullName: ""
+        amount: null,
+        income: null,
+        fromDate: null,
+        toDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 'YYYY-MM-DD'),
       },
       columns: [
         {
@@ -243,55 +254,22 @@ export default {
           sortable: true, align: 'left',
           classes: 'col-1'
         },
-
         {
-          name: 'username',
-          field: row => row.username,
-          label: 'username',
-          format: val => `${val}`,
+          name: 'incomeAmount',
+          field: row => row.amount,
+          label: this.$t('xshop_captions.l_income_amount'),
           sortable: true,
           align: 'left',
           classes: 'col-1 text-bold',
         },
         {
-          name: 'password',
-          field: row => row.password,
-          label: "password",
-          format: val => `${val}`,
+          name: 'outcomeAmount',
+          field: row => row.amount,
+          label: this.$t('xshop_captions.l_outcome_amount'),
           sortable: true,
           align: 'left',
           classes: 'col-1 text-bold',
         },
-        {
-          name: 'fio',
-          field: row => row.workers.fullName,
-          label: this.$t('xshop_captions.l_fio'),
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-
-        {
-          name: 'workerType',
-          field: row => row.workers.workerTypes.nameUz,
-          label: this.$t('xshop_captions.l_worker_type'),
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-
-        {
-          name: 'roles',
-          field: row => row.roles[0].name,
-          label: this.$t('xshop_captions.l_user_role'),
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-
         {
           name: 'modifyDate',
           field: row => row.modifiedDate,
@@ -310,13 +288,48 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
+        {
+          name: 'fullName',
+          field: row => row.founders.fullName,
+          label: this.$t('xshop_captions.l_fio'),
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1 text-bold',
+        },
+        {
+          name: 'phone',
+          field: row => this.phone_format(row.founders.phone),
+          label: this.$t('xshop_captions.l_phone'),
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'passport',
+          field: row => `${row.founders.passportSeries} ${row.founders.passportNumber}`,
+          label: this.$t('xshop_captions.l_pasport'),
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
         {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
       ],
       data: [],
-      regions: [],
-      workers: [],
-      roles: [],
-      model: 1
+      model: 1,
+      founders: [],
+      transactionsTypes: [
+        {
+          name: 'Kirim',
+          id: 1
+        },
+        {
+          name: 'Chiqim',
+          id: 0
+        }
+      ]
     }
   },
   computed: {
@@ -325,35 +338,20 @@ export default {
     }
   },
   methods: {
-    getWorkers() {
-      this.$axios.get(urls.WORKERS + '/all')
+    getFounders() {
+      this.$axios.get(urls.FOUNDERS + '/all')
         .then(res => {
           console.log(res)
-          this.workers.splice(0, this.workers.length, ...res.data)
-        }).catch(err => {
-          this.showError(err)
-      }).finally(() => {})
-    },
-    getRoles() {
-      this.$axios.get(urls.ROLES)
-        .then(res => {
-          console.log(res)
-          this.roles.splice(0, this.roles.length, ...res.data)
+          this.founders.splice(0, this.founders.length, ...res.data)
         }).catch(err => {
         this.showError(err)
       }).finally(() => {})
     },
-
     rowEdit(row) {
       for (let k in row) {
         this.$set(this.bean, k, row[k]);
       }
-      this.$set(this.bean, 'workersId', row.workers.id);
-      if (row.roles.length > 0) {
-        this.$set(this.bean, 'rolesId', row.roles[0].id);
-      } else {
-        this.$set(this.bean, 'rolesId', null);
-      }
+      this.$set(this.bean, 'foundersId', row.founders.id);
       this.showForm();
     },
   },
@@ -363,8 +361,7 @@ export default {
     }
   },
   mounted() {
-    this.getWorkers();
-    this.getRoles();
+    this.getFounders()
   }
 }
 </script>

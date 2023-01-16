@@ -97,10 +97,27 @@
 <!--        </div>-->
 <!--      </template>-->
 
+      <template v-slot:body-cell-modifyDate="props">
+        <q-td :props="props">
+          <div v-if="props.row.modifiedDate">
+            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
+          </div>
+          <div v-else>
+            --.--.----
+          </div>
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-createdDate="props">
+        <q-td :props="props">
+          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
+        </q-td>
+      </template>
+
       <template v-slot:bottom>
-        <div class="row justify-center q-mt-md">
+        <div class="full-width row justify-center q-mt-md">
           <q-pagination
-            v-model="filter.page"
+            v-model="model"
             color="grey-8"
             :max="pagesNumber"
             size="sm"
@@ -187,8 +204,8 @@ export default {
       },
       formDialog: false,
       filter: {
-        page: 1,
-        rowsPerPage: 1,
+        page: 0,
+        rowsPerPage: 5,
         rowsNumber: 0,
         descending: false,
         name: ""
@@ -260,14 +277,20 @@ export default {
       ],
       data: [],
       regions: [],
+      model: 1
     }
   },
   computed: {
     pagesNumber () {
-      return Math.ceil(this.filter.rowsNumber / this.filter.rowsPerPage - 1)
+      return Math.ceil(this.filter.rowsNumber / this.filter.rowsPerPage)
     }
   },
   methods: {
+  },
+  watch: {
+    model(newval) {
+      this.$set(this.filter, 'page', newval-1);
+    }
   },
   mounted() {
   }
