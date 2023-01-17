@@ -50,6 +50,37 @@
        icon: 'mdi-file-document-outline'
      }
    },
+
+   {
+     path: "/measure-types",
+     name: "MeasureTypes",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageMeasureTypes.vue"),
+     meta:{
+       title: "xshop_captions.l_measure_types",
+       icon: 'mdi-file-document-outline'
+     }
+   },
+   {
+     path: "/products",
+     name: "Products",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageProducts.vue"),
+     meta:{
+       title: "xshop_captions.l_products",
+       icon: 'mdi-file-document-outline'
+     }
+   },
+   {
+     path: "/suppliers",
+     name: "Suppliers",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageSuppliers.vue"),
+     meta:{
+       title: "xshop_captions.l_suppliers",
+       icon: 'mdi-file-document-outline'
+     }
+   },
 ]
 
 const main_user_cabinet_layout = {

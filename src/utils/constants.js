@@ -17,5 +17,8 @@ export const urls = {
   USERS: prf.BASE_API + "/users",
   FOUNDERS: prf.BASE_API + "/founders",
   FOUNDERS_TRANSACTIONS: prf.BASE_API + "/founder-transactions",
+  MEASURE_TYPES: prf.BASE_API + "/measure-types",
+  PRODUCTS: prf.BASE_API + "/products",
+  SUPPLIERS: prf.BASE_API + "/suppliers",
 }
 // 'http://65.108.83.140:8282/api/v1'
