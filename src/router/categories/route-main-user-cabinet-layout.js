@@ -81,6 +81,16 @@
        icon: 'mdi-file-document-outline'
      }
    },
+   {
+     path: "/supplier-trades",
+     name: "SupplierTrades",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageSupplierTrades.vue"),
+     meta:{
+       title: "xshop_captions.l_supplier_trades",
+       icon: 'mdi-file-document-outline'
+     }
+   },
 ]
 
 const main_user_cabinet_layout = {

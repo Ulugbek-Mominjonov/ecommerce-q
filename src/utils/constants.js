@@ -20,5 +20,6 @@ export const urls = {
   MEASURE_TYPES: prf.BASE_API + "/measure-types",
   PRODUCTS: prf.BASE_API + "/products",
   SUPPLIERS: prf.BASE_API + "/suppliers",
+  SUPPLIER_TRADES: prf.BASE_API + "/supplier-trades",
 }
 // 'http://65.108.83.140:8282/api/v1'
