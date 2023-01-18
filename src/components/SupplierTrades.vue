@@ -22,6 +22,7 @@
       :dense="$q.screen.lt.md"
       :grid="$q.screen.xs"
       class="sticky-first-column-table sticky-last-column-table q-mt-lg"
+      style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
         {{$t('system.no_matching_found')}}
@@ -62,6 +63,7 @@
 
       <template v-slot:top="props">
         <q-select
+          v-if="!supplierId"
           v-model="filter.suppliersId"
           emit-value
           map-options
@@ -83,6 +85,9 @@
             <div>{{props.opt.fullName}}</div>
           </template>
         </q-select>
+        <q-btn @click="goBack" class="text-capitalize" color="teal-8" outline icon="mdi-arrow-left">
+          <span class="q-ml-sm">Orqaga</span>
+        </q-btn>
         <q-select
           v-model="filter.productsId"
           emit-value
@@ -147,37 +152,6 @@
         </q-btn>
       </template>
 
-<!--      <template v-slot:item="props">-->
-<!--        <div-->
-<!--          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"-->
-<!--        >-->
-<!--          <q-card :class="props.selected ? 'row-selected' : ''">-->
-<!--            <q-card-section>-->
-<!--              <q-checkbox dense v-model="props.selected" :label="props.row[cardCheckField]"/>-->
-<!--            </q-card-section>-->
-<!--            <q-separator/>-->
-<!--            <q-list dense>-->
-<!--              <q-item v-for="col in props.cols.filter(col_ => col_.name !== actionsColumnName)" :key="col.name">-->
-<!--                <q-item-section>-->
-<!--                  <q-item-label>{{ col.label }}</q-item-label>-->
-<!--                </q-item-section>-->
-<!--                <q-item-section side>-->
-<!--                  <q-item-label caption>{{ col.value }}</q-item-label>-->
-<!--                </q-item-section>-->
-<!--              </q-item>-->
-<!--            </q-list>-->
-<!--            <q-separator/>-->
-<!--            <q-card-section class="row justify-end"-->
-<!--                            v-if="props.cols.filter(col => col.name === actionsColumnName).length>0">-->
-<!--              <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">-->
-<!--              </q-btn>-->
-<!--              <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">-->
-<!--              </q-btn>-->
-<!--            </q-card-section>-->
-
-<!--          </q-card>-->
-<!--        </div>-->
-<!--      </template>-->
       <template v-slot:bottom>
         <div class="full-width row justify-center q-mt-md">
           <q-pagination
@@ -195,56 +169,100 @@
                            :on-validation-error="onValidationError">
 
       <div class="row">
-        <q-input v-model="bean.fullName" :placeholder="$t('xshop_captions.l_fullname')"
-                 :label="$t('xshop_captions.l_fullname')"
-                 class="q-pa-md col-12 col-md-6" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-        <q-input v-model="bean.phone" :placeholder="$t('xshop_captions.l_phone')"
-                 :label="$t('xshop_captions.l_phone')"
-                 mask="+### (##) ### ## ##"
-                 unmasked-value
-                 fill-mask
-                 class="q-pa-md col-12 col-md-6" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-        <q-input v-model="bean.passportSeries" :placeholder="$t('xshop_captions.l_p_seria')"
-                 :label="$t('xshop_captions.l_p_seria')"
-                 class="q-pa-md q-pr-none col-5 col-md-3" dense
-                 mask="AA"
-                 hint="AA"
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-        <q-input v-model="bean.passportNumber" :placeholder="$t('xshop_captions.l_p_number')"
-                 :label="$t('xshop_captions.l_p_number')"
-                 class="q-pa-md q-pl-none col-7 col-md-9" dense
-                 mask="#######"
-                 hint="1234567"
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
+<!--        <q-input v-model="bean.fullName" :placeholder="$t('xshop_captions.l_fullname')"-->
+<!--                 :label="$t('xshop_captions.l_fullname')"-->
+<!--                 class="q-pa-md col-12 col-md-6" dense-->
+<!--                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">-->
+<!--        </q-input>-->
+<!--        <q-input v-model="bean.phone" :placeholder="$t('xshop_captions.l_phone')"-->
+<!--                 :label="$t('xshop_captions.l_phone')"-->
+<!--                 mask="+### (##) ### ## ##"-->
+<!--                 unmasked-value-->
+<!--                 fill-mask-->
+<!--                 class="q-pa-md col-12 col-md-6" dense-->
+<!--                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">-->
+<!--        </q-input>-->
+<!--        <q-input v-model="bean.passportSeries" :placeholder="$t('xshop_captions.l_p_seria')"-->
+<!--                 :label="$t('xshop_captions.l_p_seria')"-->
+<!--                 class="q-pa-md q-pr-none col-5 col-md-3" dense-->
+<!--                 mask="AA"-->
+<!--                 hint="AA"-->
+<!--                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">-->
+<!--        </q-input>-->
+<!--        <q-input v-model="bean.passportNumber" :placeholder="$t('xshop_captions.l_p_number')"-->
+<!--                 :label="$t('xshop_captions.l_p_number')"-->
+<!--                 class="q-pa-md q-pl-none col-7 col-md-9" dense-->
+<!--                 mask="#######"-->
+<!--                 hint="1234567"-->
+<!--                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">-->
+<!--        </q-input>-->
 
-        <q-select
-          v-model="bean.workerTypesId"
-          emit-value
-          map-options
-          :options="workerTypes"
-          option-value="id"
-          option-label="nameUz"
-          :label="$t('xshop_captions.l_worker_type')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
-          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
-          lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
-        >
-          <template v-slot:append>
-            <q-icon name="close" color="primary" @click.stop="bean.workerTypesId = null"
-                    class="cursor-pointer"/>
-          </template>
-          <template v-slot:selected-item="props">
-            <div>{{props.opt.nameUz}}</div>
-          </template>
-        </q-select>
+<!--        <q-select-->
+<!--          v-model="bean.workerTypesId"-->
+<!--          emit-value-->
+<!--          map-options-->
+<!--          :options="workerTypes"-->
+<!--          option-value="id"-->
+<!--          option-label="nameUz"-->
+<!--          :label="$t('xshop_captions.l_worker_type')"-->
+<!--          transition-show="flip-up"-->
+<!--          transition-hide="flip-down"-->
+<!--          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense-->
+<!--          lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"-->
+<!--        >-->
+<!--          <template v-slot:append>-->
+<!--            <q-icon name="close" color="primary" @click.stop="bean.workerTypesId = null"-->
+<!--                    class="cursor-pointer"/>-->
+<!--          </template>-->
+<!--          <template v-slot:selected-item="props">-->
+<!--            <div>{{props.opt.nameUz}}</div>-->
+<!--          </template>-->
+<!--        </q-select>-->
       </div>
+
+    </standart-input-dialog>
+
+    <standart-input-dialog v-model="formDialog2" :model-id="null" :on-submit="onSubmitProduct"
+                           :on-validation-error="onValidationError">
+
+      <q-scroll-area style="height: 230px; max-width: 600px;">
+        <div class="row" v-for="item in productData">
+          <hr class="col-12" v-if="productData.length > 1"/>
+          <q-select
+            v-model="item.productsId"
+            emit-value
+            map-options
+            :options="products"
+            option-value="id"
+            option-label="nameBg"
+            :label="$t('xshop_captions.l_products')"
+            transition-show="flip-up"
+            transition-hide="flip-down"
+            class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
+            lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
+          >
+            <template v-slot:append>
+              <q-icon v-if="item.productsId" name="close" color="primary" @click.stop="item.productsId = null"
+                      class="cursor-pointer"/>
+            </template>
+            <template v-slot:selected-item="props">
+              <div>{{props.opt.nameBg}}</div>
+            </template>
+          </q-select>
+          <q-input v-model="item.amount" :placeholder="$t('xshop_captions.l_amount')"
+                   :label="$t('xshop_captions.l_amount')"
+                   class="q-pa-md col-12 col-md-6" dense
+                   type="number"
+                   lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+          </q-input>
+          <q-input v-model="item.price" :placeholder="$t('xshop_captions.l_cost')"
+                   :label="$t('xshop_captions.l_cost')"
+                   class="q-pa-md col-12 col-md-6" dense
+                   lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+          </q-input>
+        </div>
+        <q-btn color="teal-8" icon="add" round class="q-mx-auto block q-mt-lg" @click="addProductBean"/>
+      </q-scroll-area>
 
     </standart-input-dialog>
 
@@ -263,6 +281,12 @@ export default {
   name: "SupplierTrades",
   components: {DateInput, StandartInputDialog},
   mixins: [StandartTable],
+  props: {
+    supplierId: {
+      type: Number,
+      default: null
+    },
+  },
   data() {
     return {
       apiUrl: urls.SUPPLIER_TRADES,
@@ -273,11 +297,6 @@ export default {
       cardCheckField: 'name',
       beanDefault: {
         id: null,
-        fullName: '',
-        phone: '',
-        passportSeries: '',
-        passportNumber: null,
-        workerTypesId: null
       },
       formDialog: false,
       filter: {
@@ -285,7 +304,7 @@ export default {
         rowsPerPage: 7,
         rowsNumber: 0,
         descending: false,
-        suppliersId: null,
+        suppliersId: this.supplierId,
         productsId: null,
         fromDate: null,
         toDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 'YYYY-MM-DD'),
@@ -411,7 +430,9 @@ export default {
       regions: [],
       suppliers: [],
       products: [],
-      model: 1
+      productData: [],
+      model: 1,
+      formDialog2: false,
     }
   },
   computed: {
@@ -420,6 +441,9 @@ export default {
     }
   },
   methods: {
+    goBack() {
+      this.$emit('goBack');
+    },
     getSuppliers() {
       this.$axios.get(urls.SUPPLIERS + '/all')
         .then(res => {
@@ -442,8 +466,45 @@ export default {
       for (let k in row) {
         this.$set(this.bean, k, row[k]);
       }
-      this.$set(this.bean, 'workerTypesId', row.workerTypes.id);
+      // this.$set(this.bean, 'workerTypesId', row.workerTypes.id);
       this.showForm();
+    },
+    rowAdd() {
+      this.productData = []
+      let productBeanDefault = {
+          suppliersId: this.supplierId,
+          productsId: null,
+          price: null,
+          amount: null,
+      }
+      this.productData.push(productBeanDefault)
+      this.showForm2();
+    },
+    showForm2() {
+      this.formDialog2 = true;
+    },
+    closeForm2() {
+      this.formDialog2 = false;
+    },
+    addProductBean() {
+      let productBeanDefault = {
+        suppliersId: this.supplierId,
+        productsId: null,
+        price: null,
+        amount: null,
+      }
+      this.productData.push(productBeanDefault)
+    },
+    onSubmitProduct() {
+      this.$axios.post(this.apiUrl, this.productData)
+        .then(response => {
+          this.closeForm2();
+          this.refreshTable();
+        }).catch(error => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
     },
   },
   watch: {

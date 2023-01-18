@@ -6,7 +6,7 @@ export default {
     "l_all": "Жами (сўм)",
     "l_amount": "Миқдор",
     "l_buy_product": "Сотиб олинган миқдор",
-    "l_cost": "Нархи",
+    "l_cost": "Нархи (so'm)",
     "l_created_date": "Яратилган сана",
     "l_fio": "Исм",
     "l_founder_transactions": "Сделки(по учредителям)",
@@ -31,6 +31,7 @@ export default {
     "l_returned_amount": "Қайтрилган миқдор",
     "l_returned_summ": "Қайтарилган summa",
     "l_role": "Ходим роли",
+    "l_show_trades": "Харидларни кўриш",
     "l_supplier_trades": "Етказиб берувчи савдолари",
     "l_suppliers": "Етказиб берувчилар",
     "l_to_date": "...гача",
@@ -39,6 +40,7 @@ export default {
     "l_user_role": "Фойдаланувчи роли",
     "l_users": "Тизим фойдаланувчилари",
     "l_worker": "Ходим",
-    "l_worker_name": "Ходим исми"
+    "l_worker_name": "Ходим исми",
+    "l_worker_type": "Ходим тури"
   }
 };

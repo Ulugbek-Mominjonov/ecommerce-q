@@ -22,6 +22,7 @@
       :dense="$q.screen.lt.md"
       :grid="$q.screen.xs"
       class="sticky-first-column-table sticky-last-column-table q-mt-lg"
+      style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
         {{$t('system.no_matching_found')}}
@@ -46,6 +47,11 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
+          <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades(props.row.id)" class="q-mr-xs">
+            <q-tooltip content-class="bg-secondary">
+              {{$t('xshop_captions.l_show_trades')}}
+            </q-tooltip>
+          </q-btn>
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('system.edit')}}
@@ -172,7 +178,7 @@ export default {
       formDialog: false,
       filter: {
         page: 0,
-        rowsPerPage: 7,
+        rowsPerPage: 15,
         rowsNumber: 0,
         descending: false,
         fullName: "",
@@ -245,6 +251,9 @@ export default {
     }
   },
   methods: {
+    goTrades(id) {
+      this.$emit('goTab', id)
+    }
   },
   watch: {
     model(newval) {
