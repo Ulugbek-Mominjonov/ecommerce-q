@@ -4,7 +4,7 @@
       <q-header elevated class="q-px-lg">
         <q-toolbar>
           <q-btn flat @click="leftDrawerOpen = !leftDrawerOpen" round dense icon="menu" />
-          <q-toolbar-title>Mebel to'lov rejasi</q-toolbar-title>
+          <q-toolbar-title>X-shop</q-toolbar-title>
 
           <q-btn
             round
@@ -24,38 +24,114 @@
         bordered
         content-class="bg-white shadow-2"
       >
-        <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
-          <q-list class="q-mt-lg">
+        <q-scroll-area class="site-main-menu" style="height: 100%; border-right: 1px solid #ddd">
+          <q-list class="q-mt-lg q-px-md">
             <q-item
-              v-for="(module, index, arr) in userModules"
+              clickable
+              v-ripple
+              active-class="site-main-menu--item--active"
+              class="site-main-menu--item"
+            >
+              <q-item-section avatar class="site-main-menu--icon">
+                <q-icon class="icon" name="mdi-monitor-dashboard" size="20px"/>
+              </q-item-section>
+
+              <q-item-section class="site-main-menu--title site-main-menu--dashboard">
+                X-shop dashboard
+              </q-item-section>
+            </q-item>
+
+            <q-item-label class="site-main-menu--heading" header>Tizim ma'lumotnomalari</q-item-label>
+            <q-item
+              v-for="(module, index, arr) in sprav"
               :key="module.name"
               :active="changeRouteName===module.name"
               clickable
               v-ripple
-              active-class="bg-teal-8 text-white"
+              active-class="site-main-menu--item--active"
               :to="module.path"
-              class="q-mb-lg"
+              class="site-main-menu--item"
             >
-              <q-item-section avatar>
-                <q-icon :name="module.meta.icon"/>
+              <q-item-section avatar class="site-main-menu--icon">
+                <q-icon class="icon" :name="module.meta.icon" size="20px"/>
               </q-item-section>
 
-              <q-item-section class=" text-subtitle1">
+              <q-item-section class="site-main-menu--title">
+                {{ $t(module.meta.title) }}
+              </q-item-section>
+            </q-item>
+
+            <q-item-label class="site-main-menu--heading q-mt-md" header>Asosiy bo'lim</q-item-label>
+            <q-item
+              v-for="(module, index, arr) in main"
+              :key="module.name"
+              :active="changeRouteName===module.name"
+              clickable
+              v-ripple
+              active-class="site-main-menu--item--active"
+              :to="module.path"
+              class="site-main-menu--item"
+            >
+              <q-item-section avatar class="site-main-menu--icon">
+                <q-icon class="icon" :name="module.meta.icon" size="20px"/>
+              </q-item-section>
+
+              <q-item-section class="site-main-menu--title">
+                {{ $t(module.meta.title) }}
+              </q-item-section>
+            </q-item>
+
+            <q-item-label class="site-main-menu--heading q-mt-md" header>Tranzaksiyalar</q-item-label>
+            <q-item
+              v-for="(module, index, arr) in transactions"
+              :key="module.name"
+              :active="changeRouteName===module.name"
+              clickable
+              v-ripple
+              active-class="site-main-menu--item--active"
+              :to="module.path"
+              class="site-main-menu--item"
+            >
+              <q-item-section avatar class="site-main-menu--icon">
+                <q-icon class="icon" :name="module.meta.icon" size="20px"/>
+              </q-item-section>
+
+              <q-item-section class="site-main-menu--title">
+                {{ $t(module.meta.title) }}
+              </q-item-section>
+            </q-item>
+
+            <q-item-label class="site-main-menu--heading q-mt-md" header>Trades</q-item-label>
+            <q-item
+              v-for="(module, index, arr) in trades"
+              :key="module.name"
+              :active="changeRouteName===module.name"
+              clickable
+              v-ripple
+              active-class="site-main-menu--item--active"
+              :to="module.path"
+              class="site-main-menu--item"
+            >
+              <q-item-section avatar class="site-main-menu--icon">
+                <q-icon class="icon" :name="module.meta.icon" size="20px"/>
+              </q-item-section>
+
+              <q-item-section class="site-main-menu--title">
                 {{ $t(module.meta.title) }}
               </q-item-section>
             </q-item>
           </q-list>
         </q-scroll-area>
 
-        <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
-          <div class="absolute-bottom bg-transparent">
-            <q-avatar size="56px" class="q-mb-sm">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-            </q-avatar>
-            <div class="text-weight-bold">{{getUser().user.workers.fullName}}</div>
-            <div>{{getUser().user.workers.phone}}</div>
-          </div>
-        </q-img>
+<!--        <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">-->
+<!--          <div class="absolute-bottom bg-transparent">-->
+<!--            <q-avatar size="56px" class="q-mb-sm">-->
+<!--              <img src="https://cdn.quasar.dev/img/boy-avatar.png">-->
+<!--            </q-avatar>-->
+<!--            <div class="text-weight-bold">{{getUser().user.workers.fullName}}</div>-->
+<!--            <div>{{getUser().user.workers.phone}}</div>-->
+<!--          </div>-->
+<!--        </q-img>-->
       </q-drawer>
 
       <q-page-container>
@@ -83,6 +159,7 @@
 
 <script>
 import {mapGetters, mapMutations} from "vuex";
+import {main_sprav} from "src/router/categories";
 export default {
   name: 'MainLayout',
   components: {
@@ -90,7 +167,10 @@ export default {
   data () {
     return {
       leftDrawerOpen: false,
-      userModules: [],
+      sprav: [],
+      main: [],
+      transactions: [],
+      trades: [],
       routeName: "",
       confirm: false
     }
@@ -118,7 +198,10 @@ export default {
     ]),
 
     getModules(){
-      this.userModules.splice(0, this.userModules.length, ...this.$store.getters.getUserCategories.main_user_cabinet_layout.children.filter(item => item.show));
+      this.sprav.splice(0, this.sprav.length, ...this.$store.getters.getUserCategories.main_sprav.children.filter(item => item.show));
+      this.main.splice(0, this.main.length, ...this.$store.getters.getUserCategories.main.children.filter(item => item.show));
+      this.trades.splice(0, this.trades.length, ...this.$store.getters.getUserCategories.main_trades.children.filter(item => item.show));
+      this.transactions.splice(0, this.transactions.length, ...this.$store.getters.getUserCategories.main_transactions.children.filter(item => item.show));
     },
     leftCabninet() {
       this.clearUser();

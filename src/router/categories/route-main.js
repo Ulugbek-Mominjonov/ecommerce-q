@@ -1,15 +1,5 @@
  const pages = [
    {
-      path: "/worker-types",
-      name: "worker-types",
-      show: true,
-      component: ()=> import("pages/UserCabinet/PageWorkerTypes.vue"),
-      meta:{
-        title: "Xodimlari turlari",
-        icon: 'mdi-account'
-      }
-    },
-   {
      path: "/workers",
      name: "workers",
      show: true,
@@ -29,6 +19,7 @@
        icon: 'mdi-file-document-outline'
      }
    },
+
    {
      path: "/founders",
      name: "founders",
@@ -36,28 +27,6 @@
      component: ()=> import("../../pages/UserCabinet/PageFounders.vue"),
      meta:{
        title: "xshop_captions.l_founders",
-       icon: 'mdi-file-document-outline'
-     }
-   },
-
-   {
-     path: "/founders-transactions",
-     name: "foundersTransactions",
-     show: true,
-     component: ()=> import("../../pages/UserCabinet/PageFoundersTransactions.vue"),
-     meta:{
-       title: "xshop_captions.l_founder_transactions",
-       icon: 'mdi-file-document-outline'
-     }
-   },
-
-   {
-     path: "/measure-types",
-     name: "MeasureTypes",
-     show: true,
-     component: ()=> import("../../pages/UserCabinet/PageMeasureTypes.vue"),
-     meta:{
-       title: "xshop_captions.l_measure_types",
        icon: 'mdi-file-document-outline'
      }
    },
@@ -81,23 +50,13 @@
        icon: 'mdi-file-document-outline'
      }
    },
-   {
-     path: "/supplier-trades",
-     name: "SupplierTrades",
-     show: true,
-     component: ()=> import("../../pages/UserCabinet/PageSupplierTrades.vue"),
-     meta:{
-       title: "xshop_captions.l_supplier_trades",
-       icon: 'mdi-file-document-outline'
-     }
-   },
 ]
 
-const main_user_cabinet_layout = {
-  path: '/main-user-cabinet-layout',
-  name: 'main-user-cabinet-layout',
+const main = {
+  path: '/main',
+  name: 'main',
   component: ()=> import('../../pages/UserCabinet/UserCabinet'),
   children: pages,
 }
 
-export default main_user_cabinet_layout;
+export default main;

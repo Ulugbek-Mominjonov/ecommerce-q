@@ -6,6 +6,7 @@ export function getCurLocale(state) {
 }
 export function getUserCategories(state){
   const modulesArr = Object.assign({}, categories);
+  console.log(modulesArr)
   return modulesArr;
 }
 

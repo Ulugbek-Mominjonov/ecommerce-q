@@ -1,1 +1,4 @@
-export {default as main_user_cabinet_layout} from './route-main-user-cabinet-layout';
+export {default as main_sprav} from './route-main-sprav';
+export {default as main} from './route-main';
+export {default as main_transactions} from './route-transactions';
+export {default as main_trades} from './route-trades';

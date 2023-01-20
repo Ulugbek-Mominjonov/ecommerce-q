@@ -218,15 +218,6 @@ export default {
           sortable: true, align: 'left',
           classes: 'col-1'
         },
-        // {
-        //   name: 'name',
-        //   field: row => row.name,
-        //   label: this.$t('captions.l_name'),
-        //   format: val => `${val}`,
-        //   sortable: true,
-        //   align: 'left',
-        //   classes: 'col-1 text-bold',
-        // },
 
         {
           name: 'nameUz',
