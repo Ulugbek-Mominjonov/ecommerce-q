@@ -22,6 +22,7 @@
       :dense="$q.screen.lt.md"
       :grid="$q.screen.xs"
       class="sticky-first-column-table sticky-last-column-table q-mt-lg"
+      style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
         {{$t('system.no_matching_found')}}

@@ -3,7 +3,7 @@
   <div>
     <q-table
       ref="table"
-      title="Mijozlar"
+      title="Xaridlar"
       :row-key="rowKey"
       :data="data"
       :columns="columns"
@@ -63,11 +63,11 @@
 
       <template v-slot:top="props">
         <q-select
-          v-if="!supplierId"
-          v-model="filter.suppliersId"
+          v-if="!customersId"
+          v-model="filter.customersId"
           emit-value
           map-options
-          :options="suppliers"
+          :options="customersId"
           option-value="id"
           option-label="fullName"
           :label="$t('xshop_captions.l_suppliers')"
@@ -78,14 +78,14 @@
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon v-if="filter.suppliersId !== null" name="close" color="primary" @click.stop="filter.suppliersId = null"
+            <q-icon v-if="filter.customersId !== null" name="close" color="primary" @click.stop="filter.customersId = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
             <div>{{props.opt.fullName}}</div>
           </template>
         </q-select>
-        <q-btn v-if="supplierId" @click="goBack" class="text-capitalize" color="teal-8" outline icon="mdi-arrow-left">
+        <q-btn v-if="customersId" @click="goBack" class="text-capitalize" color="teal-8" outline icon="mdi-arrow-left">
           <span class="q-ml-sm">Orqaga</span>
         </q-btn>
         <q-select
@@ -263,18 +263,18 @@ import StandartInputDialog from "components/base/StandartInputDialog";
 import DateInput from "components/base/DateInput.vue";
 
 export default {
-  name: "SupplierTrades",
+  name: "CustomerTrades",
   components: {DateInput, StandartInputDialog},
   mixins: [StandartTable],
   props: {
-    supplierId: {
+    customersId: {
       type: Number,
       default: null
     },
   },
   data() {
     return {
-      apiUrl: urls.SUPPLIER_TRADES,
+      apiUrl: urls.CUSTOMER_TRADES,
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -286,7 +286,7 @@ export default {
         price: null,
         returned: null,
         productsId: null,
-        suppliersId: this.suppliersId,
+        customersId: this.customersId,
       },
       formDialog: false,
       filter: {
@@ -294,7 +294,7 @@ export default {
         rowsPerPage: 7,
         rowsNumber: 0,
         descending: false,
-        suppliersId: this.supplierId,
+        customersId: this.customersId,
         productsId: null,
         fromDate: null,
         toDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 'YYYY-MM-DD'),
@@ -370,7 +370,7 @@ export default {
 
         {
           name: 'fullName',
-          field: row => row.suppliers.fullName,
+          field: row => row.customers.fullName,
           label: this.$t('xshop_captions.l_fio'),
           format: val => `${val}`,
           sortable: true,
@@ -379,7 +379,7 @@ export default {
         },
         {
           name: 'phone',
-          field: row => this.phone_format(row.suppliers.phone),
+          field: row => this.phone_format(row.customers.phone),
           label: this.$t('xshop_captions.l_phone'),
           format: val => `${val}`,
           sortable: true,
@@ -388,7 +388,7 @@ export default {
         },
         {
           name: 'passport',
-          field: row => `${row.suppliers.passportSeries} ${row.suppliers.passportNumber}`,
+          field: row => `${row.customers.passportSeries} ${row.customers.passportNumber}`,
           label: this.$t('xshop_captions.l_pasport'),
           format: val => `${val}`,
           sortable: true,
@@ -418,7 +418,7 @@ export default {
       ],
       data: [],
       regions: [],
-      suppliers: [],
+      customers: [],
       products: [],
       productData: [],
       model: 1,
@@ -434,10 +434,10 @@ export default {
     goBack() {
       this.$emit('goBack');
     },
-    getSuppliers() {
-      this.$axios.get(urls.SUPPLIERS + '/all')
+    getCustomers() {
+      this.$axios.get(urls.CUSTOMERS + '/all')
         .then(res => {
-          this.suppliers.splice(0, this.suppliers.length, ...res.data)
+          this.customers.splice(0, this.customers.length, ...res.data)
         }).catch(err => {
           this.showError(err)
       }).finally(() => {})
@@ -453,15 +453,17 @@ export default {
     },
 
     rowEdit(row) {
+      this.$set(this.bean, 'id', row.id);
       this.$set(this.bean, 'amount', row.amount);
       this.$set(this.bean, 'price', row.price);
       this.$set(this.bean, 'productsId', row.products.id);
+      this.$set(this.bean, 'customersId', this.customersId);
       this.showForm();
     },
     rowAdd() {
       this.productData = []
       let productBeanDefault = {
-          suppliersId: this.supplierId,
+          customersId: this.customersId,
           productsId: null,
           price: null,
           amount: null,
@@ -477,7 +479,7 @@ export default {
     },
     addProductBean() {
       let productBeanDefault = {
-        suppliersId: this.supplierId,
+        customersId: this.customersId,
         productsId: null,
         price: null,
         amount: null,
@@ -502,7 +504,7 @@ export default {
     }
   },
   mounted() {
-    this.getSuppliers();
+    this.getCustomers();
     this.getProducts();
   }
 }

@@ -22,6 +22,7 @@
       :dense="$q.screen.lt.md"
       :grid="$q.screen.xs"
       class="sticky-first-column-table sticky-last-column-table q-mt-lg"
+      style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
         {{$t('system.no_matching_found')}}
@@ -46,10 +47,7 @@
 
       <template v-slot:body-cell-roles="props">
         <q-td :props="props">
-          <template v-for="(item, index, arr) in props.row.roles">
-            <span>{{item.name}}</span>
-            <span v-if="index !== props.row.roles.length - 1">,</span>
-          </template>
+            <span>props.row.roles</span>
         </q-td>
       </template>
 

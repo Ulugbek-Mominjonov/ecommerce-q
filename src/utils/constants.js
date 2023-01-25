@@ -16,10 +16,18 @@ export const urls = {
   WORKERS: prf.BASE_API + "/workers",
   USERS: prf.BASE_API + "/users",
   FOUNDERS: prf.BASE_API + "/founders",
-  FOUNDERS_TRANSACTIONS: prf.BASE_API + "/founder-transactions",
   MEASURE_TYPES: prf.BASE_API + "/measure-types",
   PRODUCTS: prf.BASE_API + "/products",
   SUPPLIERS: prf.BASE_API + "/suppliers",
+  CUSTOMERS: prf.BASE_API + "/customers",
+
+  // Trades
   SUPPLIER_TRADES: prf.BASE_API + "/supplier-trades",
+  CUSTOMER_TRADES: prf.BASE_API + "/customer-trades",
+
+  // transactions
+  FOUNDERS_TRANSACTIONS: prf.BASE_API + "/founder-transactions",
+  SUPPLIERS_TRANSACTIONS: prf.BASE_API + "/supplier-transactions",
+  CUSTOMERS_TRANSACTIONS: prf.BASE_API + "/customer-transactions",
 }
 // 'http://65.108.83.140:8282/api/v1'

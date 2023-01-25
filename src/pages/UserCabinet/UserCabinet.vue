@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pa-md">
-    <q-layout view="hHh Lpr lff" class="shadow-2 rounded-borders" style="background-color: rgb(248,249,250)">
+  <div class="q-pl-md">
+    <q-layout view="hHh Lpr lff" class="shadow-2 rounded-borders" style="background-color: rgb(248,249,250); height: 100vh">
       <q-header elevated class="q-px-lg">
         <q-toolbar>
           <q-btn flat @click="leftDrawerOpen = !leftDrawerOpen" round dense icon="menu" />
@@ -25,7 +25,7 @@
         content-class="bg-white shadow-2"
       >
         <q-scroll-area class="site-main-menu" style="height: 100%; border-right: 1px solid #ddd">
-          <q-list class="q-mt-lg q-px-md">
+          <q-list class="q-my-lg q-px-md">
             <q-item
               clickable
               v-ripple
@@ -135,7 +135,7 @@
       </q-drawer>
 
       <q-page-container>
-        <q-page style="padding-right: 20px;">
+        <q-page class="q-pt-md q-pr-md" style="max-height: 100vh" >
           <router-view/>
         </q-page>
       </q-page-container>

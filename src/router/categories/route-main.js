@@ -50,6 +50,27 @@
        icon: 'mdi-file-document-outline'
      }
    },
+   {
+     path: "/customers",
+     name: "Customers",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageCustomers.vue"),
+     meta:{
+       title: "Xaridorlar",
+       icon: 'mdi-file-document-outline'
+     }
+   },
+
+   {
+     path: "/map",
+     name: "map",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/Map.vue"),
+     meta:{
+       title: "Xaridorlar",
+       icon: 'mdi-file-document-outline'
+     }
+   },
 ]
 
 const main = {

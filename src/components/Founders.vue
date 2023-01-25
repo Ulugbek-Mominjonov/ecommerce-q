@@ -22,6 +22,7 @@
       :dense="$q.screen.lt.md"
       :grid="$q.screen.xs"
       class="sticky-first-column-table sticky-last-column-table q-mt-lg"
+      style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
         {{$t('system.no_matching_found')}}
@@ -52,12 +53,22 @@
           </template>
         </q-input>
         <q-space/>
+
+<!--&lt;!&ndash;        view&ndash;&gt;-->
+<!--        <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades(props.row.id)" class="q-mr-xs">-->
+<!--          <q-tooltip content-class="bg-secondary">-->
+<!--            {{$t('xshop_captions.l_show_trades')}}-->
+<!--          </q-tooltip>-->
+<!--        </q-btn>-->
+
+<!--        refresh-->
         <q-btn icon="refresh" class="q-mr-sm bg-primary text-white" @click="refreshTable" dense>
           <q-tooltip content-class="bg-primary">
             {{ $t('xshop_captions.l_refresh') }}
           </q-tooltip>
         </q-btn>
 
+<!--        add-->
         <q-btn icon="add" class="bg-primary text-white" @click="rowAdd" dense>
           <q-tooltip content-class="bg-primary">
             {{ $t('system.add') }}

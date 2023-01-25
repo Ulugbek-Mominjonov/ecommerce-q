@@ -47,6 +47,11 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
+          <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades(props.row.id)" class="q-mr-xs">
+            <q-tooltip content-class="bg-secondary">
+              {{$t('xshop_captions.l_show_trades')}}
+            </q-tooltip>
+          </q-btn>
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('system.edit')}}
@@ -62,11 +67,11 @@
 
 
       <template v-slot:top="props">
-        <q-input v-model="filter.name" :placeholder="$t('xshop_captions.l_product_name')"
-                 :label="$t('xshop_captions.l_product_name')"
-                 class="q-pa-md col-4" dense outlined>
+        <q-input v-model="filter.fullName" placeholder="Xardidor F.I.O"
+                 label="Xardidor F.I.O"
+                 class="q-pa-md col-3" dense outlined>
           <template v-slot:append>
-            <q-icon v-if="filter.name" name="close" color="primary" @click.stop="filter.name = ''"
+            <q-icon v-if="filter.fullName" name="close" color="primary" @click.stop="filter.fullName = ''"
                     class="cursor-pointer"/>
           </template>
         </q-input>
@@ -101,42 +106,33 @@
                            :on-validation-error="onValidationError">
 
       <div class="row">
-        <q-input v-model="bean.nameUz" :placeholder="$t('xshop_captions.l_name_uz')"
-                 :label="$t('xshop_captions.l_name_uz')"
-                 class="q-pa-md col-12" dense
+        <q-input v-model="bean.fullName" :placeholder="$t('xshop_captions.l_fullname')"
+                 :label="$t('xshop_captions.l_fullname')"
+                 class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.nameRu" :placeholder="$t('xshop_captions.l_name_ru')"
-                 :label="$t('xshop_captions.l_name_ru')"
-                 class="q-pa-md col-12" dense
+        <q-input v-model="bean.phone" :placeholder="$t('xshop_captions.l_phone')"
+                 :label="$t('xshop_captions.l_phone')"
+                 mask="+### (##) ### ## ##"
+                 unmasked-value
+                 fill-mask
+                 class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.nameBg" :placeholder="$t('xshop_captions.l_name_bg')"
-                 :label="$t('xshop_captions.l_name_bg')"
-                 class="q-pa-md col-12" dense
+        <q-input v-model="bean.passportSeries" :placeholder="$t('xshop_captions.l_p_seria')"
+                 :label="$t('xshop_captions.l_p_seria')"
+                 class="q-pa-md q-pr-none col-5 col-md-3" dense
+                 mask="AA"
+                 hint="AA"
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-select
-          v-model="bean.measureTypesId"
-          emit-value
-          map-options
-          :options="measureTypes"
-          option-value="id"
-          option-label="nameUz"
-          :label="$t('xshop_captions.l_measure_types')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
-          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
-          lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
-        >
-          <template v-slot:append>
-            <q-icon v-if="bean.measureTypesId" name="close" color="primary" @click.stop="bean.measureTypesId = null"
-                    class="cursor-pointer"/>
-          </template>
-          <template v-slot:selected-item="props">
-            <div>{{props.opt.nameUz}}</div>
-          </template>
-        </q-select>
+        <q-input v-model="bean.passportNumber" :placeholder="$t('xshop_captions.l_p_number')"
+                 :label="$t('xshop_captions.l_p_number')"
+                 class="q-pa-md q-pl-none col-7 col-md-9" dense
+                 mask="#######"
+                 hint="1234567"
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
       </div>
 
     </standart-input-dialog>
@@ -152,12 +148,12 @@ import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
 
 export default {
-  name: "Products",
+  name: "Customers",
   components: {StandartInputDialog},
   mixins: [StandartTable],
   data() {
     return {
-      apiUrl: urls.PRODUCTS,
+      apiUrl: urls.CUSTOMERS,
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -165,19 +161,16 @@ export default {
       cardCheckField: 'name',
       beanDefault: {
         id: null,
-        fullName: '',
-        phone: '',
-        passportSeries: '',
-        passportNumber: null,
-        workerTypesId: null
+        fullName: ''
       },
       formDialog: false,
       filter: {
         page: 0,
-        rowsPerPage: 5,
+        rowsPerPage: 15,
         rowsNumber: 0,
         descending: false,
-        name: ""
+        fullName: "",
+        phone: ""
       },
       columns: [
         {
@@ -189,37 +182,27 @@ export default {
         },
 
         {
-          name: 'nameUz',
-          field: row => row.nameUz,
-          label: this.$t('xshop_captions.l_name_uz'),
+          name: 'fullName',
+          field: row => row.fullName,
+          label: this.$t('xshop_captions.l_fio'),
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1 text-bold',
+        },
+        {
+          name: 'phone',
+          field: row => this.phone_format(row.phone),
+          label: this.$t('xshop_captions.l_phone'),
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'nameRu',
-          field: row => row.nameRu,
-          label: this.$t('xshop_captions.l_name_ru'),
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'NameBg',
-          field: row => row.nameBg,
-          label: this.$t('xshop_captions.l_name_bg'),
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-
-        {
-          name: 'measureTypes',
-          field: row => row.measureTypes.nameBg,
-          label: this.$t('xshop_captions.l_measure_types'),
+          name: 'passport',
+          field: row => `${row.passportSeries} ${row.passportNumber}`,
+          label: this.$t('xshop_captions.l_pasport'),
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -247,10 +230,7 @@ export default {
         {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
       ],
       data: [],
-      regions: [],
-      workerTypes: [],
-      model: 1,
-      measureTypes: []
+      model: 1
     }
   },
   computed: {
@@ -259,23 +239,9 @@ export default {
     }
   },
   methods: {
-    getWorkerTypes() {
-      this.$axios.get(urls.MEASURE_TYPES + '/all')
-        .then(res => {
-          console.log(res)
-          this.measureTypes.splice(0, this.measureTypes.length, ...res.data)
-        }).catch(err => {
-          this.showError(err)
-      }).finally(() => {})
-    },
-
-    rowEdit(row) {
-      for (let k in row) {
-        this.$set(this.bean, k, row[k]);
-      }
-      this.$set(this.bean, 'measureTypesId', row.measureTypes.id);
-      this.showForm();
-    },
+    goTrades(id) {
+      this.$emit('goTab', id)
+    }
   },
   watch: {
     model(newval) {
@@ -283,7 +249,6 @@ export default {
     }
   },
   mounted() {
-    this.getWorkerTypes()
   }
 }
 </script>

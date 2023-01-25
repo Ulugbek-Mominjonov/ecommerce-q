@@ -9,6 +9,16 @@
        icon: 'mdi-file-document-outline'
      }
    },
+   {
+     path: "/customer-trades",
+     name: "CutomerTrades",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageCustomerTrades.vue"),
+     meta:{
+       title: "Xaridor xaridlari",
+       icon: 'mdi-file-document-outline'
+     }
+   },
 ]
 
 const main_trades = {

@@ -3,7 +3,7 @@
   <div>
     <q-table
       ref="table"
-      title="Mijozlar"
+      title="Xaridorlar"
       :row-key="rowKey"
       :data="data"
       :columns="columns"
@@ -56,7 +56,7 @@
         />
 
         <q-select
-          v-model="filter.income"
+          v-model="filter.isPayment"
           emit-value
           map-options
           :options="transactionsTypes"
@@ -70,7 +70,7 @@
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon v-if="filter.income !== null" name="close" color="primary" @click.stop="filter.income = null"
+            <q-icon v-if="filter.isPayment !== null" name="close" color="primary" @click.stop="filter.isPayment = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
@@ -102,7 +102,7 @@
 
       <template v-slot:body-cell-incomeAmount="props">
         <q-td :props="props">
-          <div v-if="props.row.income">
+          <div v-if="props.row.isPayment">
             {{number_format_old(props.row.amount, 0, '.', ' ')}}
           </div>
           <div v-else>
@@ -112,7 +112,7 @@
       </template>
       <template v-slot:body-cell-outcomeAmount="props">
         <q-td :props="props">
-          <div v-if="!props.row.income">
+          <div v-if="!props.row.isPayment">
             {{number_format_old(props.row.amount, 0, '.', ' ')}}
           </div>
           <div v-else>
@@ -156,20 +156,20 @@
 
       <div class="row">
         <q-select
-          v-model="bean.foundersId"
+          v-model="bean.customersId"
           emit-value
           map-options
-          :options="founders"
+          :options="customers"
           option-value="id"
           option-label="fullName"
-          :label="$t('xshop_captions.l_founders')"
+          label="Xaridor"
           transition-show="flip-up"
           transition-hide="flip-down"
           class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon name="close" color="primary" @click.stop="bean.foundersId = null"
+            <q-icon name="close" color="primary" @click.stop="bean.customersId = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
@@ -183,7 +183,7 @@
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
         <q-select
-          v-model="bean.income"
+          v-model="bean.isPayment"
           emit-value
           map-options
           :options="transactionsTypes"
@@ -196,7 +196,7 @@
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon name="close" color="primary" @click.stop="bean.income = null"
+            <q-icon name="close" color="primary" @click.stop="bean.isPayment = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
@@ -219,12 +219,12 @@ import StandartInputDialog from "components/base/StandartInputDialog";
 import DateInput from "components/base/DateInput.vue";
 
 export default {
-  name: "FoundersTransactions",
+  name: "CustomersTransactions",
   components: {DateInput, StandartInputDialog},
   mixins: [StandartTable],
   data() {
     return {
-      apiUrl: urls.FOUNDERS_TRANSACTIONS,
+      apiUrl: urls.CUSTOMERS_TRANSACTIONS,
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -233,8 +233,8 @@ export default {
       beanDefault: {
         id: null,
         amount: null,
-        income: null,
-        foundersId: null,
+        isPayment: null,
+        customersId: null,
       },
       formDialog: false,
       filter: {
@@ -243,7 +243,7 @@ export default {
         rowsNumber: 0,
         descending: false,
         amount: null,
-        income: null,
+        isPayment: null,
         fromDate: null,
         toDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 'YYYY-MM-DD'),
       },
@@ -291,7 +291,7 @@ export default {
         },
         {
           name: 'fullName',
-          field: row => row.founders.fullName,
+          field: row => row.customers.fullName,
           label: this.$t('xshop_captions.l_fio'),
           format: val => `${val}`,
           sortable: true,
@@ -300,7 +300,7 @@ export default {
         },
         {
           name: 'phone',
-          field: row => this.phone_format(row.founders.phone),
+          field: row => this.phone_format(row.customers.phone),
           label: this.$t('xshop_captions.l_phone'),
           format: val => `${val}`,
           sortable: true,
@@ -309,7 +309,7 @@ export default {
         },
         {
           name: 'passport',
-          field: row => `${row.founders.passportSeries} ${row.founders.passportNumber}`,
+          field: row => `${row.customers.passportSeries} ${row.customers.passportNumber}`,
           label: this.$t('xshop_captions.l_pasport'),
           format: val => `${val}`,
           sortable: true,
@@ -320,7 +320,7 @@ export default {
       ],
       data: [],
       model: 1,
-      founders: [],
+      customers: [],
       transactionsTypes: [
         {
           name: 'Kirim',
@@ -339,11 +339,11 @@ export default {
     }
   },
   methods: {
-    getFounders() {
-      this.$axios.get(urls.FOUNDERS + '/all')
+    getCustomers() {
+      this.$axios.get(urls.CUSTOMERS + '/all')
         .then(res => {
           console.log(res)
-          this.founders.splice(0, this.founders.length, ...res.data)
+          this.customers.splice(0, this.customers.length, ...res.data)
         }).catch(err => {
         this.showError(err)
       }).finally(() => {})
@@ -352,7 +352,7 @@ export default {
       for (let k in row) {
         this.$set(this.bean, k, row[k]);
       }
-      this.$set(this.bean, 'foundersId', row.founders.id);
+      this.$set(this.bean, 'customersId', row.customers.id);
       this.showForm();
     },
   },
@@ -362,7 +362,7 @@ export default {
     }
   },
   mounted() {
-    this.getFounders()
+    this.getCustomers()
   }
 }
 </script>

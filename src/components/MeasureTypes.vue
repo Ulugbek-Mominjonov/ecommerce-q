@@ -22,6 +22,7 @@
       :dense="$q.screen.lt.md"
       :grid="$q.screen.xs"
       class="sticky-first-column-table sticky-last-column-table q-mt-lg"
+      style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
         {{$t('system.no_matching_found')}}
@@ -52,13 +53,13 @@
           </template>
         </q-input>
         <q-space/>
-        <q-btn icon="refresh" class="q-mr-sm bg-primary text-white" @click="refreshTable" dense>
+        <q-btn icon="refresh" class="q-mr-sm text-white" @click="refreshTable" dense style="background-color: #344767">
           <q-tooltip content-class="bg-primary">
             {{ $t('xshop_captions.l_refresh') }}
           </q-tooltip>
         </q-btn>
 
-        <q-btn icon="add" class="bg-primary text-white" @click="rowAdd" dense>
+        <q-btn icon="add" class="text-white" @click="rowAdd" dense style="background-color: #344767">
           <q-tooltip content-class="bg-primary">
             {{ $t('system.add') }}
           </q-tooltip>
