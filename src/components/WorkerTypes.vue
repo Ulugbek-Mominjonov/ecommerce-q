@@ -165,7 +165,7 @@
                  class="q-pa-md col-12" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.name_uk" :placeholder="$t('xshop_captions.l_name_bg')"
+        <q-input v-model="bean.nameBg" :placeholder="$t('xshop_captions.l_name_bg')"
                  :label="$t('xshop_captions.l_name_bg')"
                  class="q-pa-md col-12" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
