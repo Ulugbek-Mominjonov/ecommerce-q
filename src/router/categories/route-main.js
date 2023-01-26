@@ -71,6 +71,17 @@
        icon: 'mdi-file-document-outline'
      }
    },
+
+   {
+     path: "/stores",
+     name: "stores",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageStores.vue"),
+     meta:{
+       title: "Dokonlar",
+       icon: 'mdi-file-document-outline'
+     }
+   },
 ]
 
 const main = {

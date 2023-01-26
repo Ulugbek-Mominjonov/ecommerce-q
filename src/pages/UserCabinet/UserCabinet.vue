@@ -1,18 +1,32 @@
 <template>
   <div class="q-pl-md">
     <q-layout view="hHh Lpr lff" class="shadow-2 rounded-borders" style="background-color: rgb(248,249,250); height: 100vh">
-      <q-header elevated class="q-px-lg">
+      <q-header elevated class="q-px-lg" style="background-color: #344767">
         <q-toolbar>
           <q-btn flat @click="leftDrawerOpen = !leftDrawerOpen" round dense icon="menu" />
           <q-toolbar-title>X-shop</q-toolbar-title>
 
           <q-btn
             round
-            color="primary"
             dense
+            size="12px"
             @click="confirm = !confirm"
-            icon="mdi-account-arrow-right-outline"
-          />
+            class="text-black q-mr-sm"
+            style="background-color: #e9e1d3"
+          >
+            <q-icon name="mdi-account" size="18px"/>
+          </q-btn>
+
+          <q-btn
+            round
+            dense
+            size="12px"
+            @click="confirm = !confirm"
+            class="text-black"
+            style="background-color: #e9e1d3"
+          >
+            <q-icon name="mdi-exit-to-app" size="18px"/>
+          </q-btn>
 
         </q-toolbar>
       </q-header>

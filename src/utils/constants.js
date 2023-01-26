@@ -20,6 +20,8 @@ export const urls = {
   PRODUCTS: prf.BASE_API + "/products",
   SUPPLIERS: prf.BASE_API + "/suppliers",
   CUSTOMERS: prf.BASE_API + "/customers",
+  STORES: prf.BASE_API + "/stores",
+
 
   // Trades
   SUPPLIER_TRADES: prf.BASE_API + "/supplier-trades",
