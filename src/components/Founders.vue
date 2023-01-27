@@ -30,6 +30,11 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
+          <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTransactions(props.row.id)" class="q-mr-xs">
+            <q-tooltip content-class="bg-secondary">
+              Tranzaksiyalar
+            </q-tooltip>
+          </q-btn>
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('system.edit')}}
@@ -243,6 +248,9 @@ export default {
     }
   },
   methods: {
+    goTransactions(id) {
+      this.$emit('goTab', id)
+    }
   },
   watch: {
     model(newval) {

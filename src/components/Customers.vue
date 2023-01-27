@@ -47,9 +47,14 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades(props.row.id)" class="q-mr-xs">
+          <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades({id: props.row.id, tab: '2'})" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('xshop_captions.l_show_trades')}}
+            </q-tooltip>
+          </q-btn>
+          <q-btn size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
+            <q-tooltip content-class="bg-secondary">
+              Tranzaksiyalarni ko'rish
             </q-tooltip>
           </q-btn>
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
@@ -239,8 +244,9 @@ export default {
     }
   },
   methods: {
-    goTrades(id) {
-      this.$emit('goTab', id)
+    goTrades(val) {
+      console.log(val)
+      this.$emit('goTab', val)
     }
   },
   watch: {

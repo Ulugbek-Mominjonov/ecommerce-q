@@ -9,6 +9,10 @@
       <q-tab-panel name="2" class="q-pa-none">
         <supplier-trades :supplierId = "supplierId" @goBack="goSuppliers"/>
       </q-tab-panel>
+
+      <q-tab-panel name="3" class="q-pa-none">
+        <suppliers-transactions :supplierId = "supplierId" @goBack="goSuppliers"/>
+      </q-tab-panel>
     </q-tab-panels>
   </div>
 </template>
@@ -18,9 +22,10 @@ import {mapGetters, mapMutations} from "vuex";
 import ModuleHeader from "components/ModuleHeader.vue";
 import Suppliers from "components/Suppliers.vue";
 import SupplierTrades from "components/SupplierTrades";
+import SuppliersTransactions from "components/SuppliersTransactions.vue";
 export default {
   name: "PageSuppliers",
-  components: {SupplierTrades, Suppliers, ModuleHeader},
+  components: {SuppliersTransactions, SupplierTrades, Suppliers, ModuleHeader},
   data() {
     return {
       panel: "1",
@@ -31,20 +36,13 @@ export default {
     ...mapGetters([
       'getUser'
     ]),
-    goTrades(id) {
-      if (this.panel === "1") {
-        this.supplierId = id;
-        this.panel = "2"
-      } else {
-        this.panel = "1"
-      }
+    goTrades(val) {
+      console.log(val)
+      this.supplierId = val.id;
+      this.panel = val.tab;
     },
     goSuppliers() {
-      if (this.panel === "2") {
-        this.panel = "1"
-      } else {
-        this.panel = "2"
-      }
+      this.panel = '1'
     }
   }
 }

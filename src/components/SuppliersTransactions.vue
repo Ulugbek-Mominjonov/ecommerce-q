@@ -44,6 +44,9 @@
       </template>
 
       <template v-slot:top="props">
+        <q-btn v-if="supplierId" @click="goBack" class="text-capitalize" color="teal-8" outline icon="mdi-arrow-left">
+          <span class="q-ml-sm">Orqaga</span>
+        </q-btn>
         <date-input
           v-model="filter.fromDate"
           :label="$t('xshop_captions.l_from_date')"
@@ -156,6 +159,7 @@
 
       <div class="row">
         <q-select
+          :disable = "supplierId"
           v-model="bean.suppliersId"
           emit-value
           map-options
@@ -222,6 +226,12 @@ export default {
   name: "SuppliersTransactions",
   components: {DateInput, StandartInputDialog},
   mixins: [StandartTable],
+  props: {
+    supplierId: {
+      type: Number,
+      default: null
+    },
+  },
   data() {
     return {
       apiUrl: urls.SUPPLIERS_TRANSACTIONS,
@@ -234,7 +244,7 @@ export default {
         id: null,
         amount: null,
         isPayment: null,
-        suppliersId: null,
+        suppliersId: this.supplierId,
       },
       formDialog: false,
       filter: {
@@ -243,6 +253,7 @@ export default {
         rowsNumber: 0,
         descending: false,
         amount: null,
+        suppliersId: this.supplierId,
         isPayment: null,
         fromDate: null,
         toDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 'YYYY-MM-DD'),
@@ -354,6 +365,9 @@ export default {
       }
       this.$set(this.bean, 'suppliersId', row.suppliers.id);
       this.showForm();
+    },
+    goBack() {
+      this.$emit('goBack');
     },
   },
   watch: {

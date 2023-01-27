@@ -23,7 +23,7 @@
 
    {
      path: "/cutomers-transactions",
-     name: "CustomersTransactions",
+     name: "sustomersTransactions",
      show: true,
      component: ()=> import("../../pages/UserCabinet/PageCustomersTransactions.vue"),
      meta:{

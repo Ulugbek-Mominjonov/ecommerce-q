@@ -44,6 +44,9 @@
       </template>
 
       <template v-slot:top="props">
+        <q-btn v-if="founderId" @click="goBack" class="text-capitalize" color="teal-8" outline icon="mdi-arrow-left">
+          <span class="q-ml-sm">Orqaga</span>
+        </q-btn>
         <date-input
           v-model="filter.fromDate"
           :label="$t('xshop_captions.l_from_date')"
@@ -156,6 +159,7 @@
 
       <div class="row">
         <q-select
+          :disable="founderId"
           v-model="bean.foundersId"
           emit-value
           map-options
@@ -222,6 +226,12 @@ export default {
   name: "FoundersTransactions",
   components: {DateInput, StandartInputDialog},
   mixins: [StandartTable],
+  props: {
+    founderId: {
+      type: Number,
+      default: null
+    },
+  },
   data() {
     return {
       apiUrl: urls.FOUNDERS_TRANSACTIONS,
@@ -234,7 +244,7 @@ export default {
         id: null,
         amount: null,
         income: null,
-        foundersId: null,
+        foundersId: this.founderId,
       },
       formDialog: false,
       filter: {
@@ -245,6 +255,7 @@ export default {
         amount: null,
         income: null,
         fromDate: null,
+        foundersId: this.founderId,
         toDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 'YYYY-MM-DD'),
       },
       columns: [
@@ -354,6 +365,9 @@ export default {
       }
       this.$set(this.bean, 'foundersId', row.founders.id);
       this.showForm();
+    },
+    goBack() {
+      this.$emit('goBack');
     },
   },
   watch: {

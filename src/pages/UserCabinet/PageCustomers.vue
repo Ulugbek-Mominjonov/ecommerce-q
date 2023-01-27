@@ -9,6 +9,11 @@
       <q-tab-panel name="2" class="q-pa-none">
         <customer-trades :customersId = "customerId" @goBack="goCustomers"/>
       </q-tab-panel>
+
+      <q-tab-panel name="3" class="q-pa-none">
+        <customers-transactions :customerId = "customerId" @goBack="goCustomers"/>
+      </q-tab-panel>
+
     </q-tab-panels>
   </div>
 </template>
@@ -20,9 +25,10 @@ import Suppliers from "components/Suppliers.vue";
 import SupplierTrades from "components/SupplierTrades";
 import Customers from "components/Customers";
 import CustomerTrades from "components/CustomerTrades";
+import CustomersTransactions from "components/CustomersTransactions.vue";
 export default {
   name: "PageCustomers",
-  components: {CustomerTrades, Customers, SupplierTrades, Suppliers, ModuleHeader},
+  components: {CustomersTransactions, CustomerTrades, Customers, ModuleHeader},
   data() {
     return {
       panel: "1",
@@ -33,20 +39,12 @@ export default {
     ...mapGetters([
       'getUser'
     ]),
-    goTrades(id) {
-      if (this.panel === "1") {
-        this.customerId = id;
-        this.panel = "2"
-      } else {
-        this.panel = "1"
-      }
+    goTrades(val) {
+      this.customerId = val.id;
+      this.panel = val.tab;
     },
     goCustomers() {
-      if (this.panel === "2") {
-        this.panel = "1"
-      } else {
-        this.panel = "2"
-      }
+      this.panel = '1'
     }
   }
 }
