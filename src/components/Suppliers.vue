@@ -11,7 +11,6 @@
       :filter="filter"
       :pagination="filter"
       @request="refreshData"
-      selection="single"
       :selected.sync="selectedRows"
       separator="horizontal"
       color="secondary"
@@ -26,6 +25,17 @@
     >
       <template v-slot:no-data="props">
         {{$t('system.no_matching_found')}}
+      </template>
+
+      <template v-slot:body-cell-passport="props">
+        <q-td :props="props">
+          <div v-if="props.row.passportSeries && props.row.passportNumber">
+            {{props.row.passportSeries}} {{props.row.passportNumber}}
+          </div>
+          <div v-else>
+            -- --- -- --
+          </div>
+        </q-td>
       </template>
 
       <template v-slot:body-cell-modifyDate="props">
@@ -72,7 +82,7 @@
 
 
       <template v-slot:top="props">
-        <q-input v-model="filter.fullName" :placeholder="$t('xshop_captions.l_fio')"
+        <q-input v-model="filter.fullName"
                  :label="$t('xshop_captions.l_fio')"
                  class="q-pa-md col-3" dense outlined>
           <template v-slot:append>
@@ -80,7 +90,7 @@
                     class="cursor-pointer"/>
           </template>
         </q-input>
-        <q-input v-model="filter.phone" :placeholder="$t('xshop_captions.l_phone')"
+        <q-input v-model="filter.phone"
                  :label="$t('xshop_captions.l_phone')"
                  mask="+### (##) ### ## ##"
                  unmasked-value
@@ -120,12 +130,12 @@
                            :on-validation-error="onValidationError">
 
       <div class="row">
-        <q-input v-model="bean.fullName" :placeholder="$t('xshop_captions.l_fullname')"
+        <q-input v-model="bean.fullName"
                  :label="$t('xshop_captions.l_fullname')"
                  class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.phone" :placeholder="$t('xshop_captions.l_phone')"
+        <q-input v-model="bean.phone"
                  :label="$t('xshop_captions.l_phone')"
                  mask="+### (##) ### ## ##"
                  unmasked-value
@@ -133,19 +143,17 @@
                  class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.passportSeries" :placeholder="$t('xshop_captions.l_p_seria')"
+        <q-input v-model="bean.passportSeries"
                  :label="$t('xshop_captions.l_p_seria')"
                  class="q-pa-md q-pr-none col-5 col-md-3" dense
                  mask="AA"
-                 hint="AA"
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+                 hint="AA">
         </q-input>
-        <q-input v-model="bean.passportNumber" :placeholder="$t('xshop_captions.l_p_number')"
+        <q-input v-model="bean.passportNumber"
                  :label="$t('xshop_captions.l_p_number')"
                  class="q-pa-md q-pl-none col-7 col-md-9" dense
                  mask="#######"
-                 hint="1234567"
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+                 hint="1234567">
         </q-input>
       </div>
 
@@ -244,7 +252,7 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-        {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
+        {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
       ],
       data: [],
       model: 1

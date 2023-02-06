@@ -34,7 +34,7 @@
       <q-drawer
         v-model="leftDrawerOpen"
         show-if-above
-        :breakpoint="500"
+        :breakpoint="300"
         bordered
         content-class="bg-white shadow-2"
       >
@@ -52,6 +52,46 @@
 
               <q-item-section class="site-main-menu--title site-main-menu--dashboard">
                 Дашбоард
+              </q-item-section>
+            </q-item>
+
+            <q-item-label class="site-main-menu--heading q-mt-md" header>Транзаксиялар</q-item-label>
+            <q-item
+              v-for="(module, index, arr) in transactions"
+              :key="module.name"
+              :active="changeRouteName===module.name"
+              clickable
+              v-ripple
+              active-class="site-main-menu--item--active"
+              :to="module.path"
+              class="site-main-menu--item"
+            >
+              <q-item-section avatar class="site-main-menu--icon">
+                <q-icon class="icon" :name="module.meta.icon" size="20px"/>
+              </q-item-section>
+
+              <q-item-section class="site-main-menu--title">
+                {{ $t(module.meta.title) }}
+              </q-item-section>
+            </q-item>
+
+            <q-item-label class="site-main-menu--heading q-mt-md" header>Савдолар</q-item-label>
+            <q-item
+              v-for="(module, index, arr) in trades"
+              :key="module.name"
+              :active="changeRouteName===module.name"
+              clickable
+              v-ripple
+              active-class="site-main-menu--item--active"
+              :to="module.path"
+              class="site-main-menu--item"
+            >
+              <q-item-section avatar class="site-main-menu--icon">
+                <q-icon class="icon" :name="module.meta.icon" size="20px"/>
+              </q-item-section>
+
+              <q-item-section class="site-main-menu--title">
+                {{ $t(module.meta.title) }}
               </q-item-section>
             </q-item>
 
@@ -75,45 +115,6 @@
               </q-item-section>
             </q-item>
 
-            <q-item-label class="site-main-menu--heading q-mt-md" header>Tranzaksiyalar</q-item-label>
-            <q-item
-              v-for="(module, index, arr) in transactions"
-              :key="module.name"
-              :active="changeRouteName===module.name"
-              clickable
-              v-ripple
-              active-class="site-main-menu--item--active"
-              :to="module.path"
-              class="site-main-menu--item"
-            >
-              <q-item-section avatar class="site-main-menu--icon">
-                <q-icon class="icon" :name="module.meta.icon" size="20px"/>
-              </q-item-section>
-
-              <q-item-section class="site-main-menu--title">
-                {{ $t(module.meta.title) }}
-              </q-item-section>
-            </q-item>
-
-            <q-item-label class="site-main-menu--heading q-mt-md" header>Trades</q-item-label>
-            <q-item
-              v-for="(module, index, arr) in trades"
-              :key="module.name"
-              :active="changeRouteName===module.name"
-              clickable
-              v-ripple
-              active-class="site-main-menu--item--active"
-              :to="module.path"
-              class="site-main-menu--item"
-            >
-              <q-item-section avatar class="site-main-menu--icon">
-                <q-icon class="icon" :name="module.meta.icon" size="20px"/>
-              </q-item-section>
-
-              <q-item-section class="site-main-menu--title">
-                {{ $t(module.meta.title) }}
-              </q-item-section>
-            </q-item>
 
 
             <q-item-label class="site-main-menu--heading" header>Тизим маълумотлари</q-item-label>
@@ -166,8 +167,8 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
-          <q-btn flat label="Turn on Wifi" color="primary" @click="leftCabninet" />
+          <q-btn flat label="Bekor qilish" color="primary" v-close-popup />
+          <q-btn flat label="Chiqish" color="primary" @click="leftCabninet" />
         </q-card-actions>
       </q-card>
     </q-dialog>

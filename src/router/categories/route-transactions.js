@@ -5,8 +5,8 @@
      show: true,
      component: ()=> import("../../pages/UserCabinet/PageFoundersTransactions.vue"),
      meta:{
-       title: "xshop_captions.l_founder_transactions",
-       icon: 'mdi-file-document-outline'
+       title: "Таъсисчи транзаксиялари",
+       icon: 'mdi-cash'
      }
    },
 
@@ -16,19 +16,19 @@
      show: true,
      component: ()=> import("../../pages/UserCabinet/PageSuppliersTransactions.vue"),
      meta:{
-       title: "Tranzaksiyalar (yetkazib beruvchilar)",
-       icon: 'mdi-file-document-outline'
+       title: "Таъминотчи транзаксиялари",
+       icon: 'mdi-truck-outline'
      }
    },
 
    {
      path: "/cutomers-transactions",
-     name: "sustomersTransactions",
+     name: "customersTransactions",
      show: true,
      component: ()=> import("../../pages/UserCabinet/PageCustomersTransactions.vue"),
      meta:{
-       title: "Tranzaksiyalar (Xaridorlar)",
-       icon: 'mdi-file-document-outline'
+       title: "Харидор транзаксиялри",
+       icon: 'mdi-account-outline'
      }
    },
 ]

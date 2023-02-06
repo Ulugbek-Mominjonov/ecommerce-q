@@ -30,16 +30,7 @@
        icon: 'mdi-cash'
      }
    },
-   {
-     path: "/products",
-     name: "Products",
-     show: true,
-     component: ()=> import("../../pages/UserCabinet/PageProducts.vue"),
-     meta:{
-       title: "xshop_captions.l_products",
-       icon: 'mdi-food-apple-outline'
-     }
-   },
+
    {
      path: "/suppliers",
      name: "Suppliers",
@@ -60,18 +51,6 @@
        icon: 'mdi-account-cash-outline'
      }
    },
-   //
-   // {
-   //   path: "/map",
-   //   name: "map",
-   //   show: true,
-   //   component: ()=> import("../../pages/UserCabinet/Map.vue"),
-   //   meta:{
-   //     title: "Харидорлар",
-   //     icon: 'mdi-account-cash-outline'
-   //   }
-   // },
-
    {
      path: "/stores",
      name: "stores",
@@ -80,6 +59,16 @@
      meta:{
        title: "Дўконлар",
        icon: 'mdi-store-outline'
+     }
+   },
+   {
+     path: "/products",
+     name: "Products",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageProducts.vue"),
+     meta:{
+       title: "xshop_captions.l_products",
+       icon: 'mdi-food-apple-outline'
      }
    },
 ]

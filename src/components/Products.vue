@@ -101,18 +101,8 @@
                            :on-validation-error="onValidationError">
 
       <div class="row">
-        <q-input v-model="bean.nameUz" :placeholder="$t('xshop_captions.l_name_uz')"
-                 :label="$t('xshop_captions.l_name_uz')"
-                 class="q-pa-md col-12" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-        <q-input v-model="bean.nameRu" :placeholder="$t('xshop_captions.l_name_ru')"
-                 :label="$t('xshop_captions.l_name_ru')"
-                 class="q-pa-md col-12" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-        <q-input v-model="bean.nameBg" :placeholder="$t('xshop_captions.l_name_bg')"
-                 :label="$t('xshop_captions.l_name_bg')"
+        <q-input v-model="bean.nameBg"
+                 :label="$t('xshop_captions.l_name')"
                  class="q-pa-md col-12" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
@@ -122,10 +112,8 @@
           map-options
           :options="measureTypes"
           option-value="id"
-          option-label="nameUz"
-          :label="$t('xshop_captions.l_measure_types')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
+          option-label="nameBg"
+          :label="'Ўлчов бирлик'"
           class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
@@ -134,7 +122,7 @@
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
-            <div>{{props.opt.nameUz}}</div>
+            <div>{{props.opt.nameBg}}</div>
           </template>
         </q-select>
       </div>
@@ -165,11 +153,10 @@ export default {
       cardCheckField: 'name',
       beanDefault: {
         id: null,
-        fullName: '',
-        phone: '',
-        passportSeries: '',
-        passportNumber: null,
-        workerTypesId: null
+        nameUz: '',
+        nameBg: '',
+        nameRu: '',
+        measureTypesId: null
       },
       formDialog: false,
       filter: {
@@ -187,45 +174,24 @@ export default {
           sortable: true, align: 'left',
           classes: 'col-1'
         },
-
         {
-          name: 'nameUz',
-          field: row => row.nameUz,
-          label: this.$t('xshop_captions.l_name_uz'),
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'nameRu',
-          field: row => row.nameRu,
-          label: this.$t('xshop_captions.l_name_ru'),
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'NameBg',
+          name: 'nameBg',
           field: row => row.nameBg,
-          label: this.$t('xshop_captions.l_name_bg'),
+          label: this.$t('xshop_captions.l_name'),
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
-
         {
           name: 'measureTypes',
           field: row => row.measureTypes.nameBg,
-          label: this.$t('xshop_captions.l_measure_types'),
+          label: "Ўлчов бирлик",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
-
         {
           name: 'modifyDate',
           field: row => row.modifiedDate,
@@ -244,7 +210,7 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-        {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
+        {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
       ],
       data: [],
       regions: [],
