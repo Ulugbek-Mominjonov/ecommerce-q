@@ -55,6 +55,26 @@
               </q-item-section>
             </q-item>
 
+            <q-item-label class="site-main-menu--heading" header>Hisobotlar</q-item-label>
+            <q-item
+              v-for="(module, index, arr) in reports"
+              :key="module.name"
+              :active="changeRouteName===module.name"
+              clickable
+              v-ripple
+              active-class="site-main-menu--item--active"
+              :to="module.path"
+              class="site-main-menu--item"
+            >
+              <q-item-section avatar class="site-main-menu--icon">
+                <q-icon class="icon" :name="module.meta.icon" size="20px"/>
+              </q-item-section>
+
+              <q-item-section class="site-main-menu--title">
+                {{ $t(module.meta.title) }}
+              </q-item-section>
+            </q-item>
+
             <q-item-label class="site-main-menu--heading" header>Tizim ma'lumotnomalari</q-item-label>
             <q-item
               v-for="(module, index, arr) in sprav"
@@ -185,6 +205,7 @@ export default {
       main: [],
       transactions: [],
       trades: [],
+      reports: [],
       routeName: "",
       confirm: false
     }
@@ -212,9 +233,11 @@ export default {
     ]),
 
     getModules(){
+      this.reports.splice(0, this.reports.length, ...this.$store.getters.getUserCategories.main_reports.children.filter(item => item.show));
       this.sprav.splice(0, this.sprav.length, ...this.$store.getters.getUserCategories.main_sprav.children.filter(item => item.show));
       this.main.splice(0, this.main.length, ...this.$store.getters.getUserCategories.main.children.filter(item => item.show));
       this.trades.splice(0, this.trades.length, ...this.$store.getters.getUserCategories.main_trades.children.filter(item => item.show));
+      this.transactions.splice(0, this.transactions.length, ...this.$store.getters.getUserCategories.main_transactions.children.filter(item => item.show));
       this.transactions.splice(0, this.transactions.length, ...this.$store.getters.getUserCategories.main_transactions.children.filter(item => item.show));
     },
     leftCabninet() {

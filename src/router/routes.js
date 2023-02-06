@@ -1,3 +1,4 @@
+import main_reports from '././categories/route-report';
 import main_sprav from "src/router/categories/route-main-sprav";
 import main from "src/router/categories/route-main";
 import main_transactions from "src/router/categories/route-transactions";
@@ -9,6 +10,7 @@ const routes = [
     children: [
     ]
   },
+  main_reports,
   main_sprav,
   main,
   main_transactions,
