@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div class="row">
-    <div class="col-7">
+    <div class="col-8">
       <q-table
         ref="table"
         title="Mijozlar"
@@ -28,6 +28,18 @@
           {{$t('system.no_matching_found')}}
         </template>
 
+        <template v-slot:body-cell-ownerName="props">
+          <q-td :props="props">
+            <div v-if="props.row.ownerName">
+              <b>Фио:</b> {{props.row.ownerName}}<br>
+              <b>Тел:</b> {{props.row.phone}}
+            </div>
+            <div v-else>
+              --.--.----
+            </div>
+          </q-td>
+        </template>
+
         <template v-slot:body-cell-modifyDate="props">
           <q-td :props="props">
             <div v-if="props.row.modifiedDate">
@@ -42,6 +54,17 @@
         <template v-slot:body-cell-createdDate="props">
           <q-td :props="props">
             {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
+          </q-td>
+        </template>
+
+        <template v-slot:body-cell-qrcode="props">
+          <q-td :props="props">
+            <div v-if="props.row.qrcode">
+              {{props.row.qrcode}}
+            </div>
+            <div v-else>
+              Берилмаган
+            </div>
           </q-td>
         </template>
 
@@ -60,19 +83,18 @@
           </q-td>
         </template>
 
-
         <template v-slot:top="props">
-          <q-input v-model="filter.storeName" placeholder="Do'kon manzili"
-                   label="Do'kon manzili"
-                   class="q-pa-sm col-3" dense outlined>
+          <q-input v-model="filter.storeName"
+                   label="Дўкон номи"
+                   class="q-pa-sm col-4" dense outlined>
             <template v-slot:append>
               <q-icon v-if="filter.storeName" name="close" color="primary" @click.stop="filter.storeName = ''"
                       class="cursor-pointer"/>
             </template>
           </q-input>
 
-          <q-input v-model="filter.ownerName" placeholder="Do'kon egasi"
-                   label="Do'kon egasi"
+          <q-input v-model="filter.ownerName"
+                   label="Дўкон егаси"
                    class="q-pa-sm col-3" dense outlined>
             <template v-slot:append>
               <q-icon v-if="filter.ownerName" name="close" color="primary" @click.stop="filter.ownerName = ''"
@@ -80,12 +102,12 @@
             </template>
           </q-input>
 
-          <q-input v-model="filter.phone" placeholder="Telefon nomer"
-                   label="Do'kon egasi"
-                   mask="+### (##) ### ## ##"
+          <q-input v-model="filter.phone"
+                   label="Телефон"
+                   mask="(##) ### ## ##"
                    unmasked-value
                    fill-mask
-                   class="q-pa-sm col-3" dense outlined>
+                   class="q-pa-sm col-4" dense outlined>
             <template v-slot:append>
               <q-icon v-if="filter.phone" name="close" color="primary" @click.stop="filter.phone = ''"
                       class="cursor-pointer"/>
@@ -100,37 +122,6 @@
 
         </template>
 
-        <!--      <template v-slot:item="props">-->
-        <!--        <div-->
-        <!--          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"-->
-        <!--        >-->
-        <!--          <q-card :class="props.selected ? 'row-selected' : ''">-->
-        <!--            <q-card-section>-->
-        <!--              <q-checkbox dense v-model="props.selected" :label="props.row[cardCheckField]"/>-->
-        <!--            </q-card-section>-->
-        <!--            <q-separator/>-->
-        <!--            <q-list dense>-->
-        <!--              <q-item v-for="col in props.cols.filter(col_ => col_.name !== actionsColumnName)" :key="col.name">-->
-        <!--                <q-item-section>-->
-        <!--                  <q-item-label>{{ col.label }}</q-item-label>-->
-        <!--                </q-item-section>-->
-        <!--                <q-item-section side>-->
-        <!--                  <q-item-label caption>{{ col.value }}</q-item-label>-->
-        <!--                </q-item-section>-->
-        <!--              </q-item>-->
-        <!--            </q-list>-->
-        <!--            <q-separator/>-->
-        <!--            <q-card-section class="row justify-end"-->
-        <!--                            v-if="props.cols.filter(col => col.name === actionsColumnName).length>0">-->
-        <!--              <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">-->
-        <!--              </q-btn>-->
-        <!--              <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">-->
-        <!--              </q-btn>-->
-        <!--            </q-card-section>-->
-
-        <!--          </q-card>-->
-        <!--        </div>-->
-        <!--      </template>-->
         <template v-slot:bottom>
           <div class="full-width row justify-center q-mt-md">
             <q-pagination
@@ -143,9 +134,9 @@
         </template>
       </q-table>
     </div>
-    <div class="col-5 q-pt-lg q-pl-md">
+    <div class="col-4 q-pt-lg q-pl-md">
       <q-toolbar class="bg-primary text-white shadow-2 col-12" style="min-height: 40px !important;">
-        <q-toolbar-title class="text-subtitle1">Do'kon joylashuvi</q-toolbar-title>
+        <q-toolbar-title class="text-subtitle1">Дўкон жойлашуви</q-toolbar-title>
       </q-toolbar>
       <div style="width: 100%; height: calc(100% - 40px); overflow: hidden">
         <yandex-map
@@ -167,55 +158,42 @@
                            :on-validation-error="onValidationError">
 
       <div class="row">
-        <q-input v-model="bean.fullName" :placeholder="$t('xshop_captions.l_fullname')"
-                 :label="$t('xshop_captions.l_fullname')"
-                 class="q-pa-md col-12 col-md-6" dense
+        <q-input v-model="bean.storeName" :placeholder="$t('xshop_captions.l_name')"
+                 :label="'Дўкон номи'"
+                 class="q-pa-md col-12" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.phone" :placeholder="$t('xshop_captions.l_phone')"
-                 :label="$t('xshop_captions.l_phone')"
-                 mask="+### (##) ### ## ##"
-                 unmasked-value
-                 fill-mask
-                 class="q-pa-md col-12 col-md-6" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-        <q-input v-model="bean.passportSeries" :placeholder="$t('xshop_captions.l_p_seria')"
-                 :label="$t('xshop_captions.l_p_seria')"
-                 class="q-pa-md q-pr-none col-5 col-md-3" dense
-                 mask="AA"
-                 hint="AA"
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-        <q-input v-model="bean.passportNumber" :placeholder="$t('xshop_captions.l_p_number')"
-                 :label="$t('xshop_captions.l_p_number')"
-                 class="q-pa-md q-pl-none col-7 col-md-9" dense
-                 mask="#######"
-                 hint="1234567"
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
+      </div>
 
-        <q-select
-          v-model="bean.workerTypesId"
-          emit-value
-          map-options
-          :options="workerTypes"
-          option-value="id"
-          option-label="nameUz"
-          :label="$t('xshop_captions.l_worker_type')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
-          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
-          lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
-        >
-          <template v-slot:append>
-            <q-icon name="close" color="primary" @click.stop="bean.workerTypesId = null"
-                    class="cursor-pointer"/>
-          </template>
-          <template v-slot:selected-item="props">
-            <div>{{props.opt.nameUz}}</div>
-          </template>
-        </q-select>
+      <div class="row">
+        <q-input v-model="bean.ownerName"
+                 :label="'Дўкон егаси'"
+                 class="q-pa-md col-12" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
+      </div>
+
+      <div class="row">
+        <q-input v-model="bean.phone"
+                 :label="$t('xshop_captions.l_phone')"
+                 class="q-pa-md col-12" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
+      </div>
+
+      <div class="row">
+        <q-input v-model="bean.address" :placeholder="$t('xshop_captions.l_name')"
+                 :label="$t('xshop_captions.l_name')"
+                 class="q-pa-md col-12" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
+      </div>
+      <div class="row">
+        <q-input v-model="bean.qrcode"
+                 :label="'Код'"
+                 class="q-pa-md col-12" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
       </div>
 
     </standart-input-dialog>
@@ -249,11 +227,11 @@ export default {
       cardCheckField: 'name',
       beanDefault: {
         id: null,
-        fullName: '',
+        storeName: '',
+        ownerName: '',
         phone: '',
-        passportSeries: '',
-        passportNumber: null,
-        workerTypesId: null
+        address: '',
+        qrcode: ''
       },
       formDialog: false,
       filter: {
@@ -277,40 +255,30 @@ export default {
         {
           name: 'storeName',
           field: row => row.storeName,
-          label: "Do'kon nomi",
+          label: "Дўкон номи",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1 text-bold',
         },
         {
-          name: 'address',
-          field: row => row.address,
-          label: "Do'kon manzili",
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
           name: 'ownerName',
           field: row => row.ownerName,
-          label: "Do'kon egasi",
+          label: "Дўкон егаси",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'phone',
-          field: row => this.phone_format(row.phone),
-          label: this.$t('xshop_captions.l_phone'),
+          name: 'address',
+          field: row => row.address,
+          label: "Дўкон манзили",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
-
         {
           name: 'modifyDate',
           field: row => row.modifiedDate,
@@ -329,11 +297,19 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-        {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
+        {
+          name: 'qrcode',
+          field: row => row.qrCode,
+          label: "Код",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
       ],
       data: [],
       regions: [],
-      workerTypes: [],
       model: 1
     }
   },
@@ -346,26 +322,9 @@ export default {
     onClick(e) {
       this.coords = e.get('coords');
     },
-    getWorkerTypes() {
-      this.$axios.get(urls.WORKER_TYPES + '/all')
-        .then(res => {
-          console.log(res)
-          this.workerTypes.splice(0, this.workerTypes.length, ...res.data)
-        }).catch(err => {
-          this.showError(err)
-      }).finally(() => {})
-    },
-
-    rowEdit(row) {
-      for (let k in row) {
-        this.$set(this.bean, k, row[k]);
-      }
-      this.$set(this.bean, 'workerTypesId', row.workerTypes.id);
-      this.showForm();
-    },
     singleRowClick(evt, row) {
       const table = this.$refs.table;
-      if (table.selected.shift() == row) {
+      if (table.selected.shift() === row) {
         table.selected.shift()
         this.coords = []
         this.coords.push(row.latitude, row.longitude)
@@ -382,7 +341,6 @@ export default {
     }
   },
   mounted() {
-    this.getWorkerTypes()
   }
 }
 </script>

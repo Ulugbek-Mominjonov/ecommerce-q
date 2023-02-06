@@ -11,7 +11,6 @@
       :filter="filter"
       :pagination="filter"
       @request="refreshData"
-      selection="single"
       :selected.sync="selectedRows"
       separator="horizontal"
       color="secondary"
@@ -25,13 +24,13 @@
       style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
-        {{$t('system.no_matching_found')}}
+        {{ $t('system.no_matching_found') }}
       </template>
 
       <template v-slot:body-cell-modifyDate="props">
         <q-td :props="props">
           <div v-if="props.row.modifiedDate">
-            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
+            {{ $dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY') }}
           </div>
           <div v-else>
             --.--.----
@@ -39,9 +38,20 @@
         </q-td>
       </template>
 
+      <template v-slot:body-cell-passport="props">
+        <q-td :props="props">
+          <div v-if="props.row.passportSeries && props.row.passportNumber">
+            {{props.row.passportSeries}} {{props.row.passportNumber}}
+          </div>
+          <div v-else>
+            -- --- -- --
+          </div>
+        </q-td>
+      </template>
+
       <template v-slot:body-cell-createdDate="props">
         <q-td :props="props">
-          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
+          {{ $dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY') }}
         </q-td>
       </template>
 
@@ -49,12 +59,12 @@
         <q-td :props="props">
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
-              {{$t('system.edit')}}
+              {{ $t('system.edit') }}
             </q-tooltip>
           </q-btn>
           <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
             <q-tooltip content-class="bg-negative">
-              {{$t('system.delete')}}
+              {{ $t('system.delete') }}
             </q-tooltip>
           </q-btn>
         </q-td>
@@ -71,23 +81,22 @@
           option-value="id"
           option-label="fullName"
           :label="$t('xshop_captions.l_suppliers')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
           outlined
           class="q-pa-sm col-2 col-md-2" dense
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon v-if="filter.customersId !== null" name="close" color="primary" @click.stop="filter.customersId = null"
+            <q-icon v-if="filter.customersId !== null" name="close" color="primary"
+                    @click.stop="filter.customersId = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
-            <div>{{props.opt.fullName}}</div>
+            <div>{{ props.opt.fullName }}</div>
           </template>
         </q-select>
-        <q-btn v-if="customersId" @click="goBack" class="text-capitalize" color="teal-8" outline icon="mdi-arrow-left">
-          <span class="q-ml-sm">Orqaga</span>
-        </q-btn>
+
+        <q-btn v-if="customersId" @click="goBack" color="teal-8" outline icon="mdi-arrow-left"/>
+
         <q-select
           v-model="filter.productsId"
           emit-value
@@ -96,47 +105,28 @@
           option-value="id"
           option-label="nameBg"
           :label="$t('xshop_captions.l_products')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
           outlined
-          class="q-pa-sm col-2 col-md-2" dense
+          class="q-pa-sm col-3 col-md-3" dense
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon v-if="filter.productsId !== null" name="close" color="primary" @click.stop="filter.productsId = null"
+            <q-icon v-if="filter.productsId !== null" name="close" color="primary"
+                    @click.stop="filter.productsId = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
-            <div>{{props.opt.nameBg}}</div>
+            <div>{{ props.opt.nameBg }}</div>
           </template>
         </q-select>
-        <q-input v-model="filter.amount" :placeholder="$t('xshop_captions.l_amount')"
-                 :label="$t('xshop_captions.l_amount')"
-                 type="number"
-                 class="q-pa-sm col-2" dense outlined>
-          <template v-slot:append>
-            <q-icon v-if="filter.amount" name="close" color="primary" @click.stop="filter.amount = ''"
-                    class="cursor-pointer"/>
-          </template>
-        </q-input>
-        <q-input v-model="filter.price" :placeholder="$t('xshop_captions.l_cost')"
-                 :label="$t('xshop_captions.l_cost')"
-                 type="number"
-                 class="q-pa-sm col-2" dense outlined>
-          <template v-slot:append>
-            <q-icon v-if="filter.price" name="close" color="primary" @click.stop="filter.price = ''"
-                    class="cursor-pointer"/>
-          </template>
-        </q-input>
         <date-input
           v-model="filter.fromDate"
           :label="$t('xshop_captions.l_from_date')"
-          class="q-pa-sm col-2 text-white"
+          class="q-pa-sm col-3 text-white"
         />
         <date-input
           v-model="filter.toDate"
           :label="$t('xshop_captions.l_to_date')"
-          class="q-pa-sm col-2 text-white"
+          class="q-pa-sm col-3 text-white"
         />
         <q-space/>
         <div class="q-mt-sm q-ml-auto">
@@ -167,8 +157,9 @@
     </q-table>
 
     <!--DIALOG-->
-    <standart-input-dialog v-model="formDialog" :model-id="bean.id" :on-submit="onSubmit"
-                           :on-validation-error="onValidationError">
+    <standart-input-dialog
+      v-model="formDialog" :model-id="bean.id" :on-submit="onSubmit"
+      :on-validation-error="onValidationError">
 
       <div class="row">
         <q-select
@@ -179,9 +170,7 @@
           option-value="id"
           option-label="nameBg"
           :label="$t('xshop_captions.l_products')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
-          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
+          class="q-pa-md col-12 col-md-6" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
@@ -189,26 +178,31 @@
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-bean="props">
-            <div>{{props.opt.nameBg}}</div>
+            <div>{{ props.opt.nameBg }}</div>
           </template>
         </q-select>
-        <q-input v-model="bean.amount" :placeholder="$t('xshop_captions.l_amount')"
+        <q-input v-model="bean.price"
+                 :label="$t('xshop_captions.l_cost')"
+                 class="q-pa-md col-12 col-md-6" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
+        <q-input v-model="bean.amount"
                  :label="$t('xshop_captions.l_amount')"
                  class="q-pa-md col-12 col-md-6" dense
                  type="number"
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.price" :placeholder="$t('xshop_captions.l_cost')"
-                 :label="$t('xshop_captions.l_cost')"
-                 class="q-pa-md col-12 col-md-6" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        <q-input v-model="bean.returned"
+                 :label="'Қайтарилган миқдор'"
+                 class="q-pa-md col-12 col-md-6" dense>
         </q-input>
       </div>
 
     </standart-input-dialog>
 
-    <standart-input-dialog v-model="formDialog2" :model-id="null" :on-submit="onSubmitProduct"
-                           :on-validation-error="onValidationError">
+    <standart-input-dialog
+      v-model="formDialog2" :model-id="null" :on-submit="onSubmitProduct"
+      :on-validation-error="onValidationError">
 
       <q-scroll-area style="height: 230px; max-width: 600px;">
         <div class="row" v-for="item in productData">
@@ -221,8 +215,6 @@
             option-value="id"
             option-label="nameBg"
             :label="$t('xshop_captions.l_products')"
-            transition-show="flip-up"
-            transition-hide="flip-down"
             class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
             lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
           >
@@ -231,16 +223,16 @@
                       class="cursor-pointer"/>
             </template>
             <template v-slot:selected-item="props">
-              <div>{{props.opt.nameBg}}</div>
+              <div>{{ props.opt.nameBg }}</div>
             </template>
           </q-select>
-          <q-input v-model="item.amount" :placeholder="$t('xshop_captions.l_amount')"
+          <q-input v-model="item.amount"
                    :label="$t('xshop_captions.l_amount')"
                    class="q-pa-md col-12 col-md-6" dense
                    type="number"
                    lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
           </q-input>
-          <q-input v-model="item.price" :placeholder="$t('xshop_captions.l_cost')"
+          <q-input v-model="item.price"
                    :label="$t('xshop_captions.l_cost')"
                    class="q-pa-md col-12 col-md-6" dense
                    lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
@@ -297,7 +289,7 @@ export default {
         customersId: this.customersId,
         productsId: null,
         fromDate: null,
-        toDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 'YYYY-MM-DD'),
+        toDate: null,
         amount: null,
         price: null
       },
@@ -313,7 +305,7 @@ export default {
         {
           name: 'NameBg',
           field: row => row.products.nameBg,
-          label: this.$t('xshop_captions.l_name_bg'),
+          label: this.$t('xshop_captions.l_name'),
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -330,7 +322,7 @@ export default {
         },
         {
           name: 'price',
-          field: row => this.number_format_old(row.price, 0, '.', ' '),
+          field: row => this.number_format_old(row.price, 0, '.', ' ') + ' сўм',
           label: this.$t('xshop_captions.l_one_product_cost'),
           format: val => `${val}`,
           sortable: true,
@@ -340,7 +332,7 @@ export default {
 
         {
           name: 'allPrice',
-          field: row => this.number_format_old(row.price * row.amount, 0, '.', ' '),
+          field: row => this.number_format_old(row.price * row.amount, 0, '.', ' ') + ' сўм',
           label: this.$t('xshop_captions.l_all'),
           format: val => `${val}`,
           sortable: true,
@@ -360,7 +352,7 @@ export default {
 
         {
           name: 'returnPrice',
-          field: row => this.number_format_old(row.price * row.returned, 0, '.', ' '),
+          field: row => this.number_format_old(row.price * row.returned, 0, '.', ' ') + ' сўм',
           label: this.$t('xshop_captions.l_returned_summ'),
           format: val => `${val}`,
           sortable: true,
@@ -414,7 +406,7 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-        {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
+        {name: 'actions', align: 'center', label: "Амаллар", style: 'width: 1rem'},
       ],
       data: [],
       regions: [],
@@ -426,7 +418,7 @@ export default {
     }
   },
   computed: {
-    pagesNumber () {
+    pagesNumber() {
       return Math.ceil(this.filter.rowsNumber / this.filter.rowsPerPage)
     }
   },
@@ -439,8 +431,9 @@ export default {
         .then(res => {
           this.customers.splice(0, this.customers.length, ...res.data)
         }).catch(err => {
-          this.showError(err)
-      }).finally(() => {})
+        this.showError(err)
+      }).finally(() => {
+      })
     },
 
     getProducts() {
@@ -449,7 +442,8 @@ export default {
           this.products.splice(0, this.products.length, ...res.data)
         }).catch(err => {
         this.showError(err)
-      }).finally(() => {})
+      }).finally(() => {
+      })
     },
 
     rowEdit(row) {
@@ -463,10 +457,10 @@ export default {
     rowAdd() {
       this.productData = []
       let productBeanDefault = {
-          customersId: this.customersId,
-          productsId: null,
-          price: null,
-          amount: null,
+        customersId: this.customersId,
+        productsId: null,
+        price: null,
+        amount: null,
       }
       this.productData.push(productBeanDefault)
       this.showForm2();
@@ -500,7 +494,7 @@ export default {
   },
   watch: {
     model(newval) {
-      this.$set(this.filter, 'page', newval-1);
+      this.$set(this.filter, 'page', newval - 1);
     }
   },
   mounted() {

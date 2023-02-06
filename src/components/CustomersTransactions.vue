@@ -11,7 +11,6 @@
       :filter="filter"
       :pagination="filter"
       @request="refreshData"
-      selection="single"
       :selected.sync="selectedRows"
       separator="horizontal"
       color="secondary"
@@ -45,17 +44,16 @@
 
       <template v-slot:top="props">
         <q-btn v-if="customerId" @click="goBack" class="text-capitalize" color="teal-8" outline icon="mdi-arrow-left">
-          <span class="q-ml-sm">Orqaga</span>
         </q-btn>
         <date-input
           v-model="filter.fromDate"
           :label="$t('xshop_captions.l_from_date')"
-          class="q-pa-sm col-2 text-white"
+          class="q-pa-sm col-3 text-white"
         />
         <date-input
           v-model="filter.toDate"
           :label="$t('xshop_captions.l_to_date')"
-          class="q-pa-sm col-2 text-white"
+          class="q-pa-sm col-3 text-white"
         />
 
         <q-select
@@ -66,8 +64,6 @@
           option-value="id"
           option-label="name"
           :label="$t('xshop_captions.l_transactions_type')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
           outlined
           class="q-pa-sm col-2 col-md-2" dense
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
@@ -80,7 +76,7 @@
             <div>{{props.opt.name}}</div>
           </template>
         </q-select>
-        <q-input v-model="filter.amount" :placeholder="$t('xshop_captions.l_amount')"
+        <q-input v-model="filter.amount"
                  :label="$t('xshop_captions.l_amount')"
                  type="number"
                  class="q-pa-sm col-2" dense outlined>
@@ -106,7 +102,7 @@
       <template v-slot:body-cell-incomeAmount="props">
         <q-td :props="props">
           <div v-if="props.row.isPayment">
-            {{number_format_old(props.row.amount, 0, '.', ' ')}}
+            {{number_format_old(props.row.amount, 0, '.', ' ')}} сўм
           </div>
           <div v-else>
             0
@@ -116,10 +112,21 @@
       <template v-slot:body-cell-outcomeAmount="props">
         <q-td :props="props">
           <div v-if="!props.row.isPayment">
-            {{number_format_old(props.row.amount, 0, '.', ' ')}}
+            {{number_format_old(props.row.amount, 0, '.', ' ')}} сўм
           </div>
           <div v-else>
-            0
+            0 сўм
+          </div>
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-passport="props">
+        <q-td :props="props">
+          <div v-if="props.row.passportSeries && props.row.passportNumber">
+            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
+          </div>
+          <div v-else>
+            -- --- -- --
           </div>
         </q-td>
       </template>
@@ -167,8 +174,6 @@
           option-value="id"
           option-label="fullName"
           label="Xaridor"
-          transition-show="flip-up"
-          transition-hide="flip-down"
           class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
@@ -180,7 +185,7 @@
             <div>{{props.opt.fullName}}</div>
           </template>
         </q-select>
-        <q-input v-model="bean.amount" :placeholder="$t('xshop_captions.l_amount')"
+        <q-input v-model="bean.amount"
                  :label="$t('xshop_captions.l_amount')"
                  type="number"
                  class="q-pa-md col-12 col-md-6" dense
@@ -194,8 +199,6 @@
           option-value="id"
           option-label="name"
           :label="$t('xshop_captions.l_transactions_type')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
           class="q-pa-md col-12 col-md-6" dense
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
@@ -256,7 +259,7 @@ export default {
         isPayment: null,
         customersId: this.customerId,
         fromDate: null,
-        toDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 'YYYY-MM-DD'),
+        toDate: null,
       },
       columns: [
         {
@@ -269,7 +272,7 @@ export default {
         {
           name: 'incomeAmount',
           field: row => row.amount,
-          label: this.$t('xshop_captions.l_income_amount'),
+          label: this.$t('xshop_captions.l_income_amount') + ' сўм',
           sortable: true,
           align: 'left',
           classes: 'col-1 text-bold',
@@ -277,7 +280,7 @@ export default {
         {
           name: 'outcomeAmount',
           field: row => row.amount,
-          label: this.$t('xshop_captions.l_outcome_amount'),
+          label: this.$t('xshop_captions.l_outcome_amount') + ' сўм',
           sortable: true,
           align: 'left',
           classes: 'col-1 text-bold',
@@ -327,18 +330,18 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-        {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
+        {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
       ],
       data: [],
       model: 1,
       customers: [],
       transactionsTypes: [
         {
-          name: 'Kirim',
+          name: 'Тўлов',
           id: 1
         },
         {
-          name: 'Chiqim',
+          name: 'Қайтариш',
           id: 0
         }
       ]

@@ -154,20 +154,8 @@
 <!--            <div>{{props.opt.name}}</div>-->
 <!--          </template>-->
 <!--        </q-select>-->
-
-
-        <q-input v-model="bean.nameUz" :placeholder="$t('xshop_captions.l_name_uz')"
-                 :label="$t('xshop_captions.l_name_uz')"
-                 class="q-pa-md col-12" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-        <q-input v-model="bean.nameRu" :placeholder="$t('xshop_captions.l_name_ru')"
-                 :label="$t('xshop_captions.l_name_ru')"
-                 class="q-pa-md col-12" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-        <q-input v-model="bean.nameBg" :placeholder="$t('xshop_captions.l_name_bg')"
-                 :label="$t('xshop_captions.l_name_bg')"
+        <q-input v-model="bean.nameBg" :placeholder="$t('xshop_captions.l_name')"
+                 :label="$t('xshop_captions.l_name')"
                  class="q-pa-md col-12" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
@@ -219,29 +207,10 @@ export default {
           sortable: true, align: 'left',
           classes: 'col-1'
         },
-
-        {
-          name: 'nameUz',
-          field: row => row.nameUz,
-          label: this.$t('xshop_captions.l_name_uz'),
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'nameRu',
-          field: row => row.nameRu,
-          label: this.$t('xshop_captions.l_name_ru'),
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
         {
           name: 'NameBg',
           field: row => row.nameBg,
-          label: this.$t('xshop_captions.l_name_bg'),
+          label: this.$t('xshop_captions.l_name'),
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -265,7 +234,7 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-        {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
+        {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
       ],
       data: [],
       regions: [],
