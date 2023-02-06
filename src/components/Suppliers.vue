@@ -72,8 +72,8 @@
 
 
       <template v-slot:top="props">
-        <q-input v-model="filter.fullName" :placeholder="$t('xshop_captions.l_worker_name')"
-                 :label="$t('xshop_captions.l_worker_name')"
+        <q-input v-model="filter.fullName" :placeholder="$t('xshop_captions.l_fio')"
+                 :label="$t('xshop_captions.l_fio')"
                  class="q-pa-md col-3" dense outlined>
           <template v-slot:append>
             <q-icon v-if="filter.fullName" name="close" color="primary" @click.stop="filter.fullName = ''"

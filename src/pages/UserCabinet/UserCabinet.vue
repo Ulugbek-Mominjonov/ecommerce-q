@@ -47,11 +47,11 @@
               class="site-main-menu--item"
             >
               <q-item-section avatar class="site-main-menu--icon">
-                <q-icon class="icon" name="mdi-monitor-dashboard" size="20px"/>
+                <q-icon class="icon" name="mdi-chart-box-outline" size="20px"/>
               </q-item-section>
 
               <q-item-section class="site-main-menu--title site-main-menu--dashboard">
-                X-shop dashboard
+                Дашбоард
               </q-item-section>
             </q-item>
 
@@ -75,27 +75,7 @@
               </q-item-section>
             </q-item>
 
-            <q-item-label class="site-main-menu--heading" header>Tizim ma'lumotnomalari</q-item-label>
-            <q-item
-              v-for="(module, index, arr) in sprav"
-              :key="module.name"
-              :active="changeRouteName===module.name"
-              clickable
-              v-ripple
-              active-class="site-main-menu--item--active"
-              :to="module.path"
-              class="site-main-menu--item"
-            >
-              <q-item-section avatar class="site-main-menu--icon">
-                <q-icon class="icon" :name="module.meta.icon" size="20px"/>
-              </q-item-section>
-
-              <q-item-section class="site-main-menu--title">
-                {{ $t(module.meta.title) }}
-              </q-item-section>
-            </q-item>
-
-            <q-item-label class="site-main-menu--heading q-mt-md" header>Asosiy bo'lim</q-item-label>
+            <q-item-label class="site-main-menu--heading q-mt-md" header>Асосий бўлим</q-item-label>
             <q-item
               v-for="(module, index, arr) in main"
               :key="module.name"
@@ -154,6 +134,29 @@
                 {{ $t(module.meta.title) }}
               </q-item-section>
             </q-item>
+
+
+            <q-item-label class="site-main-menu--heading" header>Тизим маълумотлари</q-item-label>
+            <q-item
+              v-for="(module, index, arr) in sprav"
+              :key="module.name"
+              :active="changeRouteName===module.name"
+              clickable
+              v-ripple
+              active-class="site-main-menu--item--active"
+              :to="module.path"
+              class="site-main-menu--item"
+            >
+              <q-item-section avatar class="site-main-menu--icon">
+                <q-icon class="icon" :name="module.meta.icon" size="20px"/>
+              </q-item-section>
+
+              <q-item-section class="site-main-menu--title">
+                {{ $t(module.meta.title) }}
+              </q-item-section>
+            </q-item>
+
+
           </q-list>
         </q-scroll-area>
 
@@ -237,7 +240,6 @@ export default {
       this.sprav.splice(0, this.sprav.length, ...this.$store.getters.getUserCategories.main_sprav.children.filter(item => item.show));
       this.main.splice(0, this.main.length, ...this.$store.getters.getUserCategories.main.children.filter(item => item.show));
       this.trades.splice(0, this.trades.length, ...this.$store.getters.getUserCategories.main_trades.children.filter(item => item.show));
-      this.transactions.splice(0, this.transactions.length, ...this.$store.getters.getUserCategories.main_transactions.children.filter(item => item.show));
       this.transactions.splice(0, this.transactions.length, ...this.$store.getters.getUserCategories.main_transactions.children.filter(item => item.show));
     },
     leftCabninet() {

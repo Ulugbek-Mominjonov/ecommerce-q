@@ -6,7 +6,7 @@
       component: ()=> import("pages/UserCabinet/PageWorkerTypes.vue"),
       meta:{
         title: "Xodimlari turlari",
-        icon: 'mdi-account'
+        icon: 'mdi-account-outline'
       }
     },
    {

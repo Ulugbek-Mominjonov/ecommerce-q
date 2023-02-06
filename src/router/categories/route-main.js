@@ -5,8 +5,8 @@
      show: true,
      component: ()=> import("../../pages/UserCabinet/PageWorkers.vue"),
      meta:{
-       title: "Xodimlar",
-       icon: 'mdi-file-document-outline'
+       title: "Ходимлар",
+       icon: 'mdi-account-outline'
      }
    },
    {
@@ -16,7 +16,7 @@
      component: ()=> import("../../pages/UserCabinet/PageUsers.vue"),
      meta:{
        title: "xshop_captions.l_users",
-       icon: 'mdi-file-document-outline'
+       icon: 'mdi-account-key-outline'
      }
    },
 
@@ -27,7 +27,7 @@
      component: ()=> import("../../pages/UserCabinet/PageFounders.vue"),
      meta:{
        title: "xshop_captions.l_founders",
-       icon: 'mdi-file-document-outline'
+       icon: 'mdi-cash'
      }
    },
    {
@@ -37,7 +37,7 @@
      component: ()=> import("../../pages/UserCabinet/PageProducts.vue"),
      meta:{
        title: "xshop_captions.l_products",
-       icon: 'mdi-file-document-outline'
+       icon: 'mdi-food-apple-outline'
      }
    },
    {
@@ -47,7 +47,7 @@
      component: ()=> import("../../pages/UserCabinet/PageSuppliers.vue"),
      meta:{
        title: "xshop_captions.l_suppliers",
-       icon: 'mdi-file-document-outline'
+       icon: 'mdi-truck-outline'
      }
    },
    {
@@ -56,21 +56,21 @@
      show: true,
      component: ()=> import("../../pages/UserCabinet/PageCustomers.vue"),
      meta:{
-       title: "Xaridorlar",
-       icon: 'mdi-file-document-outline'
+       title: "Харидорлар",
+       icon: 'mdi-account-cash-outline'
      }
    },
-
-   {
-     path: "/map",
-     name: "map",
-     show: true,
-     component: ()=> import("../../pages/UserCabinet/Map.vue"),
-     meta:{
-       title: "Xaridorlar",
-       icon: 'mdi-file-document-outline'
-     }
-   },
+   //
+   // {
+   //   path: "/map",
+   //   name: "map",
+   //   show: true,
+   //   component: ()=> import("../../pages/UserCabinet/Map.vue"),
+   //   meta:{
+   //     title: "Харидорлар",
+   //     icon: 'mdi-account-cash-outline'
+   //   }
+   // },
 
    {
      path: "/stores",
@@ -78,8 +78,8 @@
      show: true,
      component: ()=> import("../../pages/UserCabinet/PageStores.vue"),
      meta:{
-       title: "Dokonlar",
-       icon: 'mdi-file-document-outline'
+       title: "Дўконлар",
+       icon: 'mdi-store-outline'
      }
    },
 ]
