@@ -6,8 +6,8 @@ import Axios from "axios";
 Vue.use(VueI18n)
 
 const i18n = new VueI18n({
-  locale: 'uz',
-  fallbackLocale: 'uz',
+  locale: 'uk',
+  fallbackLocale: 'uk',
   silentTranslationWarn:true,
   messages
 })

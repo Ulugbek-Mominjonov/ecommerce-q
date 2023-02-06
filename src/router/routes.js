@@ -9,10 +9,10 @@ const routes = [
     children: [
     ]
   },
-  main_sprav,
   main,
   main_transactions,
   main_trades,
+  main_sprav,
 
   // Always leave this as last one,
   // but you can also remove it
