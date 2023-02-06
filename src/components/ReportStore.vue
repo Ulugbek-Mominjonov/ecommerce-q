@@ -45,7 +45,7 @@
 
       <template v-slot:top="props">
         <q-input v-model="filter.fullName" placeholder="Тарқатувчи"
-                 label="Тарқатувчи"
+                 label="Омборчилар"
                  class="q-pa-md col-4" dense outlined>
           <template v-slot:append>
             <q-icon v-if="filter.fullName" name="close" color="primary" @click.stop="filter.fullName = ''"
@@ -64,23 +64,6 @@
             {{ $t('system.add') }}
           </q-tooltip>
         </q-btn>
-      </template>
-
-      <template v-slot:body-cell-modifyDate="props">
-        <q-td :props="props">
-          <div v-if="props.row.modifiedDate">
-            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
-          </div>
-          <div v-else>
-            --.--.----
-          </div>
-        </q-td>
-      </template>
-
-      <template v-slot:body-cell-createdDate="props">
-        <q-td :props="props">
-          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
-        </q-td>
       </template>
 
       <template v-slot:bottom>
@@ -130,7 +113,7 @@ import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
 
 export default {
-  name: "ReportUsers",
+  name: "ReportStore",
   components: {StandartInputDialog},
   mixins: [StandartTable],
   data() {
@@ -191,18 +174,36 @@ export default {
           classes: 'col-1',
         },
         {
-          name: 'totalToStores',
-          field: row => this.number_format_old(row.totalToStores, 0, '.', ' '),
-          label: "totalToStores",
+          name: 'totalToSuppliers',
+          field: row => this.number_format_old(row.totalToSuppliers, 0, '.', ' '),
+          label: "totalToSuppliers",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'totalFromStores',
-          field: row => this.number_format_old(row.totalFromStores, 0, '.', ' '),
-          label: "totalFromStores",
+          name: 'totalFromSuppliers',
+          field: row => this.number_format_old(row.totalFromSuppliers, 0, '.', ' '),
+          label: "totalFromSuppliers",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'totalToCustomers',
+          field: row => this.number_format_old(row.totalToCustomers, 0, '.', ' '),
+          label: "totalToCustomers",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'totalFromCustomers',
+          field: row => this.number_format_old(row.totalFromCustomers, 0, '.', ' '),
+          label: "totalFromCustomers",
           format: val => `${val}`,
           sortable: true,
           align: 'left',

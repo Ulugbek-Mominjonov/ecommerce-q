@@ -28,27 +28,21 @@
         {{$t('system.no_matching_found')}}
       </template>
 
-      <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
-          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
-            <q-tooltip content-class="bg-secondary">
-              {{$t('system.edit')}}
-            </q-tooltip>
-          </q-btn>
-          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
-            <q-tooltip content-class="bg-negative">
-              {{$t('system.delete')}}
-            </q-tooltip>
-          </q-btn>
-        </q-td>
-      </template>
-
       <template v-slot:top="props">
-        <q-input v-model="filter.fullName" placeholder="Тарқатувчи"
-                 label="Тарқатувчи"
+        <q-input v-model="filter.storeName" placeholder="Дўкон"
+                 label="Дўкон"
                  class="q-pa-md col-4" dense outlined>
           <template v-slot:append>
-            <q-icon v-if="filter.fullName" name="close" color="primary" @click.stop="filter.fullName = ''"
+            <q-icon v-if="filter.storeName" name="close" color="primary" @click.stop="filter.storeName = ''"
+                    class="cursor-pointer"/>
+          </template>
+        </q-input>
+
+        <q-input v-model="filter.ownerName" placeholder="Дўкон эгаси"
+                 label="Дўкон эгаси"
+                 class="q-pa-md col-4" dense outlined>
+          <template v-slot:append>
+            <q-icon v-if="filter.ownerName" name="close" color="primary" @click.stop="filter.ownerName = ''"
                     class="cursor-pointer"/>
           </template>
         </q-input>
@@ -66,20 +60,54 @@
         </q-btn>
       </template>
 
-      <template v-slot:body-cell-modifyDate="props">
+      <template v-slot:body-cell-storeName="props">
         <q-td :props="props">
-          <div v-if="props.row.modifiedDate">
-            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
+          <div>
+            <span class="text-bold">Номи: </span> <span>{{props.row.storeName}}</span>
           </div>
-          <div v-else>
-            --.--.----
+
+          <div>
+            <span class="text-bold">Манзили: </span> <span>{{props.row.address}}</span>
           </div>
         </q-td>
       </template>
 
-      <template v-slot:body-cell-createdDate="props">
+      <template v-slot:body-cell-ownerName="props">
         <q-td :props="props">
-          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
+          <div>
+            <span class="text-bold">Исми: </span> <span>{{props.row.ownerName}}</span>
+          </div>
+
+          <div>
+            <span class="text-bold">Телефон: </span> <span>{{phone_format(props.row.phone)}}</span>
+          </div>
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-distributorName="props">
+        <q-td :props="props">
+          <div>
+            <span class="text-bold">Исми: </span> <span>{{props.row.distributorName}}</span>
+          </div>
+
+          <div>
+            <span class="text-bold">Телефон: </span> <span>{{phone_format(props.row.distributorPhone)}}</span>
+          </div>
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
+            <q-tooltip content-class="bg-secondary">
+              {{$t('system.edit')}}
+            </q-tooltip>
+          </q-btn>
+          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
+            <q-tooltip content-class="bg-negative">
+              {{$t('system.delete')}}
+            </q-tooltip>
+          </q-btn>
         </q-td>
       </template>
 
@@ -130,12 +158,12 @@ import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
 
 export default {
-  name: "ReportUsers",
+  name: "ReportStores",
   components: {StandartInputDialog},
   mixins: [StandartTable],
   data() {
     return {
-      apiUrl: urls.USERS + '/report',
+      apiUrl: urls.STORES + '/report',
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -153,7 +181,8 @@ export default {
         rowsPerPage: 5,
         rowsNumber: 0,
         descending: false,
-        fullName: ""
+        storeName: "",
+        ownerName: "",
       },
       columns: [
         {
@@ -164,64 +193,45 @@ export default {
           classes: 'col-1'
         },
         {
-          name: 'fullName',
-          field: row => row.fullName,
-          label: 'Фойдаланувчи',
+          name: 'storeName',
+          field: row => row.storeName,
+          label: 'Дўкон',
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'username',
-          field: row => row.username,
-          label: "Username",
+          name: 'ownerName',
+          field: row => row.ownerName,
+          label: 'Дўкон егаси',
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'phone',
-          field: row => this.phone_format(row.phone),
-          label: "Telefon nomer",
+          name: 'distributorName',
+          field: row => row.distributorName,
+          label: 'Тарқатувчи',
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'totalToStores',
-          field: row => this.number_format_old(row.totalToStores, 0, '.', ' '),
-          label: "totalToStores",
+          name: 'totalTrade',
+          field: row => this.number_format_old(row.totalTrade, 0, '.', ' '),
+          label: "Умумий савдо",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'totalFromStores',
-          field: row => this.number_format_old(row.totalFromStores, 0, '.', ' '),
-          label: "totalFromStores",
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-
-        {
-          name: 'totalToKassa',
-          field: row => this.number_format_old(row.totalToKassa, 0, '.', ' '),
-          label: "totalToKassa",
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'totalFromKassa',
-          field: row => this.number_format_old(row.totalFromKassa, 0, '.', ' '),
-          label: "totalFromKassa",
+          name: 'totalPayment',
+          field: row => this.number_format_old(row.totalPayment, 0, '.', ' '),
+          label: "Умумий тўлов",
           format: val => `${val}`,
           sortable: true,
           align: 'left',

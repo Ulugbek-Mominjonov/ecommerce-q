@@ -44,8 +44,8 @@
       </template>
 
       <template v-slot:top="props">
-        <q-input v-model="filter.fullName" placeholder="Тарқатувчи"
-                 label="Тарқатувчи"
+        <q-input v-model="filter.fullName" placeholder="Таъминотчи"
+                 label="Таъминотчи"
                  class="q-pa-md col-4" dense outlined>
           <template v-slot:append>
             <q-icon v-if="filter.fullName" name="close" color="primary" @click.stop="filter.fullName = ''"
@@ -64,23 +64,6 @@
             {{ $t('system.add') }}
           </q-tooltip>
         </q-btn>
-      </template>
-
-      <template v-slot:body-cell-modifyDate="props">
-        <q-td :props="props">
-          <div v-if="props.row.modifiedDate">
-            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
-          </div>
-          <div v-else>
-            --.--.----
-          </div>
-        </q-td>
-      </template>
-
-      <template v-slot:body-cell-createdDate="props">
-        <q-td :props="props">
-          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
-        </q-td>
       </template>
 
       <template v-slot:bottom>
@@ -130,12 +113,12 @@ import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
 
 export default {
-  name: "ReportUsers",
+  name: "ReportSupliers",
   components: {StandartInputDialog},
   mixins: [StandartTable],
   data() {
     return {
-      apiUrl: urls.USERS + '/report',
+      apiUrl: urls.SUPPLIERS + '/report',
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -166,16 +149,7 @@ export default {
         {
           name: 'fullName',
           field: row => row.fullName,
-          label: 'Фойдаланувчи',
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'username',
-          field: row => row.username,
-          label: "Username",
+          label: 'Таъминотчи',
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -191,42 +165,42 @@ export default {
           classes: 'col-1',
         },
         {
-          name: 'totalToStores',
-          field: row => this.number_format_old(row.totalToStores, 0, '.', ' '),
-          label: "totalToStores",
+          name: 'totalTrade',
+          field: row => this.number_format_old(row.totalTrade, 0, '.', ' '),
+          label: "Умумий савдо",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'totalFromStores',
-          field: row => this.number_format_old(row.totalFromStores, 0, '.', ' '),
-          label: "totalFromStores",
+          name: 'totalPayment',
+          field: row => this.number_format_old(row.totalPayment, 0, '.', ' '),
+          label: "Умумий тўлов",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'totalReturnedTrade',
+          field: row => this.number_format_old(row.totalReturnedTrade, 0, '.', ' '),
+          label: "Қайтарилган умумий савдо",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'totalReturnedPayment',
+          field: row => this.number_format_old(row.totalReturnedPayment, 0, '.', ' '),
+          label: "Қайтарилган умумий тўлов",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
 
-        {
-          name: 'totalToKassa',
-          field: row => this.number_format_old(row.totalToKassa, 0, '.', ' '),
-          label: "totalToKassa",
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'totalFromKassa',
-          field: row => this.number_format_old(row.totalFromKassa, 0, '.', ' '),
-          label: "totalFromKassa",
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
         {
           name: 'balance',
           field: row => this.number_format_old(row.balance, 0, '.', ' '),
