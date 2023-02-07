@@ -140,7 +140,7 @@ export default {
       formDialog: false,
       filter: {
         page: 0,
-        rowsPerPage: 5,
+        rowsPerPage: 10,
         rowsNumber: 0,
         descending: false,
         name: ""

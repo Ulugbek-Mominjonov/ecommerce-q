@@ -41,7 +41,6 @@ export default ({app, router, store, Vue}) => {
           return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
         },
         showError(error) {
-          console.log('----e:', error)
           if (error.type == 'warning') {
             this.$q.notify({
               caption: error.errorMessage + ' [' + error.errorCode + ']',
@@ -229,96 +228,6 @@ export default ({app, router, store, Vue}) => {
           return value.toString().replace(/(\d)(?=(\d{4})+(?!\d))/g, '$1 ');
         },
 
-        parseToJsonCert(certs) {
-          var retval = [];
-          var cert = {};
-          for (let k in certs) {
-            cert = certs[k];
-            this.$set(cert, 'certAlias', this.aliasParseToJson(cert.alias));
-            retval.push(cert);
-          }
-          return retval;
-        },
-
-        setLength(text, size) {
-          if (!!text) {
-            if ((!!text) && text.length > size) {
-              return text.substring(0, size) + '...'
-            } else {
-              return text
-            }
-          }
-        },
-
-        parseToJsonCertNew(certs) {
-          let result = [];
-          if (certs) {
-            certs.forEach(element => {
-              let el = {}
-              let alias = {};
-              for (let r in this.aliasParseToJson(element.alias)) {
-                alias = this.aliasParseToJson(element.alias)[r];
-                this.$set(el, r, alias);
-              }
-              this.$set(element, 'el', el)
-              result.push(element);
-            })
-          }
-
-          return result;
-        },
-
-        aliasParseToJson(alias) {
-          var retval = {};
-          var splittedStr;
-
-          for (let k in alias.split(',')) {
-
-            splittedStr = alias.split(',')[k];
-            if (splittedStr.match(/cn=/g) !== null) {
-              this.$set(retval, 'cn', splittedStr.split('=')[1]);
-            }
-            if (splittedStr.match(/name=/g)) {
-              this.$set(retval, 'name', splittedStr.split('=')[1]);
-            }
-            if (splittedStr.match(/surname=/g)) {
-              this.$set(retval, 'surname', splittedStr.split('=')[1]);
-            }
-            if (splittedStr.match(/o=/g)) {
-              this.$set(retval, 'o', splittedStr.split('=')[1]);
-            }
-            if (splittedStr.match(/l=/g)) {
-              this.$set(retval, 'l', splittedStr.split('=')[1]);
-            }
-            if (splittedStr.match(/st=/g)) {
-              this.$set(retval, 'st', splittedStr.split('=')[1]);
-            }
-            if (splittedStr.match(/c=/g)) {
-              this.$set(retval, 'c', splittedStr.split('=')[1]);
-            }
-            if (splittedStr.match(/uid=/g)) {
-              this.$set(retval, 'uid', splittedStr.split('=')[1]);
-            }
-            if (splittedStr.match(/1.2.860.3.16.1.2=/g)) {
-              this.$set(retval, 'pinfl', splittedStr.split('=')[1]);
-            }
-            if (splittedStr.match(/t=/g)) {
-              this.$set(retval, 't', splittedStr.split('=')[1]);
-            }
-            if (splittedStr.match(/serialnumber=/g)) {
-              this.$set(retval, 'serialnumber', splittedStr.split('=')[1]);
-            }
-            if (splittedStr.match(/validfrom=/g)) {
-              this.$set(retval, 'validfrom', splittedStr.split('=')[1]);
-            }
-            if (splittedStr.match(/validto=/g)) {
-              this.$set(retval, 'validto', splittedStr.split('=')[1]);
-            }
-          }
-
-          return retval;
-
-        }
       }
     }
   )

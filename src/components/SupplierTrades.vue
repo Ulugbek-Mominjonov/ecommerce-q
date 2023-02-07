@@ -339,7 +339,7 @@ export default {
       formDialog: false,
       filter: {
         page: 0,
-        rowsPerPage: 7,
+        rowsPerPage: 10,
         rowsNumber: 0,
         descending: false,
         suppliersId: this.supplierId,

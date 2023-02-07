@@ -32,6 +32,7 @@ export default {
         })
         .catch(e => {
           console.error(e);
+          this.showError(e)
         }).finally(() => {
         this.loading = false;
       });
@@ -71,6 +72,7 @@ export default {
             this.closeForm();
             this.refreshTable();
           }).catch(error => {
+          this.showError(error)
           console.error(error);
         }).finally(() => {
           this.loading = false;
@@ -82,6 +84,7 @@ export default {
             this.closeForm();
             this.refreshTable();
           }).catch(error => {
+            this.showError(error)
           console.error(error);
         }).finally(() => {
           this.loading = false;
@@ -98,6 +101,7 @@ export default {
             this.refreshTable();
           }).catch(error => {
           console.error(error);
+          this.showError(error)
         });
       });
 

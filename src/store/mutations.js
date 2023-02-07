@@ -21,6 +21,7 @@ export function incrementAjaxRequestsCnt(state, val) {
 
 export function decrementAjaxRequestsCnt(state, val) {
   state.ajaxRequestsCnt--;
+  console.log(val)
 }
 
 export function resetAjaxRequestsCnt(state, val) {

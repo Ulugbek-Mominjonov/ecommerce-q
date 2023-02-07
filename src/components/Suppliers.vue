@@ -191,7 +191,7 @@ export default {
       formDialog: false,
       filter: {
         page: 0,
-        rowsPerPage: 15,
+        rowsPerPage: 10,
         rowsNumber: 0,
         descending: false,
         fullName: "",

@@ -1,83 +1,42 @@
 <template>
   <q-page
-    class="window-height window-width row justify-center items-center"
-    style="background: linear-gradient(#8274C5, #5A4A9F);"
+    class="window-height window-width row justify-center items-center login-bg"
   >
-    <div class="column q-pa-lg">
+    <div class="column q-pa-lg login-content">
       <div class="row">
-        <q-card square class="shadow-24 bordered" style="width:400px;height:540px;">
-          <q-card-section class="bg-deep-purple-7">
-            <h4 class="text-h5 text-white q-my-md">{{ title }}</h4>
-
+        <q-card square class="shadow-24 bordered flex column" style="width:400px;height:450px; border-radius: 20px !important;">
+          <q-card-section style="background-image: linear-gradient(to right, #606c88 0%, #3f4c6b 51%, #606c88 100%);">
+            <h4 class="text-h5 text-white q-my-xs text-center text-h6">{{ title }}</h4>
           </q-card-section>
           <q-card-section>
-            <q-fab
-              color="primary" @click="switchTypeForm"
-              icon="add"
-              class="absolute"
-              style="top: 0; right: 12px; transform: translateY(-50%);"
-            >
-              <q-tooltip>
-                Регистрация нового пользователя
-              </q-tooltip>
-            </q-fab>
             <q-form class="q-px-sm q-pt-xl">
-              <q-input
-                ref="email"
-                clearable
-                outlined
-                v-if="register"
-                v-model="email"
-                type="email"
-                lazy-rules
-                :rules="[this.required,this.isEmail,this.short]"
-                label="Email">
-                <template v-slot:prepend>
-                  <q-icon name="email"/>
-                </template>
-              </q-input>
               <q-input
                 ref="username"
                 square
-                clearable
                 v-model="username"
                 lazy-rules
                 :rules="[this.required,this.short]"
-                type="username" label="Пользователь">
+                type="username" label="Foydalanuvchi">
                 <template v-slot:prepend>
-                  <q-icon name="person"/>
+                  <q-icon name="person" color="teal-10"/>
+                </template>
+                <template v-slot:append>
+                  <q-icon v-if="username !== null" name="close" size="sm" @click="username = null" class="cursor-pointer"/>
                 </template>
               </q-input>
               <q-input
                 ref="password"
                 square
-                clearable
                 v-model="password" :type="passwordFieldType"
                 lazy-rules
                 :rules="[this.required,this.short]"
-                label="Пароль">
+                label="Parol">
 
                 <template v-slot:prepend>
-                  <q-icon name="lock"/>
+                  <q-icon name="lock" color="teal-10"/>
                 </template>
                 <template v-slot:append>
-                  <q-icon
-                    :name="visibilityIcon" @click="switchVisibility" class="cursor-pointer"/>
-                </template>
-              </q-input>
-              <q-input
-                ref="repassword"
-                v-if="register"
-                square
-                clearable
-                v-model="repassword" :type="passwordFieldType"
-                lazy-rules
-                :rules="[this.required,this.short,this.diffPassword]"
-                label="Повторить пароль">
-                <template v-slot:prepend>
-                  <q-icon name="lock"/>
-                </template>
-                <template v-slot:append>
+                  <q-icon v-if="password !== null" name="close" size="sm" @click="password = null" class="cursor-pointer"/>
                   <q-icon
                     :name="visibilityIcon" @click="switchVisibility" class="cursor-pointer"/>
                 </template>
@@ -85,19 +44,11 @@
             </q-form>
           </q-card-section>
 
-          <q-card-actions class="q-px-lg">
-            <q-btn
-              unelevated
-              size="lg"
-              color="secondary"
+          <q-card-actions class="q-px-lg q-mt-auto q-mb-lg">
+            <button
               @click="submit"
-              class="full-width text-white" :label="btnLabel"/>
+              class="text-white login-button">Kirish</button>
           </q-card-actions>
-          <q-card-section
-            v-if="!register"
-            class="text-center q-pa-sm">
-            <p class="text-grey-6">Забыли пароль?</p>
-          </q-card-section>
         </q-card>
       </div>
     </div>
@@ -191,20 +142,21 @@ export default {
               // this.$i18n.locale = this.$store.state.lang_code;
               // this.setRouterPath('/main-user-cabinet-layout')
               // this.$emit('changeTab', '0')
+              this.$q.notify({
+                icon: 'done',
+                caption: '',
+                color: 'positive',
+                message: 'Tizimga muvafiqiyatli kirildi!!!'
+              })
               this.$router.push({
                 path: '/worker-types',
-              }).finally(() => {
               })
-            }).catch(error => {
-            console.log(error)
-            this.error = error.errorMessage === '' ? error.errorDescription : error.errorMessage
-          }).finally(() => {
+            }).catch(response => {
+            console.log(response)
+            // this.error = error.errorMessage === '' ? error.errorDescription : error.errorMessage
+            this.showError(response)
+            }).finally(() => {
           });
-          this.$q.notify({
-            icon: 'done',
-            color: 'positive',
-            message: 'Авторизация'
-          })
         }
     },
     switchTypeForm(){
@@ -221,6 +173,48 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+  .login-bg {
+    position: relative;
+    background: url("../../assets/login.png");
+    background-size: cover;
+    z-index: 1;
 
+    .login-content {
+      position: relative;
+      z-index: 99;
+    }
+
+    &::before {
+      display: block;
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+      z-index: 2;
+    }
+
+    .login-button {
+      width: 70%;
+      margin: 10px auto;
+      padding: 15px 45px;
+      text-align: center;
+      text-transform: uppercase;
+      transition: .5s;
+      background-size: 200% auto;
+      color: #fff;
+      box-shadow: 0 0 20px #eee;
+      border-radius: 10px;
+      border: none;
+      display: block;
+      background-image: linear-gradient(to right, #606c88 0%, #3f4c6b 51%, #606c88 100%);
+
+      &:hover {
+        background-position: right center;
+        color: #fff;
+        text-decoration: none;
+      }
+    }
+  }
 </style>

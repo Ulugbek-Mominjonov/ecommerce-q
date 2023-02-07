@@ -30,16 +30,16 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
-            <q-tooltip content-class="bg-secondary">
-              {{$t('system.edit')}}
-            </q-tooltip>
-          </q-btn>
-          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
-            <q-tooltip content-class="bg-negative">
-              {{$t('system.delete')}}
-            </q-tooltip>
-          </q-btn>
+<!--          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">-->
+<!--            <q-tooltip content-class="bg-secondary">-->
+<!--              {{$t('system.edit')}}-->
+<!--            </q-tooltip>-->
+<!--          </q-btn>-->
+<!--          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">-->
+<!--            <q-tooltip content-class="bg-negative">-->
+<!--              {{$t('system.delete')}}-->
+<!--            </q-tooltip>-->
+<!--          </q-btn>-->
         </q-td>
       </template>
 
@@ -59,11 +59,11 @@
           </q-tooltip>
         </q-btn>
 
-        <q-btn icon="add" class="text-white" @click="rowAdd" dense style="background-color: #344767">
-          <q-tooltip content-class="bg-primary">
-            {{ $t('system.add') }}
-          </q-tooltip>
-        </q-btn>
+<!--        <q-btn icon="add" class="text-white" @click="rowAdd" dense style="background-color: #344767">-->
+<!--          <q-tooltip content-class="bg-primary">-->
+<!--            {{ $t('system.add') }}-->
+<!--          </q-tooltip>-->
+<!--        </q-btn>-->
       </template>
 
       <template v-slot:body-cell-modifyDate="props">
