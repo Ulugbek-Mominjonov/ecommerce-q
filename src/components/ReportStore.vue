@@ -28,46 +28,8 @@
         {{$t('system.no_matching_found')}}
       </template>
 
-      <template v-slot:body-cell-passport="props">
-        <q-td :props="props">
-          <div v-if="props.row.passportNumber&&props.row.passportSeries">
-            {{props.row.passportSeries}} {{props.row.passportNumber}}
-          </div>
-          <div v-else>
-            -- --- -- --
-          </div>
-        </q-td>
-      </template>
-
-      <template v-slot:body-cell-modifyDate="props">
-        <q-td :props="props">
-          <div v-if="props.row.modifiedDate">
-            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
-          </div>
-          <div v-else>
-            --.--.----
-          </div>
-        </q-td>
-      </template>
-
-      <template v-slot:body-cell-createdDate="props">
-        <q-td :props="props">
-          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
-        </q-td>
-      </template>
-
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades({id: props.row.id, tab: '2'})" class="q-mr-xs">
-            <q-tooltip content-class="bg-secondary">
-              {{$t('xshop_captions.l_show_trades')}}
-            </q-tooltip>
-          </q-btn>
-          <q-btn size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
-            <q-tooltip content-class="bg-secondary">
-              Tranzaksiyalarni ko'rish
-            </q-tooltip>
-          </q-btn>
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('system.edit')}}
@@ -81,24 +43,23 @@
         </q-td>
       </template>
 
-
       <template v-slot:top="props">
-        <q-input v-model="filter.fullName"
-                 label="Харидор Ф. I. O"
-                 class="q-pa-md col-3" dense outlined>
+        <q-input v-model="filter.fullName" placeholder="Тарқатувчи"
+                 label="Омборчилар"
+                 class="q-pa-md col-4" dense outlined>
           <template v-slot:append>
             <q-icon v-if="filter.fullName" name="close" color="primary" @click.stop="filter.fullName = ''"
                     class="cursor-pointer"/>
           </template>
         </q-input>
         <q-space/>
-        <q-btn icon="refresh" class="q-mr-sm bg-primary text-white" @click="refreshTable" dense>
+        <q-btn icon="refresh" class="q-mr-sm text-white" @click="refreshTable" dense style="background-color: #344767">
           <q-tooltip content-class="bg-primary">
             {{ $t('xshop_captions.l_refresh') }}
           </q-tooltip>
         </q-btn>
 
-        <q-btn icon="add" class="bg-primary text-white" @click="rowAdd" dense>
+        <q-btn icon="add" class="text-white" @click="rowAdd" dense style="background-color: #344767">
           <q-tooltip content-class="bg-primary">
             {{ $t('system.add') }}
           </q-tooltip>
@@ -122,30 +83,20 @@
                            :on-validation-error="onValidationError">
 
       <div class="row">
-        <q-input v-model="bean.fullName"
-                 :label="$t('xshop_captions.l_fullname')"
-                 class="q-pa-md col-12 col-md-6" dense
+        <q-input v-model="bean.nameUz" :placeholder="$t('xshop_captions.l_name_uz')"
+                 :label="$t('xshop_captions.l_name_uz')"
+                 class="q-pa-md col-12" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.phone"
-                 :label="$t('xshop_captions.l_phone')"
-                 mask="+### (##) ### ## ##"
-                 unmasked-value
-                 fill-mask
-                 class="q-pa-md col-12 col-md-6" dense
+        <q-input v-model="bean.nameRu" :placeholder="$t('xshop_captions.l_name_ru')"
+                 :label="$t('xshop_captions.l_name_ru')"
+                 class="q-pa-md col-12" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.passportSeries"
-                 :label="$t('xshop_captions.l_p_seria')"
-                 class="q-pa-md q-pr-none col-5 col-md-3" dense
-                 mask="AA"
-                 hint="AA">
-        </q-input>
-        <q-input v-model="bean.passportNumber"
-                 :label="$t('xshop_captions.l_p_number')"
-                 class="q-pa-md q-pl-none col-7 col-md-9" dense
-                 mask="#######"
-                 hint="1234567">
+        <q-input v-model="bean.nameBg" :placeholder="$t('xshop_captions.l_name_bg')"
+                 :label="$t('xshop_captions.l_name_bg')"
+                 class="q-pa-md col-12" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
       </div>
 
@@ -162,12 +113,12 @@ import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
 
 export default {
-  name: "Customers",
+  name: "ReportStore",
   components: {StandartInputDialog},
   mixins: [StandartTable],
   data() {
     return {
-      apiUrl: urls.CUSTOMERS,
+      apiUrl: urls.USERS + '/report',
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -175,16 +126,17 @@ export default {
       cardCheckField: 'name',
       beanDefault: {
         id: null,
-        fullName: ''
+        nameUz: '',
+        nameRu: '',
+        nameBg: '',
       },
       formDialog: false,
       filter: {
         page: 0,
-        rowsPerPage: 15,
+        rowsPerPage: 5,
         rowsNumber: 0,
         descending: false,
-        fullName: "",
-        phone: ""
+        fullName: ""
       },
       columns: [
         {
@@ -194,29 +146,64 @@ export default {
           sortable: true, align: 'left',
           classes: 'col-1'
         },
-
         {
           name: 'fullName',
           field: row => row.fullName,
-          label: this.$t('xshop_captions.l_fio'),
+          label: 'Фойдаланувчи',
           format: val => `${val}`,
           sortable: true,
           align: 'left',
-          classes: 'col-1 text-bold',
+          classes: 'col-1',
+        },
+        {
+          name: 'username',
+          field: row => row.username,
+          label: "Username",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
         },
         {
           name: 'phone',
           field: row => this.phone_format(row.phone),
-          label: this.$t('xshop_captions.l_phone'),
+          label: "Telefon nomer",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'passport',
-          field: row => `${row.passportSeries} ${row.passportNumber}`,
-          label: this.$t('xshop_captions.l_pasport'),
+          name: 'totalToSuppliers',
+          field: row => this.number_format_old(row.totalToSuppliers, 0, '.', ' '),
+          label: "totalToSuppliers",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'totalFromSuppliers',
+          field: row => this.number_format_old(row.totalFromSuppliers, 0, '.', ' '),
+          label: "totalFromSuppliers",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'totalToCustomers',
+          field: row => this.number_format_old(row.totalToCustomers, 0, '.', ' '),
+          label: "totalToCustomers",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'totalFromCustomers',
+          field: row => this.number_format_old(row.totalFromCustomers, 0, '.', ' '),
+          label: "totalFromCustomers",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -224,26 +211,36 @@ export default {
         },
 
         {
-          name: 'modifyDate',
-          field: row => row.modifiedDate,
-          label: this.$t('xshop_captions.l_update_date'),
+          name: 'totalToKassa',
+          field: row => this.number_format_old(row.totalToKassa, 0, '.', ' '),
+          label: "totalToKassa",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'createdDate',
-          field: row => row.createdDate,
-          label: this.$t('xshop_captions.l_created_date'),
+          name: 'totalFromKassa',
+          field: row => this.number_format_old(row.totalFromKassa, 0, '.', ' '),
+          label: "totalFromKassa",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
-        {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
+        {
+          name: 'balance',
+          field: row => this.number_format_old(row.balance, 0, '.', ' '),
+          label: "balance",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
       ],
       data: [],
+      regions: [],
       model: 1
     }
   },
@@ -253,10 +250,6 @@ export default {
     }
   },
   methods: {
-    goTrades(val) {
-      console.log(val)
-      this.$emit('goTab', val)
-    }
   },
   watch: {
     model(newval) {

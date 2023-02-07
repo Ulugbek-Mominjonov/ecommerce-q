@@ -136,15 +136,6 @@ export default {
     },
 
   },
-  watch: {
-    filter: {
-      handler(new_val, old_val) {
-        let el = this.$store.state.currentRouteName
-        Cookies.set(el, JSON.stringify(new_val), {expires: '30min'})
-      },
-      deep: true,
-    }
-  }
 
 }
 </script>

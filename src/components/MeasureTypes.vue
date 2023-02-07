@@ -44,8 +44,8 @@
       </template>
 
       <template v-slot:top="props">
-        <q-input v-model="filter.name" :placeholder="$t('xshop_captions.l_worker_type')"
-                 :label="$t('xshop_captions.l_worker_type')"
+        <q-input v-model="filter.name" :placeholder="$t('xshop_captions.l_name')"
+                 :label="$t('xshop_captions.l_name')"
                  class="q-pa-md col-4" dense outlined>
           <template v-slot:append>
             <q-icon v-if="filter.name" name="close" color="primary" @click.stop="filter.name = ''"
@@ -180,7 +180,7 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-        {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
+        {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
       ],
       data: [],
       regions: [],

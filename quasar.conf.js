@@ -28,7 +28,8 @@ module.exports = function (/* ctx */) {
       'global-mixin',
       'router-init',
       'dateutil-init',
-      'notify-defaults'
+      'notify-defaults',
+      'print'
     ],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

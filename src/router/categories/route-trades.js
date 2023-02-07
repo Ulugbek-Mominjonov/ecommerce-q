@@ -5,8 +5,8 @@
      show: true,
      component: ()=> import("../../pages/UserCabinet/PageSupplierTrades.vue"),
      meta:{
-       title: "xshop_captions.l_supplier_trades",
-       icon: 'mdi-file-document-outline'
+       title: "Таъминотчи савдолари",
+       icon: 'mdi-truck-outline'
      }
    },
    {
@@ -15,8 +15,8 @@
      show: true,
      component: ()=> import("../../pages/UserCabinet/PageCustomerTrades.vue"),
      meta:{
-       title: "Xaridor xaridlari",
-       icon: 'mdi-file-document-outline'
+       title: "Харидор савдолари",
+       icon: 'mdi-account-outline'
      }
    },
 ]

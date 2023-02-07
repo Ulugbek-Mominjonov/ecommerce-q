@@ -221,3 +221,23 @@ body {
 #yandexMap58450{
   height: 100% !important;
 }
+#scroll-area-trade.q-scrollarea {
+  height: 600px !important;
+  width: 800px  !important;
+}
+
+
+//@media print {
+//  //use your CSS over here customize your prints components.
+//  ::v-deep .project-header,
+//  ::v-deep .project-drawer {
+//    display: none !important;
+//  }
+//  ::v-deep footer {
+//    display: none !important;
+//  }
+//
+//  #print {
+//    display: block;
+//  }
+//}

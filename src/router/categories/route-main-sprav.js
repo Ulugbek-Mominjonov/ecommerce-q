@@ -5,7 +5,7 @@
       show: true,
       component: ()=> import("pages/UserCabinet/PageWorkerTypes.vue"),
       meta:{
-        title: "Xodimlari turlari",
+        title: "Ходим турлари",
         icon: 'mdi-account-outline'
       }
     },
@@ -16,7 +16,7 @@
      component: ()=> import("../../pages/UserCabinet/PageMeasureTypes.vue"),
      meta:{
        title: "xshop_captions.l_measure_types",
-       icon: 'mdi-file-document-outline'
+       icon: 'mdi-counter'
      }
    },
 ]

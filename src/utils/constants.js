@@ -31,5 +31,8 @@ export const urls = {
   FOUNDERS_TRANSACTIONS: prf.BASE_API + "/founder-transactions",
   SUPPLIERS_TRANSACTIONS: prf.BASE_API + "/supplier-transactions",
   CUSTOMERS_TRANSACTIONS: prf.BASE_API + "/customer-transactions",
+
+  // report
+  USER_REPORT: prf.BASE_API + "/report"
 }
 // 'http://65.108.83.140:8282/api/v1'
