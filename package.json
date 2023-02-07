@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "x-shop",
   "productName": "x-shop",
-  "author": "Fp_Orifov_Jafar",
+  "author": "Ulug'bek_Mo'minjonov",
   "private": true,
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
