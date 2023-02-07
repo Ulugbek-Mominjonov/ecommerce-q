@@ -147,7 +147,7 @@
           <ymap-marker
             :coords="coords"
             marker-id="123"
-            hint-content="some hint"
+            :hint-content="storeName"
           />
         </yandex-map>
       </div>
@@ -310,7 +310,8 @@ export default {
       ],
       data: [],
       regions: [],
-      model: 1
+      model: 1,
+      storeName: ""
     }
   },
   computed: {
@@ -326,18 +327,25 @@ export default {
       const table = this.$refs.table;
       if (table.selected.shift() === row) {
         table.selected.shift()
-        this.coords = []
-        this.coords.push(row.latitude, row.longitude)
-        console.log(1)
       } else {
         table.selected.push(row)
-        console.log(2)
+        this.storeName = row.storeName
+        this.coords = []
+        this.coords.push(row.latitude, row.longitude)
       }
     },
   },
   watch: {
     model(newval) {
       this.$set(this.filter, 'page', newval-1);
+    },
+    data: function (val) {
+      setTimeout(() => {
+        this.storeName = val[0].storeName
+        this.coords = []
+        this.coords.push(val[0].latitude, val[0].longitude);
+      }, 1000)
+      this.selectedRows.push(val[0])
     }
   },
   mounted() {

@@ -181,7 +181,7 @@
           :label="$t('xshop_captions.l_products')"
           transition-show="flip-up"
           transition-hide="flip-down"
-          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
+          class="q-pa-md col-xs-12 col-sm-6 col-md-6 col-lg-6" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
@@ -192,6 +192,12 @@
             <div>{{props.opt.nameBg}}</div>
           </template>
         </q-select>
+        <q-input v-model="bean.returned" :placeholder="$t('xshop_captions.l_returned_amount')"
+                 :label="$t('xshop_captions.l_returned_amount')"
+                 class="q-pa-md col-12 col-md-6" dense
+                 type="number"
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
         <q-input v-model="bean.amount" :placeholder="$t('xshop_captions.l_amount')"
                  :label="$t('xshop_captions.l_amount')"
                  class="q-pa-md col-12 col-md-6" dense
@@ -207,11 +213,11 @@
 
     </standart-input-dialog>
 
-    <standart-input-dialog v-model="formDialog2" :model-id="null" :on-submit="onSubmitProduct"
+    <standart-input-dialog :width="true" v-model="formDialog2" :model-id="null" :on-submit="onSubmitProduct"
                            :on-validation-error="onValidationError">
 
-      <q-scroll-area style="height: 230px; max-width: 600px;">
-        <div class="row" v-for="item in productData">
+      <q-scroll-area style="height: 600px">
+        <div class="row full-width full-height" v-for="item in productData">
           <hr class="col-12" v-if="productData.length > 1"/>
           <q-select
             v-model="item.productsId"
@@ -251,12 +257,53 @@
 
     </standart-input-dialog>
 
+    <div id="print">
+      <q-table
+        :data="productData"
+        :columns="columnsPrint"
+        row-key="name"
+        hide-bottom
+        class="shadow-0"
+      >
+        <template v-slot:top="props">
+          <div class="text-bold text-subtitle1 text-center full-width">Xarid cheki</div>
+        </template>
+
+        <template v-slot:body-cell-name="props">
+          <q-td :props="props">
+            <div>
+              {{products.filter(item => item.id === props.row.productsId)[0].nameBg}}
+            </div>
+          </q-td>
+        </template>
+      </q-table>
+
+      <div class="flex justify-between q-mx-auto" style="width: 80%; margin-top: 40px">
+        <p class="text-bold">{{user.user.workers.fullName}}</p>
+        <p>________________</p>
+      </div>
+    </div>
+
+    <q-dialog v-model="print" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="mdi-exclamation-thick" color="negative" text-color="white" size="md"/>
+          <span class="q-ml-sm">Xarid uchun chek chiqarilsinmi!!!</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Yo'q" color="primary" v-close-popup />
+          <q-btn flat label="Ha" color="primary" @click="printMe" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
   </div>
 </template>
 
 <script>
 import {urls} from 'src/utils/constants';
-import {mapMutations} from 'vuex';
+import {mapGetters, mapMutations} from 'vuex';
 import {mapState} from 'vuex';
 import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
@@ -277,6 +324,7 @@ export default {
       apiUrl: urls.SUPPLIER_TRADES,
       loading: false,
       rowKey: 'id',
+      width: 700,
       selectedRows: [],
       bean: {},
       cardCheckField: 'name',
@@ -286,7 +334,7 @@ export default {
         price: null,
         returned: null,
         productsId: null,
-        suppliersId: this.suppliersId,
+        suppliersId: this.supplierId,
       },
       formDialog: false,
       filter: {
@@ -297,7 +345,7 @@ export default {
         suppliersId: this.supplierId,
         productsId: null,
         fromDate: null,
-        toDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 'YYYY-MM-DD'),
+        toDate: null,
         amount: null,
         price: null
       },
@@ -423,14 +471,59 @@ export default {
       productData: [],
       model: 1,
       formDialog2: false,
+      print: false,
+      options: {
+        // name: '_self',
+        specs: [
+          'fullscreen=yes',
+          'titlebar=yes',
+          'scrollbars=yes'
+        ],
+        styles: [
+          'https://cdn.jsdelivr.net/npm/quasar@1.22.5/dist/quasar.min.css'
+        ]
+      },
+      columnsPrint: [
+        {
+          name: 'name',
+          required: true,
+          label: 'Mahsulot nomi',
+          align: 'left',
+          field: row => row.productsId,
+          format: val => `${val}`,
+          sortable: true
+        },
+        {
+          name: 'cost',
+          required: true,
+          label: 'Mahsulot narxi',
+          align: 'left',
+          field: row => this.number_format_old(row.price, 0,'.', ''),
+          sortable: true
+        },
+        {
+          name: 'amount',
+          required: true,
+          label: 'Mahsulot miqdori',
+          align: 'left',
+          field: row => this.number_format_old(row.amount, 0,'.', ''),
+          sortable: true
+        }
+      ],
     }
   },
   computed: {
     pagesNumber () {
       return Math.ceil(this.filter.rowsNumber / this.filter.rowsPerPage)
+    },
+    user() {
+      return this.getUser()
     }
   },
   methods: {
+    ...mapGetters([
+      'getUser'
+    ]),
     goBack() {
       this.$emit('goBack');
     },
@@ -454,8 +547,11 @@ export default {
 
     rowEdit(row) {
       this.$set(this.bean, 'amount', row.amount);
+      this.$set(this.bean, 'id', row.id);
       this.$set(this.bean, 'price', row.price);
       this.$set(this.bean, 'productsId', row.products.id);
+      this.$set(this.bean, 'returned', row.returned);
+      this.$set(this.bean, 'suppliersId', row.suppliers.id);
       this.showForm();
     },
     rowAdd() {
@@ -489,12 +585,17 @@ export default {
         .then(response => {
           this.closeForm2();
           this.refreshTable();
+          this.print = true;
         }).catch(error => {
         console.error(error);
       }).finally(() => {
         this.loading = false;
       });
     },
+    printMe() {
+      this.$htmlToPaper('print', this.options)
+      this.print = false
+    }
   },
   watch: {
     model(newval) {
@@ -507,3 +608,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+#print {
+  display: none;
+}
+
+</style>

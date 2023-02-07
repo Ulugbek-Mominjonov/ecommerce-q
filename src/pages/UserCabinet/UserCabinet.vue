@@ -1,7 +1,7 @@
 <template>
   <div class="q-pl-md">
     <q-layout view="hHh Lpr lff" class="shadow-2 rounded-borders" style="background-color: rgb(248,249,250); height: 100vh">
-      <q-header elevated class="q-px-lg" style="background-color: #344767">
+      <q-header elevated class="q-px-lg project-header" style="background-color: #344767">
         <q-toolbar>
           <q-btn flat @click="leftDrawerOpen = !leftDrawerOpen" round dense icon="menu" />
           <q-toolbar-title>X-shop</q-toolbar-title>
@@ -37,6 +37,7 @@
         :breakpoint="500"
         bordered
         content-class="bg-white shadow-2"
+        class="project-drawer"
       >
         <q-scroll-area class="site-main-menu" style="height: 100%; border-right: 1px solid #ddd">
           <q-list class="q-my-lg q-px-md">
@@ -95,7 +96,7 @@
               </q-item-section>
             </q-item>
 
-            <q-item-label class="site-main-menu--heading q-mt-md" header>Tranzaksiyalar</q-item-label>
+            <q-item-label class="site-main-menu--heading q-mt-md" header>Транзаксиялар</q-item-label>
             <q-item
               v-for="(module, index, arr) in transactions"
               :key="module.name"
@@ -115,7 +116,7 @@
               </q-item-section>
             </q-item>
 
-            <q-item-label class="site-main-menu--heading q-mt-md" header>Trades</q-item-label>
+            <q-item-label class="site-main-menu--heading q-mt-md" header>Савдолар</q-item-label>
             <q-item
               v-for="(module, index, arr) in trades"
               :key="module.name"
@@ -186,8 +187,8 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
-          <q-btn flat label="Turn on Wifi" color="primary" @click="leftCabninet" />
+          <q-btn flat label="Bekor qilish" color="primary" v-close-popup />
+          <q-btn flat label="Chiqish" color="primary" @click="leftCabninet" />
         </q-card-actions>
       </q-card>
     </q-dialog>
