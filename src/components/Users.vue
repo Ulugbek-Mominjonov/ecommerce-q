@@ -45,20 +45,14 @@
         </q-td>
       </template>
 
-      <template v-slot:body-cell-roles="props">
-        <q-td :props="props">
-            <span>props.row.roles</span>
-        </q-td>
-      </template>
-
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades({id: props.row.id, tab: '2'})" class="q-mr-xs">
+          <q-btn v-if="props.row.workers.workerTypes.id === 3" size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades({id: props.row.id, tab: '2'})" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('xshop_captions.l_show_trades')}}
             </q-tooltip>
           </q-btn>
-          <q-btn size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
+          <q-btn v-if="props.row.workers.workerTypes.id === 3" size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               Tranzaksiyalarni ko'rish
             </q-tooltip>
@@ -265,7 +259,7 @@ export default {
           name: 'password',
           field: row => row.password,
           label: "password",
-          format: val => `${val}`,
+          format: val => `******`,
           sortable: true,
           align: 'left',
           classes: 'col-1 text-bold',
@@ -292,9 +286,8 @@ export default {
 
         {
           name: 'roles',
-          field: row => row.roles[0].name,
+          field: row => row.roles.name,
           label: this.$t('xshop_captions.l_user_role'),
-          format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
