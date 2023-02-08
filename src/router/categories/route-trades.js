@@ -1,5 +1,15 @@
  const pages = [
    {
+     path: "/user-trades",
+     name: "UserTrades",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageUserTrades.vue"),
+     meta:{
+       title: "Фойдаланувчи савдолари",
+       icon: 'mdi-account-cash-outline'
+     }
+   },
+   {
      path: "/supplier-trades",
      name: "SupplierTrades",
      show: true,

@@ -3,7 +3,7 @@
   <div>
     <q-table
       ref="table"
-      title="Mijozlar"
+      title="Foydalanuvchi tranzaksiyalari"
       :row-key="rowKey"
       :data="data"
       :columns="columns"
@@ -11,7 +11,6 @@
       :filter="filter"
       :pagination="filter"
       @request="refreshData"
-      selection="single"
       :selected.sync="selectedRows"
       separator="horizontal"
       color="secondary"
@@ -44,43 +43,40 @@
       </template>
 
       <template v-slot:top="props">
-        <q-btn v-if="supplierId" @click="goBack" class="text-capitalize" color="teal-8" outline icon="mdi-arrow-left">
-          <span class="q-ml-sm">Orqaga</span>
+        <q-btn v-if="userId" @click="goBack" class="text-capitalize" color="teal-8" outline icon="mdi-arrow-left">
         </q-btn>
         <date-input
           v-model="filter.fromDate"
           :label="$t('xshop_captions.l_from_date')"
-          class="q-pa-sm col-2 text-white"
+          class="q-pa-sm col-3 text-white"
         />
         <date-input
           v-model="filter.toDate"
           :label="$t('xshop_captions.l_to_date')"
-          class="q-pa-sm col-2 text-white"
+          class="q-pa-sm col-3 text-white"
         />
 
         <q-select
-          v-model="filter.income"
+          v-model="filter.isToKassa"
           emit-value
           map-options
           :options="transactionsTypes"
           option-value="id"
           option-label="name"
           :label="$t('xshop_captions.l_transactions_type')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
           outlined
           class="q-pa-sm col-2 col-md-2" dense
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon v-if="filter.income !== null" name="close" color="primary" @click.stop="filter.income = null"
+            <q-icon v-if="filter.isToKassa !== null" name="close" color="primary" @click.stop="filter.isToKassa = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
             <div>{{props.opt.name}}</div>
           </template>
         </q-select>
-        <q-input v-model="filter.amount" :placeholder="$t('xshop_captions.l_amount')"
+        <q-input v-model="filter.amount"
                  :label="$t('xshop_captions.l_amount')"
                  type="number"
                  class="q-pa-sm col-2" dense outlined>
@@ -96,7 +92,7 @@
           </q-tooltip>
         </q-btn>
 
-        <q-btn  v-if="supplierId" icon="add" class="bg-primary text-white" @click="rowAdd" dense>
+        <q-btn  v-if="userId" icon="add" class="bg-primary text-white" @click="rowAdd" dense>
           <q-tooltip content-class="bg-primary">
             {{ $t('system.add') }}
           </q-tooltip>
@@ -105,8 +101,8 @@
 
       <template v-slot:body-cell-incomeAmount="props">
         <q-td :props="props">
-          <div v-if="props.row.isPayment">
-            {{number_format_old(props.row.amount, 0, '.', ' ')}}
+          <div v-if="props.row.isToKassa">
+            {{number_format_old(props.row.amount, 0, '.', ' ')}} сўм
           </div>
           <div v-else>
             0
@@ -115,11 +111,22 @@
       </template>
       <template v-slot:body-cell-outcomeAmount="props">
         <q-td :props="props">
-          <div v-if="!props.row.isPayment">
-            {{number_format_old(props.row.amount, 0, '.', ' ')}}
+          <div v-if="!props.row.isToKassa">
+            {{number_format_old(props.row.amount, 0, '.', ' ')}} сўм
           </div>
           <div v-else>
-            0
+            0 сўм
+          </div>
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-passport="props">
+        <q-td :props="props">
+          <div v-if="props.row.users.workers.passportSeries && props.row.users.workers.passportNumber">
+            {{props.row.users.workers.passportSeries }} {{props.row.users.workers.passportNumber}}
+          </div>
+          <div v-else>
+            -- --- -- --
           </div>
         </q-td>
       </template>
@@ -159,48 +166,44 @@
 
       <div class="row">
         <q-select
-          :disable = "supplierId"
-          v-model="bean.suppliersId"
+          :disable="userId"
+          v-model="bean.usersId"
           emit-value
           map-options
-          :options="suppliers"
+          :options="users"
           option-value="id"
-          option-label="fullName"
-          label="Yetkazib beruvchi"
-          transition-show="flip-up"
-          transition-hide="flip-down"
+          option-label="username"
+          label="Foydalanuvchi"
           class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon name="close" color="primary" @click.stop="bean.suppliersId = null"
+            <q-icon v-if="bean.usersId" name="close" color="primary" @click.stop="bean.usersId = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
-            <div>{{props.opt.fullName}}</div>
+            <div>{{props.opt.workers.fullName}}</div>
           </template>
         </q-select>
-        <q-input v-model="bean.amount" :placeholder="$t('xshop_captions.l_amount')"
+        <q-input v-model="bean.amount"
                  :label="$t('xshop_captions.l_amount')"
                  type="number"
                  class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
         <q-select
-          v-model="bean.isPayment"
+          v-model="bean.isToKassa"
           emit-value
           map-options
           :options="transactionsTypes"
           option-value="id"
           option-label="name"
           :label="$t('xshop_captions.l_transactions_type')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
           class="q-pa-md col-12 col-md-6" dense
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon name="close" color="primary" @click.stop="bean.isPayment = null"
+            <q-icon name="close" color="primary" @click.stop="bean.isToKassa = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
@@ -223,18 +226,18 @@ import StandartInputDialog from "components/base/StandartInputDialog";
 import DateInput from "components/base/DateInput.vue";
 
 export default {
-  name: "SuppliersTransactions",
+  name: "UsersTransactions",
   components: {DateInput, StandartInputDialog},
   mixins: [StandartTable],
   props: {
-    supplierId: {
+    userId: {
       type: Number,
       default: null
-    },
+    }
   },
   data() {
     return {
-      apiUrl: urls.SUPPLIERS_TRANSACTIONS,
+      apiUrl: urls.USERS_TRANSACTIONS,
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -243,8 +246,8 @@ export default {
       beanDefault: {
         id: null,
         amount: null,
-        isPayment: null,
-        suppliersId: this.supplierId,
+        isToKassa: null,
+        usersId: this.userId,
       },
       formDialog: false,
       filter: {
@@ -253,10 +256,10 @@ export default {
         rowsNumber: 0,
         descending: false,
         amount: null,
-        suppliersId: this.supplierId,
-        isPayment: null,
+        isToKassa: null,
+        usersId: this.userId,
         fromDate: null,
-        toDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 'YYYY-MM-DD'),
+        toDate: null,
       },
       columns: [
         {
@@ -269,7 +272,7 @@ export default {
         {
           name: 'incomeAmount',
           field: row => row.amount,
-          label: this.$t('xshop_captions.l_income_amount'),
+          label: this.$t('xshop_captions.l_income_amount') + ' сўм',
           sortable: true,
           align: 'left',
           classes: 'col-1 text-bold',
@@ -277,7 +280,7 @@ export default {
         {
           name: 'outcomeAmount',
           field: row => row.amount,
-          label: this.$t('xshop_captions.l_outcome_amount'),
+          label: this.$t('xshop_captions.l_outcome_amount') + ' сўм',
           sortable: true,
           align: 'left',
           classes: 'col-1 text-bold',
@@ -302,7 +305,7 @@ export default {
         },
         {
           name: 'fullName',
-          field: row => row.suppliers.fullName,
+          field: row => row.users.workers.fullName,
           label: this.$t('xshop_captions.l_fio'),
           format: val => `${val}`,
           sortable: true,
@@ -311,7 +314,7 @@ export default {
         },
         {
           name: 'phone',
-          field: row => this.phone_format(row.suppliers.phone),
+          field: row => this.phone_format(row.users.workers.phone),
           label: this.$t('xshop_captions.l_phone'),
           format: val => `${val}`,
           sortable: true,
@@ -320,7 +323,7 @@ export default {
         },
         {
           name: 'passport',
-          field: row => `${row.suppliers.passportSeries} ${row.suppliers.passportNumber}`,
+          field: row => `${row.users.workers.passportSeries} ${row.users.workers.passportNumber}`,
           label: this.$t('xshop_captions.l_pasport'),
           format: val => `${val}`,
           sortable: true,
@@ -331,14 +334,14 @@ export default {
       ],
       data: [],
       model: 1,
-      suppliers: [],
+      users: [],
       transactionsTypes: [
         {
-          name: 'Kirim',
+          name: 'Тўлов',
           id: 1
         },
         {
-          name: 'Chiqim',
+          name: 'Қайтариш',
           id: 0
         }
       ]
@@ -350,11 +353,11 @@ export default {
     }
   },
   methods: {
-    getSuppliers() {
-      this.$axios.get(urls.SUPPLIERS + '/all')
+    getUsers() {
+      this.$axios.get(urls.USERS + '/all')
         .then(res => {
           console.log(res)
-          this.suppliers.splice(0, this.suppliers.length, ...res.data)
+          this.users.splice(0, this.users.length, ...res.data)
         }).catch(err => {
         this.showError(err)
       }).finally(() => {})
@@ -363,7 +366,7 @@ export default {
       for (let k in row) {
         this.$set(this.bean, k, row[k]);
       }
-      this.$set(this.bean, 'suppliersId', row.suppliers.id);
+      this.$set(this.bean, 'usersId', row.users.id);
       this.showForm();
     },
     goBack() {
@@ -376,7 +379,7 @@ export default {
     }
   },
   mounted() {
-    this.getSuppliers()
+    this.getUsers()
   }
 }
 </script>

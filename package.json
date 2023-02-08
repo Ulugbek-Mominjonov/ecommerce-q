@@ -1,8 +1,8 @@
 {
-  "name": "x-shop",
+  "name": "Distribution",
   "version": "0.0.1",
-  "description": "x-shop",
-  "productName": "x-shop",
+  "description": "Distribution",
+  "productName": "Distribution",
   "author": "Ulug'bek_Mo'minjonov",
   "private": true,
   "scripts": {

@@ -10,6 +10,22 @@ const routes = [
     children: [
     ]
   },
+  {
+    path: '/dashboard',
+    component: ()=> import('../pages/UserCabinet/UserCabinet'),
+    children: [
+      {
+        path: "/",
+        name: "dashboard",
+        show: true,
+        component: ()=> import("src/pages/UserCabinet/Dashboard"),
+        meta:{
+          title: "Таъминотчи савдолари",
+          icon: 'mdi-truck-outline'
+        }
+      },
+    ]
+  },
   main_reports,
   main_sprav,
   main,

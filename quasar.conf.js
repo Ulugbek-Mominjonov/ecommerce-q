@@ -79,7 +79,7 @@ module.exports = function (/* ctx */) {
     // Full list of options: https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       https: false,
-      port: 8080,
+      port: 8089,
       open: true // opens browser window automatically
     },
 
@@ -120,9 +120,9 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `x-shop`,
-        short_name: `x-shop`,
-        description: `x-shop`,
+        name: `Distribution`,
+        short_name: `Distribution`,
+        description: `Distribution`,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -187,7 +187,7 @@ module.exports = function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'x-shop'
+        appId: 'Distribution'
       },
 
       // More info: https://v1.quasar.dev/quasar-cli/developing-electron-apps/node-integration

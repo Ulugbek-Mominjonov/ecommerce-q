@@ -53,6 +53,16 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
+          <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades({id: props.row.id, tab: '2'})" class="q-mr-xs">
+            <q-tooltip content-class="bg-secondary">
+              {{$t('xshop_captions.l_show_trades')}}
+            </q-tooltip>
+          </q-btn>
+          <q-btn size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
+            <q-tooltip content-class="bg-secondary">
+              Tranzaksiyalarni ko'rish
+            </q-tooltip>
+          </q-btn>
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('system.edit')}}
@@ -68,8 +78,8 @@
 
 
       <template v-slot:top="props">
-        <q-input v-model="filter.workersFullName" :placeholder="$t('xshop_captions.l_worker_name')"
-                 :label="$t('xshop_captions.l_worker_name')"
+        <q-input v-model="filter.workersFullName" placeholder="Фойдаланувчи"
+                 label="Фойдаланувчи"
                  class="q-pa-md col-4" dense outlined>
           <template v-slot:append>
             <q-icon v-if="filter.workersFullName" name="close" color="primary" @click.stop="filter.workersFullName = ''"
@@ -354,6 +364,11 @@ export default {
       }
       this.showForm();
     },
+
+    goTrades(val) {
+      console.log(val)
+      this.$emit('goTab', val)
+    }
   },
   watch: {
     model(newval) {

@@ -1,5 +1,15 @@
  const pages = [
    {
+     path: "/users-transactions",
+     name: "usersTransactions",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageUsersTransactions.vue"),
+     meta:{
+       title: "Фойдаланувчи транзаксиялри",
+       icon: 'mdi-account-convert-outline'
+     }
+   },
+   {
      path: "/founders-transactions",
      name: "foundersTransactions",
      show: true,

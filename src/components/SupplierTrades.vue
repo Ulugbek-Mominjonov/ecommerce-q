@@ -146,7 +146,7 @@
             </q-tooltip>
           </q-btn>
 
-          <q-btn icon="add" class="bg-primary text-white" @click="rowAdd" dense>
+          <q-btn v-if="supplierId" icon="add" class="bg-primary text-white" @click="rowAdd" dense>
             <q-tooltip content-class="bg-primary">
               {{ $t('system.add') }}
             </q-tooltip>

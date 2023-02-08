@@ -4,7 +4,7 @@
     <q-table
       id="customerTable"
       ref="table"
-      title="Xaridlar"
+      title="Foydalanuvchi savdolari"
       :row-key="rowKey"
       :data="data"
       :columns="columns"
@@ -74,11 +74,11 @@
 
       <template v-slot:top="props">
         <q-select
-          v-if="!customersId"
-          v-model="filter.customersId"
+          v-if="!usersId"
+          v-model="filter.usersId"
           emit-value
           map-options
-          :options="customersId"
+          :options="users"
           option-value="id"
           option-label="fullName"
           :label="$t('xshop_captions.l_suppliers')"
@@ -87,8 +87,8 @@
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon v-if="filter.customersId !== null" name="close" color="primary"
-                    @click.stop="filter.customersId = null"
+            <q-icon v-if="filter.usersId !== null" name="close" color="primary"
+                    @click.stop="filter.usersId = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
@@ -96,7 +96,7 @@
           </template>
         </q-select>
 
-        <q-btn v-if="customersId" @click="goBack" color="teal-8" outline icon="mdi-arrow-left"/>
+        <q-btn v-if="usersId" @click="goBack" color="teal-8" outline icon="mdi-arrow-left"/>
 
         <q-select
           v-model="filter.productsId"
@@ -137,7 +137,7 @@
             </q-tooltip>
           </q-btn>
 
-          <q-btn v-if="customersId" icon="add" class="bg-primary text-white" @click="rowAdd" dense>
+          <q-btn v-if="usersId" icon="add" class="bg-primary text-white" @click="rowAdd" dense>
             <q-tooltip content-class="bg-primary">
               {{ $t('system.add') }}
             </q-tooltip>
@@ -297,11 +297,11 @@ import StandartInputDialog from "components/base/StandartInputDialog";
 import DateInput from "components/base/DateInput.vue";
 
 export default {
-  name: "CustomerTrades",
+  name: "UserTrades",
   components: {DateInput, StandartInputDialog},
   mixins: [StandartTable],
   props: {
-    customersId: {
+    usersId: {
       type: Number,
       default: null
     },
@@ -335,7 +335,7 @@ export default {
           sortable: true
         }
       ],
-      apiUrl: urls.CUSTOMER_TRADES,
+      apiUrl: urls.USER_TRADES,
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -347,7 +347,7 @@ export default {
         price: null,
         returned: null,
         productsId: null,
-        customersId: this.customersId,
+        usersId: this.usersId,
       },
       formDialog: false,
       filter: {
@@ -355,7 +355,7 @@ export default {
         rowsPerPage: 10,
         rowsNumber: 0,
         descending: false,
-        customersId: this.customersId,
+        usersId: this.usersId,
         productsId: null,
         fromDate: null,
         toDate: null,
@@ -431,7 +431,7 @@ export default {
 
         {
           name: 'fullName',
-          field: row => row.customers.fullName,
+          field: row => row.users.fullName,
           label: this.$t('xshop_captions.l_fio'),
           format: val => `${val}`,
           sortable: true,
@@ -440,7 +440,7 @@ export default {
         },
         {
           name: 'phone',
-          field: row => this.phone_format(row.customers.phone),
+          field: row => this.phone_format(row.users.phone),
           label: this.$t('xshop_captions.l_phone'),
           format: val => `${val}`,
           sortable: true,
@@ -449,7 +449,7 @@ export default {
         },
         {
           name: 'passport',
-          field: row => `${row.customers.passportSeries} ${row.customers.passportNumber}`,
+          field: row => `${row.users.passportSeries} ${row.users.passportNumber}`,
           label: this.$t('xshop_captions.l_pasport'),
           format: val => `${val}`,
           sortable: true,
@@ -479,7 +479,7 @@ export default {
       ],
       data: [],
       regions: [],
-      customers: [],
+      users: [],
       products: [],
       productData: [],
       model: 1,
@@ -513,10 +513,10 @@ export default {
     goBack() {
       this.$emit('goBack');
     },
-    getCustomers() {
+    getUsers() {
       this.$axios.get(urls.CUSTOMERS + '/all')
         .then(res => {
-          this.customers.splice(0, this.customers.length, ...res.data)
+          this.users.splice(0, this.users.length, ...res.data)
         }).catch(err => {
         this.showError(err)
       }).finally(() => {
@@ -538,13 +538,13 @@ export default {
       this.$set(this.bean, 'amount', row.amount);
       this.$set(this.bean, 'price', row.price);
       this.$set(this.bean, 'productsId', row.products.id);
-      this.$set(this.bean, 'customersId', this.customersId);
+      this.$set(this.bean, 'usersId', this.usersId);
       this.showForm();
     },
     rowAdd() {
       this.productData = []
       let productBeanDefault = {
-        customersId: this.customersId,
+        usersId: this.usersId,
         productsId: null,
         price: null,
         amount: null,
@@ -560,7 +560,7 @@ export default {
     },
     addProductBean() {
       let productBeanDefault = {
-        customersId: this.customersId,
+        usersId: this.usersId,
         productsId: null,
         price: null,
         amount: null,
@@ -590,7 +590,7 @@ export default {
     }
   },
   mounted() {
-    this.getCustomers();
+    this.getUsers();
     this.getProducts();
   }
 }

@@ -4,7 +4,7 @@
       <q-header elevated class="q-px-lg project-header" style="background-color: #344767">
         <q-toolbar>
           <q-btn flat @click="leftDrawerOpen = !leftDrawerOpen" round dense icon="menu" />
-          <q-toolbar-title>X-shop</q-toolbar-title>
+          <q-toolbar-title>Дистрибуция</q-toolbar-title>
 
           <q-btn
             round
@@ -44,6 +44,7 @@
             <q-item
               clickable
               v-ripple
+              to="/dashboard"
               active-class="site-main-menu--item--active"
               class="site-main-menu--item"
             >

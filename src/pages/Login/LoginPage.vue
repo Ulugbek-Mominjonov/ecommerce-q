@@ -176,7 +176,7 @@ export default {
 <style lang="scss">
   .login-bg {
     position: relative;
-    background: url("../../assets/login.png");
+    //background: url("../../assets/login.png");
     background-size: cover;
     z-index: 1;
 

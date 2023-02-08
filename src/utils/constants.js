@@ -26,11 +26,13 @@ export const urls = {
   // Trades
   SUPPLIER_TRADES: prf.BASE_API + "/supplier-trades",
   CUSTOMER_TRADES: prf.BASE_API + "/customer-trades",
+  USER_TRADES: prf.BASE_API + "/user-trades",
 
   // transactions
   FOUNDERS_TRANSACTIONS: prf.BASE_API + "/founder-transactions",
   SUPPLIERS_TRANSACTIONS: prf.BASE_API + "/supplier-transactions",
   CUSTOMERS_TRANSACTIONS: prf.BASE_API + "/customer-transactions",
+  USERS_TRANSACTIONS: prf.BASE_API + "/user-transactions",
 
   // report
   USER_REPORT: prf.BASE_API + "/report"
