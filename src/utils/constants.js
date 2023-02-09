@@ -35,6 +35,9 @@ export const urls = {
   USERS_TRANSACTIONS: prf.BASE_API + "/user-transactions",
 
   // report
-  USER_REPORT: prf.BASE_API + "/report"
+  USER_REPORT: prf.BASE_API + "/report",
+  DASHBOARD_CARD_INFO: prf.BASE_API + "/dashboard/card-info",
+  DASHBOARD_DEBITOR_STORE: prf.BASE_API + "/dashboard/top-debtor-stores",
+  DASHBOARD_DEBITOR_CUSTOMER: prf.BASE_API + "/dashboard/top-debtor-customers",
 }
 // 'http://65.108.83.140:8282/api/v1'
