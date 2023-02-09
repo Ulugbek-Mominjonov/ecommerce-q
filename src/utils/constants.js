@@ -14,6 +14,7 @@ export const urls = {
   ROLES: prf.BASE_API + "/roles",
   WORKER_TYPES: prf.BASE_API + "/worker-types",
   WORKERS: prf.BASE_API + "/workers",
+  WORKER_SALARY: prf.BASE_API + "/worker-salaries",
   USERS: prf.BASE_API + "/users",
   FOUNDERS: prf.BASE_API + "/founders",
   MEASURE_TYPES: prf.BASE_API + "/measure-types",
