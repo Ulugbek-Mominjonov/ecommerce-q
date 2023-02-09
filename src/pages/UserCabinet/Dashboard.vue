@@ -1,11 +1,13 @@
 <template>
   <div class="dashboard">
     <div class="flex justify-between dashboard-header">
-      <dashboard-card style="width: 19%;" title="Kassa" :value="cardInfo.kassaBalance" icon="mdi-bank-plus"/>
-      <dashboard-card style="width: 19%;" title="Харидорлар" :value="cardInfo.customerBalance" icon="mdi-account-cash-outline"/>
-      <dashboard-card style="width: 19%;" title="Do'konlar" :value="cardInfo.storeBalance" icon="mdi-store-outline"/>
-      <dashboard-card style="width: 19%;" title="Ta'minotchilar" :value="cardInfo.supplierBalance" icon="mdi-truck-outline"/>
-      <dashboard-card style="width: 19%;" title="Foydalanuvchilar" :value="cardInfo.userBalance" icon="mdi-cash-check"/>
+      <dashboard-card style="width: 24%;" title="Касса" :value="cardInfo.kassaBalance" icon="mdi-bank-plus"/>
+      <dashboard-card style="width: 24%;" title="Харидорлар" :value="cardInfo.customerBalance" icon="mdi-account-cash-outline"/>
+      <dashboard-card style="width: 24%;" title="Дўконлар" :value="cardInfo.storeBalance" icon="mdi-store-outline"/>
+      <dashboard-card style="width: 24%;" title="Таъминотчилар" :value="cardInfo.supplierBalance" icon="mdi-truck-outline"/>
+      <dashboard-card style="width: 30%; margin-top: 20px"  title="Фойдаланувчилар" :value="cardInfo.userBalance" icon="mdi-cash-check"/>
+      <dashboard-card style="width: 30%; margin-top: 20px" title="Берилган иш хақи" :value="cardInfo.workerSalaries" icon="mdi-cash-check"/>
+      <dashboard-card style="width: 30%; margin-top: 20px" title="Харажатлар" :value="cardInfo.kassaOutputs" icon="mdi-cash-check"/>
     </div>
 
     <div class="dashboard-statistic flex justify-between">
@@ -21,7 +23,7 @@
             <q-timeline-entry
               icon="mdi-store"
             >
-              <div class="text-bold">{{item.storeName}}</div>
+              <div class="text-bold">{{item.storeName}} ( {{ formatPrice(item.balance) }} сўм )</div>
               <div class="text-secondary">
                 <div>{{item.ownerName }} ({{item.phone}})</div>
               </div>
@@ -41,7 +43,7 @@
             <q-timeline-entry
               icon="mdi-account-cash-outline"
             >
-              <div class="text-bold">{{item.fullName}}</div>
+              <div class="text-bold">{{item.fullName}} ( {{ formatPrice(item.balance) }} сўм )</div>
               <div class="text-secondary">
                 <div>{{item.phone }}</div>
               </div>
@@ -116,7 +118,7 @@ export default {
     flex-grow: 0;
   }
   .dashboard-statistic {
-    width: 80%;
+    width: 100%;
     margin-top: 40px;
     margin-left: auto;
     margin-right: auto;

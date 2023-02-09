@@ -20,6 +20,16 @@
      }
    },
    {
+     path: "/kassa-outputs",
+     name: "kassa-outputs",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageKassaOutputs.vue"),
+     meta:{
+       title: "Харажатлар",
+       icon: 'mdi-account-cash-outline'
+     }
+   },
+   {
      path: "/users",
      name: "users",
      show: true,

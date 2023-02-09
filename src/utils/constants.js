@@ -15,6 +15,7 @@ export const urls = {
   WORKER_TYPES: prf.BASE_API + "/worker-types",
   WORKERS: prf.BASE_API + "/workers",
   WORKER_SALARY: prf.BASE_API + "/worker-salaries",
+  KASSA_OUTPUTS: prf.BASE_API + "/kassa-outputs",
   USERS: prf.BASE_API + "/users",
   FOUNDERS: prf.BASE_API + "/founders",
   MEASURE_TYPES: prf.BASE_API + "/measure-types",
