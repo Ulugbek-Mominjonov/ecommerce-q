@@ -36,6 +36,7 @@
         show-if-above
         :breakpoint="500"
         bordered
+        :width="300"
         content-class="bg-white shadow-2"
         class="project-drawer"
       >

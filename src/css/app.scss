@@ -226,6 +226,13 @@ body {
   width: 800px  !important;
 }
 
+.q-timeline__heading-title {
+  padding-bottom: 10px;
+}
+.q-timeline__entry--icon .q-timeline__subtitle {
+  display: none;
+}
+
 
 //@media print {
 //  //use your CSS over here customize your prints components.
