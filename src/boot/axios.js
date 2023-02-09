@@ -12,6 +12,7 @@ export default ({app, router, store, Vue}) => {
       return response;
     },
     (error) => {
+      console.log("errorrr:", error)
       store.commit("decrementAjaxRequestsCnt");
       if (!error.response) {
         return Promise.reject({

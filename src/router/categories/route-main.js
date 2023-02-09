@@ -10,6 +10,16 @@
      }
    },
    {
+     path: "/workers-salary",
+     name: "workers-salary",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageWorkersSalary.vue"),
+     meta:{
+       title: "Ишчилар иш ҳақи",
+       icon: 'mdi-account-cash-outline'
+     }
+   },
+   {
      path: "/users",
      name: "users",
      show: true,
