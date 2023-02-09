@@ -52,7 +52,7 @@
               {{$t('xshop_captions.l_show_trades')}}
             </q-tooltip>
           </q-btn>
-          <q-btn v-if="props.row.workers.workerTypes.id === 3" size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
+          <q-btn v-if="props.row.workers.workerTypes.id < 4" size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               Tranzaksiyalarni ko'rish
             </q-tooltip>
@@ -161,8 +161,8 @@
           option-value="id"
           option-label="fullName"
           :label="$t('xshop_captions.l_worker')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
+
+
           class="q-pa-md col-xs-12 col-sm-12 col-md-6 col-lg-6" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
@@ -183,8 +183,8 @@
           option-value="id"
           option-label="name"
           :label="$t('xshop_captions.l_role')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
+
+
           class="q-pa-md col-xs-12 col-sm-12 col-md-6 col-lg-6" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >

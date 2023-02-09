@@ -28,6 +28,17 @@
         {{$t('system.no_matching_found')}}
       </template>
 
+      <template v-slot:body-cell-passport="props">
+        <q-td :props="props">
+          <div v-if="props.row.passportSeries && props.row.passportNumber">
+            {{props.row.passportSeries}} {{props.row.passportNumber}}
+          </div>
+          <div v-else>
+            -- --- -- --
+          </div>
+        </q-td>
+      </template>
+
       <template v-slot:body-cell-modifyDate="props">
         <q-td :props="props">
           <div v-if="props.row.modifiedDate">
@@ -83,38 +94,6 @@
           </q-tooltip>
         </q-btn>
       </template>
-
-<!--      <template v-slot:item="props">-->
-<!--        <div-->
-<!--          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"-->
-<!--        >-->
-<!--          <q-card :class="props.selected ? 'row-selected' : ''">-->
-<!--            <q-card-section>-->
-<!--              <q-checkbox dense v-model="props.selected" :label="props.row[cardCheckField]"/>-->
-<!--            </q-card-section>-->
-<!--            <q-separator/>-->
-<!--            <q-list dense>-->
-<!--              <q-item v-for="col in props.cols.filter(col_ => col_.name !== actionsColumnName)" :key="col.name">-->
-<!--                <q-item-section>-->
-<!--                  <q-item-label>{{ col.label }}</q-item-label>-->
-<!--                </q-item-section>-->
-<!--                <q-item-section side>-->
-<!--                  <q-item-label caption>{{ col.value }}</q-item-label>-->
-<!--                </q-item-section>-->
-<!--              </q-item>-->
-<!--            </q-list>-->
-<!--            <q-separator/>-->
-<!--            <q-card-section class="row justify-end"-->
-<!--                            v-if="props.cols.filter(col => col.name === actionsColumnName).length>0">-->
-<!--              <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">-->
-<!--              </q-btn>-->
-<!--              <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">-->
-<!--              </q-btn>-->
-<!--            </q-card-section>-->
-
-<!--          </q-card>-->
-<!--        </div>-->
-<!--      </template>-->
       <template v-slot:bottom>
         <div class="full-width row justify-center q-mt-md">
           <q-pagination
@@ -149,15 +128,13 @@
                  :label="$t('xshop_captions.l_p_seria')"
                  class="q-pa-md q-pr-none col-5 col-md-3" dense
                  mask="AA"
-                 hint="AA"
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+                 hint="AA">
         </q-input>
         <q-input v-model="bean.passportNumber" :placeholder="$t('xshop_captions.l_p_number')"
                  :label="$t('xshop_captions.l_p_number')"
                  class="q-pa-md q-pl-none col-7 col-md-9" dense
                  mask="#######"
-                 hint="1234567"
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+                 hint="1234567">
         </q-input>
 
         <q-select
@@ -168,8 +145,8 @@
           option-value="id"
           option-label="nameUz"
           :label="$t('xshop_captions.l_worker_type')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
+
+
           class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >

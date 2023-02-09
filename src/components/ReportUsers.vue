@@ -21,26 +21,11 @@
       @row-click="rowClick"
       :dense="$q.screen.lt.md"
       :grid="$q.screen.xs"
-      class="sticky-first-column-table sticky-last-column-table q-mt-lg"
+      class="sticky-first-column-table q-mt-lg"
       style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
         {{$t('system.no_matching_found')}}
-      </template>
-
-      <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
-<!--          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">-->
-<!--            <q-tooltip content-class="bg-secondary">-->
-<!--              {{$t('system.edit')}}-->
-<!--            </q-tooltip>-->
-<!--          </q-btn>-->
-<!--          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">-->
-<!--            <q-tooltip content-class="bg-negative">-->
-<!--              {{$t('system.delete')}}-->
-<!--            </q-tooltip>-->
-<!--          </q-btn>-->
-        </q-td>
       </template>
 
       <template v-slot:top="props">
@@ -59,11 +44,6 @@
           </q-tooltip>
         </q-btn>
 
-<!--        <q-btn icon="add" class="text-white" @click="rowAdd" dense style="background-color: #344767">-->
-<!--          <q-tooltip content-class="bg-primary">-->
-<!--            {{ $t('system.add') }}-->
-<!--          </q-tooltip>-->
-<!--        </q-btn>-->
       </template>
 
       <template v-slot:body-cell-modifyDate="props">
@@ -74,6 +54,14 @@
           <div v-else>
             --.--.----
           </div>
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-fullName="props">
+        <q-td :props="props">
+          <b>{{props.row.fullName}}</b> <br>
+          {{ $t('login.l_username') }}: <b>{{props.row.username}}</b> <br>
+          {{ $t('xshop_captions.l_phone_short') }}: <b>{{props.row.phone}}</b> <br>
         </q-td>
       </template>
 
@@ -173,18 +161,9 @@ export default {
           classes: 'col-1',
         },
         {
-          name: 'username',
-          field: row => row.username,
-          label: "Username",
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'phone',
-          field: row => this.phone_format(row.phone),
-          label: "Telefon nomer",
+          name: 'balance',
+          field: row => this.number_format_old(row.balance, 0, '.', ' '),
+          label: this.$t('xshop_captions.l_balance'),
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -193,7 +172,7 @@ export default {
         {
           name: 'totalToKassa',
           field: row => this.number_format_old(row.totalToKassa, 0, '.', ' '),
-          label: "totalToKassa",
+          label: "Кассага",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -202,16 +181,7 @@ export default {
         {
           name: 'totalFromKassa',
           field: row => this.number_format_old(row.totalFromKassa, 0, '.', ' '),
-          label: "totalFromKassa",
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'balance',
-          field: row => this.number_format_old(row.balance, 0, '.', ' '),
-          label: "balance",
+          label: "Кассадан",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -220,7 +190,7 @@ export default {
         {
           name: 'totalToStores',
           field: row => this.number_format_old(row.totalToStores, 0, '.', ' '),
-          label: "totalToStores",
+          label: "Дўконга",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -229,7 +199,7 @@ export default {
         {
           name: 'totalFromStores',
           field: row => this.number_format_old(row.totalFromStores, 0, '.', ' '),
-          label: "totalFromStores",
+          label: "Дўкондан",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -239,7 +209,7 @@ export default {
         {
           name: 'totalToSuppliers',
           field: row => this.number_format_old(row.totalToSuppliers, 0, '.', ' '),
-          label: "totalToSuppliers",
+          label: "Таъминотчига",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -248,7 +218,7 @@ export default {
         {
           name: 'totalFromSuppliers',
           field: row => this.number_format_old(row.totalFromSuppliers, 0, '.', ' '),
-          label: "totalFromSuppliers",
+          label: "Таъминотчидан",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -257,7 +227,7 @@ export default {
         {
           name: 'totalToCustomers',
           field: row => this.number_format_old(row.totalToCustomers, 0, '.', ' '),
-          label: "totalToCustomers",
+          label: "Харидорга",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -266,7 +236,7 @@ export default {
         {
           name: 'totalFromCustomers',
           field: row => this.number_format_old(row.totalFromCustomers, 0, '.', ' '),
-          label: "totalFromCustomers",
+          label: "Харидордан",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -275,7 +245,7 @@ export default {
         {
           name: 'totalToFounders',
           field: row => this.number_format_old(row.totalToFounders, 0, '.', ' '),
-          label: "totalToFounders",
+          label: "Таъсисчига",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -284,14 +254,21 @@ export default {
         {
           name: 'totalFromFounders',
           field: row => this.number_format_old(row.totalFromFounders, 0, '.', ' '),
-          label: "totalFromFounders",
+          label: "Таъсисчидан",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
-
-        {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
+        {
+          name: 'distributorEarning',
+          field: row => this.number_format_old(row.distributorEarning, 0, '.', ' '),
+          label: "Дистрибутор даромади",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
       ],
       data: [],
       regions: [],

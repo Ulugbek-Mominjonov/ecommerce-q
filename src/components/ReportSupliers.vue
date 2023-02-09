@@ -21,26 +21,11 @@
       @row-click="rowClick"
       :dense="$q.screen.lt.md"
       :grid="$q.screen.xs"
-      class="sticky-first-column-table sticky-last-column-table q-mt-lg"
+      class="sticky-first-column-table q-mt-lg"
       style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
         {{$t('system.no_matching_found')}}
-      </template>
-
-      <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
-<!--          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">-->
-<!--            <q-tooltip content-class="bg-secondary">-->
-<!--              {{$t('system.edit')}}-->
-<!--            </q-tooltip>-->
-<!--          </q-btn>-->
-<!--          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">-->
-<!--            <q-tooltip content-class="bg-negative">-->
-<!--              {{$t('system.delete')}}-->
-<!--            </q-tooltip>-->
-<!--          </q-btn>-->
-        </q-td>
       </template>
 
       <template v-slot:top="props">
@@ -59,11 +44,14 @@
           </q-tooltip>
         </q-btn>
 
-<!--        <q-btn icon="add" class="text-white" @click="rowAdd" dense style="background-color: #344767">-->
-<!--          <q-tooltip content-class="bg-primary">-->
-<!--            {{ $t('system.add') }}-->
-<!--          </q-tooltip>-->
-<!--        </q-btn>-->
+      </template>
+
+
+      <template v-slot:body-cell-fullName="props">
+        <q-td :props="props">
+          {{ props.row.fullName }} <br>
+          {{ props.row.phone }}
+        </q-td>
       </template>
 
       <template v-slot:bottom>
@@ -155,15 +143,18 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
+
+
         {
-          name: 'phone',
-          field: row => this.phone_format(row.phone),
-          label: "Telefon nomer",
+          name: 'balance',
+          field: row => this.number_format_old(row.balance, 0, '.', ' '),
+          label: this.$t('xshop_captions.l_balance'),
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
+
         {
           name: 'totalTrade',
           field: row => this.number_format_old(row.totalTrade, 0, '.', ' '),
@@ -201,16 +192,6 @@ export default {
           classes: 'col-1',
         },
 
-        {
-          name: 'balance',
-          field: row => this.number_format_old(row.balance, 0, '.', ' '),
-          label: "balance",
-          format: val => `${val}`,
-          sortable: true,
-          align: 'left',
-          classes: 'col-1',
-        },
-        {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
       ],
       data: [],
       regions: [],

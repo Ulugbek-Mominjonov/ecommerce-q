@@ -66,8 +66,8 @@
           option-value="id"
           option-label="name"
           :label="$t('xshop_captions.l_transactions_type')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
+
+
           outlined
           class="q-pa-sm col-2 col-md-2" dense
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
@@ -167,8 +167,8 @@
           option-value="id"
           option-label="fullName"
           label="Yetkazib beruvchi"
-          transition-show="flip-up"
-          transition-hide="flip-down"
+
+
           class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
@@ -194,8 +194,8 @@
           option-value="id"
           option-label="name"
           :label="$t('xshop_captions.l_transactions_type')"
-          transition-show="flip-up"
-          transition-hide="flip-down"
+
+
           class="q-pa-md col-12 col-md-6" dense
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
@@ -256,7 +256,7 @@ export default {
         suppliersId: this.supplierId,
         isPayment: null,
         fromDate: null,
-        toDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 'YYYY-MM-DD'),
+        toDate: null,
       },
       columns: [
         {
@@ -334,11 +334,11 @@ export default {
       suppliers: [],
       transactionsTypes: [
         {
-          name: 'Kirim',
+          name: 'Тўлов',
           id: 1
         },
         {
-          name: 'Chiqim',
+          name: 'Қайтариш',
           id: 0
         }
       ]

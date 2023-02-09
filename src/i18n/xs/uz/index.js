@@ -26,6 +26,7 @@ export default {
     "l_p_seria": "Passport seriya",
     "l_pasport": "Pasport ma'lumotlari",
     "l_phone": "Telefon nomer",
+    "l_phone_short": "Тел",
     "l_product_name": "Mahsulot nomi",
     "l_products": "Mahsulotlar",
     "l_refresh": "Yangilash",

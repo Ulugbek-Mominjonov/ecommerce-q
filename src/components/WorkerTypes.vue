@@ -141,8 +141,8 @@
 <!--          option-value="id"-->
 <!--          option-label="name"-->
 <!--          :label="$t('captions.l_region')"-->
-<!--          transition-show="flip-up"-->
-<!--          transition-hide="flip-down"-->
+<!--          -->
+<!--          -->
 <!--          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense-->
 <!--          lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"-->
 <!--        >-->
