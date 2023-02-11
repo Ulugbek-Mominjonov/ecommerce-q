@@ -276,7 +276,7 @@ export default {
 
         {
           name: 'workerType',
-          field: row => row.workers.workerTypes.nameUz,
+          field: row => row.workers.workerTypes.nameBg,
           label: this.$t('xshop_captions.l_worker_type'),
           format: val => `${val}`,
           sortable: true,

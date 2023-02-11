@@ -48,7 +48,7 @@
                  :label="$t('xshop_captions.l_name')"
                  class="q-pa-md col-4" dense outlined>
           <template v-slot:append>
-            <q-icon v-if="filter.name" name="close" color="primary" @click.stop="filter.name = ''"
+            <q-icon v-if="filter.description" name="close" color="primary" @click.stop="filter.description = ''"
                     class="cursor-pointer"/>
           </template>
         </q-input>
@@ -141,7 +141,7 @@ export default {
       cardCheckField: 'name',
       beanDefault: {
         id: null,
-        nameUz: '',
+        description: '',
       },
       formDialog: false,
       filter: {

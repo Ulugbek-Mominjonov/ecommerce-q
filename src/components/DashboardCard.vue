@@ -40,7 +40,7 @@ export default {
 <style lang="scss" scoped>
   .card {
     border-radius: 12px;
-    box-shadow: 0 20px 27px rgb(0 0 0 / 7%);
+    box-shadow: 0 20px 27px rgb(0 0 0 / 17%);
     margin: 0;
     padding: 0;
     color: rgba(0,0,0,.65);
@@ -52,6 +52,7 @@ export default {
     position: relative;
     background: #fff;
     transition: all .3s;
+    border: 1px solid #c1c1c1;
 
     &-body {
       padding: 16px;

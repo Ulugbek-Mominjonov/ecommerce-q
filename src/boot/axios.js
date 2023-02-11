@@ -12,7 +12,6 @@ export default ({app, router, store, Vue}) => {
       return response;
     },
     (error) => {
-      console.log("errorrr:", error)
       store.commit("decrementAjaxRequestsCnt");
       if (!error.response) {
         return Promise.reject({
@@ -30,7 +29,7 @@ export default ({app, router, store, Vue}) => {
           errorMessage: app.i18n.t("http.base_error")
         });
       }
-      if (error.response.data.ERROR.status === 401) {
+      if (error.response.status === 401) {
         store.commit('clearUserSession');
         router.push('/');
         return Promise.reject({

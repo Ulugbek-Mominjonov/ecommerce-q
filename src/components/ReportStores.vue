@@ -128,16 +128,6 @@
                            :on-validation-error="onValidationError">
 
       <div class="row">
-        <q-input v-model="bean.nameUz" :placeholder="$t('xshop_captions.l_name_uz')"
-                 :label="$t('xshop_captions.l_name_uz')"
-                 class="q-pa-md col-12" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-        <q-input v-model="bean.nameRu" :placeholder="$t('xshop_captions.l_name_ru')"
-                 :label="$t('xshop_captions.l_name_ru')"
-                 class="q-pa-md col-12" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
         <q-input v-model="bean.nameBg" :placeholder="$t('xshop_captions.l_name_bg')"
                  :label="$t('xshop_captions.l_name_bg')"
                  class="q-pa-md col-12" dense

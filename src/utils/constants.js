@@ -41,5 +41,6 @@ export const urls = {
   DASHBOARD_CARD_INFO: prf.BASE_API + "/dashboard/card-info",
   DASHBOARD_DEBITOR_STORE: prf.BASE_API + "/dashboard/top-debtor-stores",
   DASHBOARD_DEBITOR_CUSTOMER: prf.BASE_API + "/dashboard/top-debtor-customers",
+  DASHBOARD_TOP_DISTRIBUTOR: prf.BASE_API + "/dashboard/top-less-trade-distributors",
 }
 // 'http://65.108.83.140:8282/api/v1'

@@ -21,11 +21,11 @@
       @row-click="rowClick"
       :dense="$q.screen.lt.md"
       :grid="$q.screen.xs"
-      class="sticky-first-column-table q-mt-lg"
+      class="sticky-first-column-table sticky-last-column-table q-mt-lg"
       style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
-        {{$t('system.no_matching_found')}}
+        {{ $t('system.no_matching_found') }}
       </template>
 
       <template v-slot:top="props">
@@ -49,7 +49,7 @@
       <template v-slot:body-cell-modifyDate="props">
         <q-td :props="props">
           <div v-if="props.row.modifiedDate">
-            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
+            {{ $dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY') }}
           </div>
           <div v-else>
             --.--.----
@@ -59,15 +59,25 @@
 
       <template v-slot:body-cell-fullName="props">
         <q-td :props="props">
-          <b>{{props.row.fullName}}</b> <br>
-          {{ $t('login.l_username') }}: <b>{{props.row.username}}</b> <br>
-          {{ $t('xshop_captions.l_phone_short') }}: <b>{{props.row.phone}}</b> <br>
+          <b>{{ props.row.fullName }}</b> <br>
+          {{ $t('login.l_username') }}: <b>{{ props.row.username }}</b> <br>
+          {{ $t('xshop_captions.l_phone_short') }}: <b>{{ props.row.phone }}</b> <br>
         </q-td>
       </template>
 
       <template v-slot:body-cell-createdDate="props">
         <q-td :props="props">
-          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
+          {{ $dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY') }}
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn size="sm" dense color="primary" icon="mdi-cash" @click.stop="addTransaction(props.row.id, props.row.fullName)" class="q-mr-sm">
+            <q-tooltip content-class="bg-negative">
+              Транзаксия яратиш
+            </q-tooltip>
+          </q-btn>
         </q-td>
       </template>
 
@@ -84,27 +94,42 @@
     </q-table>
 
     <!--DIALOG-->
-    <standart-input-dialog v-model="formDialog" :model-id="bean.id" :on-submit="onSubmit"
+    <standart-input-dialog v-model="formDialog" :on-submit="onSubmit"
                            :on-validation-error="onValidationError">
-
       <div class="row">
-        <q-input v-model="bean.nameUz" :placeholder="$t('xshop_captions.l_name_uz')"
-                 :label="$t('xshop_captions.l_name_uz')"
-                 class="q-pa-md col-12" dense
+        <q-input v-model="workerName"
+                 :label="'Ходим исми'"
+                 type="text"
+                 readonly
+                 class="q-pa-md col-12 col-md-12" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.nameRu" :placeholder="$t('xshop_captions.l_name_ru')"
-                 :label="$t('xshop_captions.l_name_ru')"
-                 class="q-pa-md col-12" dense
+        <q-input v-model="bean.amount"
+                 :label="$t('xshop_captions.l_amount')"
+                 type="number"
+                 class="q-pa-md col-12 col-md-6 col-lg-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.nameBg" :placeholder="$t('xshop_captions.l_name_bg')"
-                 :label="$t('xshop_captions.l_name_bg')"
-                 class="q-pa-md col-12" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
+        <q-select
+          v-model="bean.isToKassa"
+          emit-value
+          map-options
+          :options="transactionsTypes"
+          option-value="id"
+          option-label="name"
+          :label="$t('xshop_captions.l_transactions_type')"
+          class="q-pa-md col-12 col-md-6 col-lg-6" dense
+          lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
+        >
+          <template v-slot:append>
+            <q-icon name="close" color="primary" @click.stop="bean.isToKassa = null"
+                    class="cursor-pointer"/>
+          </template>
+          <template v-slot:selected-item="props">
+            <div>{{ props.opt.name }}</div>
+          </template>
+        </q-select>
       </div>
-
     </standart-input-dialog>
 
   </div>
@@ -128,12 +153,23 @@ export default {
       rowKey: 'id',
       selectedRows: [],
       bean: {},
+      workerName: "",
+      users: [],
+      transactionsTypes: [
+        {
+          name: 'Тўлов',
+          id: 1
+        },
+        {
+          name: 'Қайтариш',
+          id: 0
+        }
+      ],
       cardCheckField: 'name',
       beanDefault: {
-        id: null,
-        nameUz: '',
-        nameRu: '',
-        nameBg: '',
+        usersId: null,
+        isToKassa: null,
+        amount: null
       },
       formDialog: false,
       filter: {
@@ -269,6 +305,7 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
+        {name: 'actions', align: 'center', label: "Амаллар", style: 'width: 1rem'},
       ],
       data: [],
       regions: [],
@@ -276,18 +313,52 @@ export default {
     }
   },
   computed: {
-    pagesNumber () {
+    pagesNumber() {
       return Math.ceil(this.filter.rowsNumber / this.filter.rowsPerPage)
     }
   },
   methods: {
+    getUsers() {
+      this.$axios.get(urls.USERS + '/all')
+        .then(res => {
+          console.log(res)
+          this.users.splice(0, this.users.length, ...res.data)
+        }).catch(err => {
+        this.showError(err)
+      }).finally(() => {
+      })
+    },
+    addTransaction(id, name) {
+      this.bean = Object.assign({}, this.bean);
+      this.bean.usersId = id
+      this.workerName = name
+      this.showForm();
+    },
+    showForm() {
+      this.formDialog = true;
+    },
+
+    onSubmit() {
+      this.loading = true;
+      this.$axios.post(urls.USERS_TRANSACTIONS, this.bean)
+        .then(response => {
+          this.closeForm();
+          this.refreshTable();
+        }).catch(error => {
+        this.showError(error)
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
   },
   watch: {
     model(newval) {
-      this.$set(this.filter, 'page', newval-1);
+      this.$set(this.filter, 'page', newval - 1);
     }
   },
   mounted() {
+    this.getUsers()
   }
 }
 </script>
