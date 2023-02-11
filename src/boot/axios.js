@@ -13,22 +13,6 @@ export default ({app, router, store, Vue}) => {
     },
     (error) => {
       store.commit("decrementAjaxRequestsCnt");
-      if (!error.response) {
-        return Promise.reject({
-          type: 'warning',
-          errorCode: -200,
-          errorDescription: "",
-          errorMessage: app.i18n.t("http.base_error")
-        });
-      }
-      if (!error.response.data) {
-        return Promise.reject({
-          type: 'warning',
-          errorCode: -200,
-          errorDescription: "",
-          errorMessage: app.i18n.t("http.base_error")
-        });
-      }
       if (error.response.status === 401) {
         store.commit('clearUserSession');
         router.push('/');
@@ -38,22 +22,15 @@ export default ({app, router, store, Vue}) => {
           errorDescription: "",
           errorMessage: app.i18n.t("http.session_timeout")
         });
+      } else if (error.response.status === 403) {
+        alert("Бу бўлимга кириш учун сизга рухсат йўқ")
+      } else{
+        if (error.response.data.status === 409 || error.response.data.status === 410){
+          alert("Логин ёки парол нотўғри киритилди")
+        } else{
+          alert(error.response.data.message)
+        }
       }
-      if (error.response.data.ERROR.status === 403) {
-        return Promise.reject({
-          type: 'warning',
-          errorCode: error.response.data.ERROR.code,
-          errorDescription: error.response.data.ERROR.description,
-          errorMessage: error.response.data.ERROR.message
-        });
-      }
-      return Promise.reject({
-        type: 'error',
-        errorCode: error.response.data.ERROR.code,
-        errorDescription: error.response.data.ERROR.description,
-        errorMessage: error.response.data.ERROR.message
-      });
-
     }
   );
   Axios.interceptors.request.use(
@@ -75,11 +52,3 @@ export default ({app, router, store, Vue}) => {
   };
   Vue.prototype.$axios = Axios;
 }
-//
-//
-//
-//
-// import Vue from 'vue'
-// import axios from 'axios'
-//
-// Vue.prototype.$axios = axios
