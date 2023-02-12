@@ -277,33 +277,6 @@ export default {
   },
   data() {
     return {
-      columnsPrint: [
-        {
-          name: 'name',
-          required: true,
-          label: 'Mahsulot nomi',
-          align: 'left',
-          field: row => row.productsId,
-          format: val => `${val}`,
-          sortable: true
-        },
-        {
-          name: 'cost',
-          required: true,
-          label: 'Mahsulot narxi',
-          align: 'left',
-          field: row => this.number_format_old(row.price, 0,'.', ''),
-          sortable: true
-        },
-        {
-          name: 'amount',
-          required: true,
-          label: 'Mahsulot miqdori',
-          align: 'left',
-          field: row => this.number_format_old(row.amount, 0,'.', ''),
-          sortable: true
-        }
-      ],
       apiUrl: urls.USER_TRADES,
       loading: false,
       rowKey: 'id',
@@ -448,6 +421,24 @@ export default {
           name: 'createdDate',
           field: row => row.createdDate,
           label: this.$t('xshop_captions.l_created_date'),
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'modifyBy',
+          field: row => row.modifiedBy,
+          label: "Ўзгартирган фойдаланувчи",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'createdBy',
+          field: row => row.createdBy,
+          label: 'Яратган фойдаланувчи',
           format: val => `${val}`,
           sortable: true,
           align: 'left',

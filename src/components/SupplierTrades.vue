@@ -421,6 +421,24 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
+        {
+          name: 'modifyBy',
+          field: row => row.modifiedBy,
+          label: "Ўзгартирган фойдаланувчи",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'createdBy',
+          field: row => row.createdBy,
+          label: 'Яратган фойдаланувчи',
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
         {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
       ],
       data: [],
@@ -441,33 +459,6 @@ export default {
           'https://cdn.jsdelivr.net/npm/quasar@1.22.5/dist/quasar.min.css'
         ]
       },
-      columnsPrint: [
-        {
-          name: 'name',
-          required: true,
-          label: 'Mahsulot nomi',
-          align: 'left',
-          field: row => row.productsId,
-          format: val => `${val}`,
-          sortable: true
-        },
-        {
-          name: 'cost',
-          required: true,
-          label: 'Mahsulot narxi',
-          align: 'left',
-          field: row => this.number_format_old(row.price, 0,'.', ''),
-          sortable: true
-        },
-        {
-          name: 'amount',
-          required: true,
-          label: 'Mahsulot miqdori',
-          align: 'left',
-          field: row => this.number_format_old(row.amount, 0,'.', ''),
-          sortable: true
-        }
-      ],
     }
   },
   computed: {
