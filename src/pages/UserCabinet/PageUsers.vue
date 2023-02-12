@@ -21,11 +21,6 @@
 <script>
 import {mapGetters, mapMutations} from "vuex";
 import ModuleHeader from "components/ModuleHeader.vue";
-import Suppliers from "components/Suppliers.vue";
-import SupplierTrades from "components/SupplierTrades";
-import Customers from "components/Customers";
-import CustomerTrades from "components/CustomerTrades";
-import CustomersTransactions from "components/CustomersTransactions.vue";
 import Users from "components/Users";
 import UserTrades from "components/UserTrades";
 import UsersTransactions from "components/UsersTransactions";

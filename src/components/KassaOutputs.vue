@@ -155,7 +155,7 @@ export default {
           name: 'id',
           field: 'id',
           label: this.$t('xshop_captions.l_id'),
-          sortable: true, align: 'left',
+           align: 'left',
           classes: 'col-1'
         },
         {
@@ -163,7 +163,7 @@ export default {
           field: row => row.amount,
           label: 'Ҳаражат миқдори',
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -172,7 +172,7 @@ export default {
           field: row => row.description,
           label: this.$t('xshop_captions.l_name'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -181,7 +181,7 @@ export default {
           field: row => row.modifiedDate,
           label: this.$t('xshop_captions.l_update_date'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -190,7 +190,25 @@ export default {
           field: row => row.createdDate,
           label: this.$t('xshop_captions.l_created_date'),
           format: val => `${val}`,
-          sortable: true,
+
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'modifyBy',
+          field: row => row.modifiedBy,
+          label: "Ўзгартирган фойдаланувчи",
+          format: val => `${val}`,
+
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'createdBy',
+          field: row => row.createdBy,
+          label: 'Яратган фойдаланувчи',
+          format: val => `${val}`,
+
           align: 'left',
           classes: 'col-1',
         },

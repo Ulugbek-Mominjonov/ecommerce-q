@@ -327,7 +327,7 @@ export default {
           name: 'id',
           field: 'id',
           label: this.$t('xshop_captions.l_id'),
-          sortable: true, align: 'left',
+           align: 'left',
           classes: '1rem'
         },
 
@@ -336,7 +336,7 @@ export default {
           field: row => row.storeName,
           label: "Дўкон номи",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1 text-bold',
         },
@@ -345,7 +345,7 @@ export default {
           field: row => row.ownerName,
           label: "Дўкон егаси",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -354,7 +354,7 @@ export default {
           field: row => row.address,
           label: "Дўкон манзили",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -363,7 +363,7 @@ export default {
           field: row => row.modifiedDate,
           label: this.$t('xshop_captions.l_update_date'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -372,7 +372,7 @@ export default {
           field: row => row.createdDate,
           label: this.$t('xshop_captions.l_created_date'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -381,7 +381,25 @@ export default {
           field: row => row.qrCode,
           label: "Код",
           format: val => `${val}`,
-          sortable: true,
+
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'modifyBy',
+          field: row => row.modifiedBy,
+          label: "Ўзгартирган фойдаланувчи",
+          format: val => `${val}`,
+
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'createdBy',
+          field: row => row.createdBy,
+          label: 'Яратган фойдаланувчи',
+          format: val => `${val}`,
+
           align: 'left',
           classes: 'col-1',
         },

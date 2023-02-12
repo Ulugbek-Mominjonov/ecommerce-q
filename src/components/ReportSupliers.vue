@@ -167,7 +167,7 @@ export default {
           name: 'id',
           field: 'id',
           label: this.$t('xshop_captions.l_id'),
-          sortable: true, align: 'left',
+           align: 'left',
           classes: 'col-1'
         },
         {
@@ -175,7 +175,7 @@ export default {
           field: row => row.fullName,
           label: 'Таъминотчи',
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -186,7 +186,7 @@ export default {
           field: row => this.number_format_old(row.balance, 0, '.', ' '),
           label: this.$t('xshop_captions.l_balance'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -196,7 +196,7 @@ export default {
           field: row => this.number_format_old(row.totalTrade, 0, '.', ' '),
           label: "Умумий савдо",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -205,7 +205,7 @@ export default {
           field: row => this.number_format_old(row.totalPayment, 0, '.', ' '),
           label: "Умумий тўлов",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -214,7 +214,7 @@ export default {
           field: row => this.number_format_old(row.totalReturnedTrade, 0, '.', ' '),
           label: "Қайтарилган умумий савдо",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -223,7 +223,7 @@ export default {
           field: row => this.number_format_old(row.totalReturnedPayment, 0, '.', ' '),
           label: "Қайтарилган умумий тўлов",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },

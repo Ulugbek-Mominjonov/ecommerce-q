@@ -313,7 +313,7 @@ export default {
           name: 'id',
           field: 'id',
           label: this.$t('xshop_captions.l_id'),
-          sortable: true, align: 'left',
+           align: 'left',
           classes: 'col-1'
         },
 
@@ -322,7 +322,7 @@ export default {
           field: row => row.products.nameBg,
           label: this.$t('xshop_captions.l_name_bg'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1 text-bold',
         },
@@ -331,7 +331,7 @@ export default {
           field: row => this.number_format_old(row.amount, 0, '.', ' ') + " " + row.products.measureTypes.nameBg,
           label: this.$t('xshop_captions.l_buy_product'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -340,7 +340,7 @@ export default {
           field: row => this.number_format_old(row.price, 0, '.', ' '),
           label: this.$t('xshop_captions.l_one_product_cost'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -350,7 +350,7 @@ export default {
           field: row => this.number_format_old(row.price * row.amount, 0, '.', ' '),
           label: this.$t('xshop_captions.l_all'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -360,7 +360,7 @@ export default {
           field: row => this.number_format_old(row.returned, 0, '.', ' ') + " " + row.products.measureTypes.nameBg,
           label: this.$t('xshop_captions.l_returned_amount'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -370,7 +370,7 @@ export default {
           field: row => this.number_format_old(row.price * row.returned, 0, '.', ' '),
           label: this.$t('xshop_captions.l_returned_summ'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -380,7 +380,7 @@ export default {
           field: row => row.suppliers.fullName,
           label: this.$t('xshop_captions.l_fio'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1 text-bold',
         },
@@ -389,7 +389,7 @@ export default {
           field: row => this.phone_format(row.suppliers.phone),
           label: this.$t('xshop_captions.l_phone'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -398,7 +398,7 @@ export default {
           field: row => `${row.suppliers.passportSeries} ${row.suppliers.passportNumber}`,
           label: this.$t('xshop_captions.l_pasport'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -408,7 +408,7 @@ export default {
           field: row => row.modifiedDate,
           label: this.$t('xshop_captions.l_update_date'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -417,7 +417,25 @@ export default {
           field: row => row.createdDate,
           label: this.$t('xshop_captions.l_created_date'),
           format: val => `${val}`,
-          sortable: true,
+
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'modifyBy',
+          field: row => row.modifiedBy,
+          label: "Ўзгартирган фойдаланувчи",
+          format: val => `${val}`,
+
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'createdBy',
+          field: row => row.createdBy,
+          label: 'Яратган фойдаланувчи',
+          format: val => `${val}`,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -441,33 +459,6 @@ export default {
           'https://cdn.jsdelivr.net/npm/quasar@1.22.5/dist/quasar.min.css'
         ]
       },
-      columnsPrint: [
-        {
-          name: 'name',
-          required: true,
-          label: 'Mahsulot nomi',
-          align: 'left',
-          field: row => row.productsId,
-          format: val => `${val}`,
-          sortable: true
-        },
-        {
-          name: 'cost',
-          required: true,
-          label: 'Mahsulot narxi',
-          align: 'left',
-          field: row => this.number_format_old(row.price, 0,'.', ''),
-          sortable: true
-        },
-        {
-          name: 'amount',
-          required: true,
-          label: 'Mahsulot miqdori',
-          align: 'left',
-          field: row => this.number_format_old(row.amount, 0,'.', ''),
-          sortable: true
-        }
-      ],
     }
   },
   computed: {
