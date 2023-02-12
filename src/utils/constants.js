@@ -1,5 +1,5 @@
 export const cfghttp = {
-  BASE_TIMEOUT: 60 * 1000,
+  BASE_TIMEOUT: 1 * 60 * 1000,
   UPLOAD_TIMEOUT: 2 * 60 * 1000,
   EXCEL_TIMEOUT: 3 * 60 * 1000,
   BG_TIMEOUT: 3 * 60 * 1000
@@ -7,7 +7,7 @@ export const cfghttp = {
 
 export const prf = {
   BASE_API: 'http://localhost:8585/api/v1',
-  //BASE_API: 'http://91.213.99.53/java/api/v1',
+  //BASE_API: '/java/api/v1',
 };
 
 export const urls = {
@@ -41,8 +41,6 @@ export const urls = {
   USER_REPORT: prf.BASE_API + "/report",
   DASHBOARD_CARD_INFO: prf.BASE_API + "/dashboard/card-info",
   DASHBOARD_DEBITOR_STORE: prf.BASE_API + "/dashboard/top-debtor-stores",
-  DASHBOARD_LAST_TRADE_DATE_STORE: prf.BASE_API + "/dashboard/last-trade-date-stores",
-  DASHBOARD_OLD_TRADED_STORE: prf.BASE_API + "/dashboard/old-traded-stores",
   DASHBOARD_DEBITOR_CUSTOMER: prf.BASE_API + "/dashboard/top-debtor-customers",
   DASHBOARD_TOP_DISTRIBUTOR: prf.BASE_API + "/dashboard/top-less-trade-distributors",
 }

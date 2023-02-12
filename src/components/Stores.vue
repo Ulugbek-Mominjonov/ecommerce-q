@@ -60,7 +60,12 @@
         <template v-slot:body-cell-qrcode="props">
           <q-td :props="props">
             <div v-if="props.row.qrcode">
-              {{props.row.qrcode}}
+              <q-btn size="sm" dense color="positive" icon="mdi-eye" @click.stop="showQueryCode(props.row)" class="q-mr-sm">
+                <q-tooltip content-class="bg-positive">
+                  Query кодни кўриш
+                </q-tooltip>
+              </q-btn>
+              <span>{{props.row.qrcode}}</span>
             </div>
             <div v-else>
               Берилмаган
@@ -198,6 +203,79 @@
 
     </standart-input-dialog>
 
+    <q-dialog v-model="qrDialog">
+      <q-card>
+        <q-bar>
+          <span style="font-size: 15px">Query kod</span>
+
+          <q-space />
+
+          <q-btn dense flat icon="close" v-close-popup>
+            <q-tooltip>Ёпиш</q-tooltip>
+          </q-btn>
+        </q-bar>
+
+        <q-card-section>
+          <img :src="qrUrl" alt="">
+          <div class="flex justify-between" v-if="qrData">
+            <span>Дўкон:</span>
+            <span class="text-bold">{{qrData.storeName}}</span>
+          </div>
+          <div class="flex justify-between" v-if="qrData">
+            <span>Дўкон егаси:</span>
+            <span class="text-bold">{{qrData.ownerName}}</span>
+          </div>
+          <div class="flex justify-between" v-if="qrData">
+            <span>Телефон:</span>
+            <span class="text-bold">{{qrData.phone}}</span>
+          </div>
+          <div class="flex justify-between" v-if="qrData">
+            <span>Манзил:</span>
+            <span class="text-bold">{{qrData.address}}</span>
+          </div>
+          <div class="text-center">
+            {{currentDate}}
+          </div>
+        </q-card-section>
+
+        <q-separator/>
+
+        <q-card-actions align="right">
+          <q-btn v-close-popup flat color="primary" label="Ёпиш" />
+          <q-btn v-close-popup @click="printMe" flat color="primary" round icon="mdi-printer">
+            <q-tooltip class="bg-primary">
+              Печатга бериш
+            </q-tooltip>
+          </q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <div v-if="qrData" id="print" class="text-center" style="margin: 0 auto;" :style="[qrDialog ? {'display': 'block'} : {'display': 'none'}]">
+      <img :src="qrUrl" style="margin: 0 auto;">
+      <div style="width: 300px;" >
+        <div class="flex justify-between">
+          <span>Дўкон:</span>
+          <span class="text-bold">{{qrData.storeName}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Дўкон егаси:</span>
+          <span class="text-bold">{{qrData.ownerName}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Телефон:</span>
+          <span class="text-bold">{{qrData.phone}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Манзил:</span>
+          <span class="text-bold">{{qrData.address}}</span>
+        </div>
+        <div class="text-center">
+          {{currentDate}}
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -208,6 +286,7 @@ import {mapState} from 'vuex';
 import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
 import { yandexMap, ymapMarker } from 'vue-yandex-maps';
+import {date} from "quasar";
 
 export default {
   name: "Stores",
@@ -311,7 +390,22 @@ export default {
       data: [],
       regions: [],
       model: 1,
-      storeName: ""
+      storeName: "",
+      qrUrl: "",
+      qrDialog: false,
+      qrData: null,
+      options: {
+        // name: '_self',
+        specs: [
+          'fullscreen=yes',
+          'titlebar=yes',
+          'scrollbars=yes'
+        ],
+        styles: [
+          'https://cdn.jsdelivr.net/npm/quasar@1.22.5/dist/quasar.min.css'
+        ]
+      },
+      currentDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes()), 'DD.MM.YYYY HH:mm'),
     }
   },
   computed: {
@@ -320,6 +414,16 @@ export default {
     }
   },
   methods: {
+    showQueryCode(row) {
+      this.qrData = row
+      console.log(row)
+      this.qrUrl = 'https://chart.googleapis.com/chart?cht=qr&chs=' + 300 + 'x' + 300 + "&chl=" +  encodeURIComponent(row.qrcode);
+      this.qrDialog = true
+    },
+    printMe() {
+      this.$htmlToPaper('print', this.options)
+      this.qrDialog = false
+    },
     onClick(e) {
       this.coords = e.get('coords');
     },
