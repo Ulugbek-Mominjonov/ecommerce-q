@@ -41,6 +41,7 @@ export const urls = {
   USER_REPORT: prf.BASE_API + "/report",
   DASHBOARD_CARD_INFO: prf.BASE_API + "/dashboard/card-info",
   DASHBOARD_DEBITOR_STORE: prf.BASE_API + "/dashboard/top-debtor-stores",
+  DASHBOARD_LAST_TRADE_DATE_STORE: prf.BASE_API + "/dashboard/last-trade-date-stores",
   DASHBOARD_DEBITOR_CUSTOMER: prf.BASE_API + "/dashboard/top-debtor-customers",
   DASHBOARD_TOP_DISTRIBUTOR: prf.BASE_API + "/dashboard/top-less-trade-distributors",
 }
