@@ -152,7 +152,6 @@ export default {
                 path: '/worker-types',
               })
             }).catch(response => {
-            console.log(response)
             // this.error = error.errorMessage === '' ? error.errorDescription : error.errorMessage
             this.showError(response)
             }).finally(() => {

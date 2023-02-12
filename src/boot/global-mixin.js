@@ -49,9 +49,6 @@ export default ({app, router, store, Vue}) => {
               color: 'negative'
             })
           }
-          else {
-            store.commit('setGlobalError', error);
-          }
         },
         showErrorToast(error){
           console.log('----e:', error)
