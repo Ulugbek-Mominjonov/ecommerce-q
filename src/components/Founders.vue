@@ -187,7 +187,7 @@ export default {
           name: 'id',
           field: 'id',
           label: this.$t('xshop_captions.l_id'),
-          sortable: true, align: 'left',
+           align: 'left',
           classes: 'col-1'
         },
         {
@@ -195,7 +195,7 @@ export default {
           field: row => row.fullName,
           label: this.$t('xshop_captions.l_fio'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1 text-bold',
         },
@@ -204,7 +204,7 @@ export default {
           field: row => this.phone_format(row.phone),
           label: this.$t('xshop_captions.l_phone'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -213,7 +213,7 @@ export default {
           field: row => `${row.passportSeries} ${row.passportNumber}`,
           label: this.$t('xshop_captions.l_pasport'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -222,7 +222,7 @@ export default {
           field: row => row.modifiedDate,
           label: this.$t('xshop_captions.l_update_date'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -231,7 +231,7 @@ export default {
           field: row => row.createdDate,
           label: this.$t('xshop_captions.l_created_date'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -240,7 +240,7 @@ export default {
           field: row => row.modifiedBy,
           label: "Ўзгартирган фойдаланувчи",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -249,7 +249,7 @@ export default {
           field: row => row.createdBy,
           label: 'Яратган фойдаланувчи',
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },

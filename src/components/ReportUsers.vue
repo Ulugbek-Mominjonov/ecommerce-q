@@ -179,7 +179,7 @@ export default {
           name: 'id',
           field: 'id',
           label: this.$t('xshop_captions.l_id'),
-          sortable: true, align: 'left',
+           align: 'left',
           classes: 'col-1'
         },
         {
@@ -187,7 +187,7 @@ export default {
           field: row => row.fullName,
           label: 'Фойдаланувчи',
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -196,7 +196,7 @@ export default {
           field: row => this.number_format_old(row.balance, 0, '.', ' '),
           label: this.$t('xshop_captions.l_balance'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -205,7 +205,7 @@ export default {
           field: row => this.number_format_old(row.totalToKassa, 0, '.', ' '),
           label: "Кассага",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -214,7 +214,7 @@ export default {
           field: row => this.number_format_old(row.totalFromKassa, 0, '.', ' '),
           label: "Кассадан",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -223,7 +223,7 @@ export default {
           field: row => this.number_format_old(row.totalToStores, 0, '.', ' '),
           label: "Дўконга",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -232,7 +232,7 @@ export default {
           field: row => this.number_format_old(row.totalFromStores, 0, '.', ' '),
           label: "Дўкондан",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -242,7 +242,7 @@ export default {
           field: row => this.number_format_old(row.totalToSuppliers, 0, '.', ' '),
           label: "Таъминотчига",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -251,7 +251,7 @@ export default {
           field: row => this.number_format_old(row.totalFromSuppliers, 0, '.', ' '),
           label: "Таъминотчидан",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -260,7 +260,7 @@ export default {
           field: row => this.number_format_old(row.totalToCustomers, 0, '.', ' '),
           label: "Харидорга",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -269,7 +269,7 @@ export default {
           field: row => this.number_format_old(row.totalFromCustomers, 0, '.', ' '),
           label: "Харидордан",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -278,7 +278,7 @@ export default {
           field: row => this.number_format_old(row.totalToFounders, 0, '.', ' '),
           label: "Таъсисчига",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -287,7 +287,7 @@ export default {
           field: row => this.number_format_old(row.totalFromFounders, 0, '.', ' '),
           label: "Таъсисчидан",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -296,7 +296,7 @@ export default {
           field: row => this.number_format_old(row.distributorEarning, 0, '.', ' '),
           label: "Дистрибутор даромади",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },

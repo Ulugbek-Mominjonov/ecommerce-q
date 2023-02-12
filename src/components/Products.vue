@@ -25,13 +25,13 @@
       style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
-        {{$t('system.no_matching_found')}}
+        {{ $t('system.no_matching_found') }}
       </template>
 
       <template v-slot:body-cell-modifyDate="props">
         <q-td :props="props">
           <div v-if="props.row.modifiedDate">
-            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
+            {{ $dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY') }}
           </div>
           <div v-else>
             --.--.----
@@ -41,7 +41,7 @@
 
       <template v-slot:body-cell-createdDate="props">
         <q-td :props="props">
-          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
+          {{ $dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY') }}
         </q-td>
       </template>
 
@@ -49,12 +49,12 @@
         <q-td :props="props">
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
-              {{$t('system.edit')}}
+              {{ $t('system.edit') }}
             </q-tooltip>
           </q-btn>
           <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
             <q-tooltip content-class="bg-negative">
-              {{$t('system.delete')}}
+              {{ $t('system.delete') }}
             </q-tooltip>
           </q-btn>
         </q-td>
@@ -122,7 +122,7 @@
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
-            <div>{{props.opt.nameBg}}</div>
+            <div>{{ props.opt.nameBg }}</div>
           </template>
         </q-select>
       </div>
@@ -171,7 +171,7 @@ export default {
           name: 'id',
           field: 'id',
           label: this.$t('xshop_captions.l_id'),
-          sortable: true, align: 'left',
+          align: 'left',
           classes: 'col-1'
         },
         {
@@ -179,7 +179,7 @@ export default {
           field: row => row.nameBg,
           label: this.$t('xshop_captions.l_name'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -188,7 +188,7 @@ export default {
           field: row => row.measureTypes.nameBg,
           label: "Ўлчов бирлик",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -197,7 +197,7 @@ export default {
           field: row => row.modifiedDate,
           label: this.$t('xshop_captions.l_update_date'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -206,7 +206,7 @@ export default {
           field: row => row.createdDate,
           label: this.$t('xshop_captions.l_created_date'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -215,7 +215,6 @@ export default {
           field: row => row.modifiedBy,
           label: "Ўзгартирган фойдаланувчи",
           format: val => `${val}`,
-          sortable: true,
           align: 'left',
           classes: 'col-1',
         },
@@ -224,11 +223,11 @@ export default {
           field: row => row.createdBy,
           label: 'Яратган фойдаланувчи',
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
-        {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
+        {name: 'actions', align: 'center', label: "Амаллар", style: 'width: 1rem'},
       ],
       data: [],
       regions: [],
@@ -238,7 +237,7 @@ export default {
     }
   },
   computed: {
-    pagesNumber () {
+    pagesNumber() {
       return Math.ceil(this.filter.rowsNumber / this.filter.rowsPerPage)
     }
   },
@@ -249,8 +248,9 @@ export default {
           console.log(res)
           this.measureTypes.splice(0, this.measureTypes.length, ...res.data)
         }).catch(err => {
-          this.showError(err)
-      }).finally(() => {})
+        this.showError(err)
+      }).finally(() => {
+      })
     },
 
     rowEdit(row) {
@@ -263,7 +263,7 @@ export default {
   },
   watch: {
     model(newval) {
-      this.$set(this.filter, 'page', newval-1);
+      this.$set(this.filter, 'page', newval - 1);
     }
   },
   mounted() {

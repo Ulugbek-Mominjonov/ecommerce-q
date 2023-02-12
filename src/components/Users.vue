@@ -212,7 +212,7 @@ export default {
           name: 'id',
           field: 'id',
           label: this.$t('xshop_captions.l_id'),
-          sortable: true, align: 'left',
+           align: 'left',
           classes: 'col-1'
         },
 
@@ -221,7 +221,7 @@ export default {
           field: row => row.username,
           label: 'username',
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1 text-bold',
         },
@@ -230,7 +230,7 @@ export default {
           field: row => row.password,
           label: "password",
           format: val => `******`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1 text-bold',
         },
@@ -239,7 +239,7 @@ export default {
           field: row => row.workers.fullName,
           label: this.$t('xshop_captions.l_fio'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -249,7 +249,7 @@ export default {
           field: row => row.workers.workerTypes.nameBg,
           label: this.$t('xshop_captions.l_worker_type'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -258,7 +258,7 @@ export default {
           name: 'roles',
           field: row => row.roles.name,
           label: this.$t('xshop_captions.l_user_role'),
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -268,7 +268,7 @@ export default {
           field: row => row.modifiedDate,
           label: this.$t('xshop_captions.l_update_date'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -277,7 +277,7 @@ export default {
           field: row => row.createdDate,
           label: this.$t('xshop_captions.l_created_date'),
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -286,7 +286,7 @@ export default {
           field: row => row.modifiedBy,
           label: "Ўзгартирган фойдаланувчи",
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
@@ -295,7 +295,7 @@ export default {
           field: row => row.createdBy,
           label: 'Яратган фойдаланувчи',
           format: val => `${val}`,
-          sortable: true,
+
           align: 'left',
           classes: 'col-1',
         },
