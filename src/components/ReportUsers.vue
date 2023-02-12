@@ -65,15 +65,10 @@
         </q-td>
       </template>
 
-      <template v-slot:body-cell-createdDate="props">
-        <q-td :props="props">
-          {{ $dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY') }}
-        </q-td>
-      </template>
-
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn size="sm" dense color="primary" icon="mdi-cash" @click.stop="addTransaction(props.row.id, props.row.fullName)" class="q-mr-sm">
+          <q-btn size="sm" dense color="primary" icon="mdi-cash"
+                 @click.stop="addTransaction(props.row.id, props.row.fullName)" class="q-mr-sm">
             <q-tooltip content-class="bg-negative">
               Транзаксия яратиш
             </q-tooltip>
@@ -318,16 +313,6 @@ export default {
     }
   },
   methods: {
-    getUsers() {
-      this.$axios.get(urls.USERS + '/all')
-        .then(res => {
-          console.log(res)
-          this.users.splice(0, this.users.length, ...res.data)
-        }).catch(err => {
-        this.showError(err)
-      }).finally(() => {
-      })
-    },
     addTransaction(id, name) {
       this.bean = Object.assign({}, this.bean);
       this.bean.usersId = id
@@ -358,7 +343,6 @@ export default {
     }
   },
   mounted() {
-    this.getUsers()
   }
 }
 </script>

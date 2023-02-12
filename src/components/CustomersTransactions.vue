@@ -99,23 +99,23 @@
         </q-btn>
       </template>
 
-      <template v-slot:body-cell-incomeAmount="props">
+      <template v-slot:body-cell-amount="props">
         <q-td :props="props">
           <div v-if="props.row.isPayment">
-            {{number_format_old(props.row.amount, 0, '.', ' ')}} сўм
+            Тўлов <br> {{number_format_old(props.row.amount, 0, '.', ' ')}} сўм
           </div>
           <div v-else>
-            0
+            Қайтариш <br> {{number_format_old(props.row.amount, 0, '.', ' ')}} сўм
           </div>
         </q-td>
       </template>
-      <template v-slot:body-cell-outcomeAmount="props">
+      <template v-slot:body-cell-paymentType="props">
         <q-td :props="props">
-          <div v-if="!props.row.isPayment">
-            {{number_format_old(props.row.amount, 0, '.', ' ')}} сўм
+          <div v-if="props.row.paymentType === 1">
+            Нақд
           </div>
           <div v-else>
-            0 сўм
+            Пластик
           </div>
         </q-td>
       </template>
@@ -199,11 +199,30 @@
           option-value="id"
           option-label="name"
           :label="$t('xshop_captions.l_transactions_type')"
-          class="q-pa-md col-12 col-md-6" dense
+          class="q-pa-md col-12 col-md-6 col-lg-6" dense
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
             <q-icon name="close" color="primary" @click.stop="bean.isPayment = null"
+                    class="cursor-pointer"/>
+          </template>
+          <template v-slot:selected-item="props">
+            <div>{{props.opt.name}}</div>
+          </template>
+        </q-select>
+        <q-select
+          v-model="bean.paymentType"
+          emit-value
+          map-options
+          :options="paymentTypes"
+          option-value="id"
+          option-label="name"
+          :label="'Нақд ёки пластик'"
+          class="q-pa-md col-12 col-md-12 col-lg-12" dense
+          lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
+        >
+          <template v-slot:append>
+            <q-icon name="close" color="primary" @click.stop="bean.paymentType = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
@@ -270,7 +289,7 @@ export default {
           classes: 'col-1'
         },
         {
-          name: 'incomeAmount',
+          name: 'amount',
           field: row => row.amount,
           label: this.$t('xshop_captions.l_income_amount') + ' сўм',
           sortable: true,
@@ -278,9 +297,9 @@ export default {
           classes: 'col-1 text-bold',
         },
         {
-          name: 'outcomeAmount',
-          field: row => row.amount,
-          label: this.$t('xshop_captions.l_outcome_amount') + ' сўм',
+          name: 'paymentType',
+          field: row => row.paymentType,
+          label: "Тўлов тури",
           sortable: true,
           align: 'left',
           classes: 'col-1 text-bold',
@@ -343,6 +362,16 @@ export default {
         {
           name: 'Қайтариш',
           id: 0
+        }
+      ],
+      paymentTypes: [
+        {
+          name: 'Нақд',
+          id: 1
+        },
+        {
+          name: 'Пластик',
+          id: 2
         }
       ]
     }
