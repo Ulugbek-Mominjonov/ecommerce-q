@@ -82,6 +82,7 @@
           </template>
         </q-input>
         <q-space/>
+
         <q-btn icon="refresh" class="q-mr-sm bg-primary text-white" @click="refreshTable" dense>
           <q-tooltip content-class="bg-primary">
             {{ $t('xshop_captions.l_refresh') }}
@@ -143,7 +144,7 @@
           map-options
           :options="workerTypes"
           option-value="id"
-          option-label="nameUz"
+          option-label="nameBg"
           :label="$t('xshop_captions.l_worker_type')"
 
 
@@ -155,7 +156,7 @@
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
-            <div>{{props.opt.nameUz}}</div>
+            <div>{{props.opt.nameBg}}</div>
           </template>
         </q-select>
       </div>
@@ -239,7 +240,7 @@ export default {
 
         {
           name: 'workerType',
-          field: row => row.workerTypes.nameUz,
+          field: row => row.workerTypes.nameBg,
           label: this.$t('xshop_captions.l_worker_type'),
           format: val => `${val}`,
           sortable: true,

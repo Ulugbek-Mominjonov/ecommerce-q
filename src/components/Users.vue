@@ -25,13 +25,13 @@
       style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
-        {{$t('system.no_matching_found')}}
+        {{ $t('system.no_matching_found') }}
       </template>
 
       <template v-slot:body-cell-modifyDate="props">
         <q-td :props="props">
           <div v-if="props.row.modifyDate">
-            {{$dateutil.formatDate(props.row.modifyDate, 'DD.MM.YYYY')}}
+            {{ $dateutil.formatDate(props.row.modifyDate, 'DD.MM.YYYY') }}
           </div>
           <div v-else>
             --.--.----
@@ -41,30 +41,32 @@
 
       <template v-slot:body-cell-createdDate="props">
         <q-td :props="props">
-          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
+          {{ $dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY') }}
         </q-td>
       </template>
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn v-if="props.row.workers.workerTypes.id === 3" size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades({id: props.row.id, tab: '2'})" class="q-mr-xs">
+          <q-btn v-if="props.row.workers.workerTypes.id === 3" size="sm" dense color="warning" icon="mdi-eye"
+                 @click.stop="goTrades({id: props.row.id, tab: '2'})" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
-              {{$t('xshop_captions.l_show_trades')}}
+              {{ $t('xshop_captions.l_show_trades') }}
             </q-tooltip>
           </q-btn>
-          <q-btn v-if="props.row.workers.workerTypes.id < 4" size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
+          <q-btn v-if="props.row.workers.workerTypes.id < 4" size="sm" dense color="positive" icon="mdi-table-eye"
+                 @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               Tranzaksiyalarni ko'rish
             </q-tooltip>
           </q-btn>
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
-              {{$t('system.edit')}}
+              {{ $t('system.edit') }}
             </q-tooltip>
           </q-btn>
           <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
             <q-tooltip content-class="bg-negative">
-              {{$t('system.delete')}}
+              {{ $t('system.delete') }}
             </q-tooltip>
           </q-btn>
         </q-td>
@@ -93,38 +95,6 @@
           </q-tooltip>
         </q-btn>
       </template>
-
-<!--      <template v-slot:item="props">-->
-<!--        <div-->
-<!--          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"-->
-<!--        >-->
-<!--          <q-card :class="props.selected ? 'row-selected' : ''">-->
-<!--            <q-card-section>-->
-<!--              <q-checkbox dense v-model="props.selected" :label="props.row[cardCheckField]"/>-->
-<!--            </q-card-section>-->
-<!--            <q-separator/>-->
-<!--            <q-list dense>-->
-<!--              <q-item v-for="col in props.cols.filter(col_ => col_.name !== actionsColumnName)" :key="col.name">-->
-<!--                <q-item-section>-->
-<!--                  <q-item-label>{{ col.label }}</q-item-label>-->
-<!--                </q-item-section>-->
-<!--                <q-item-section side>-->
-<!--                  <q-item-label caption>{{ col.value }}</q-item-label>-->
-<!--                </q-item-section>-->
-<!--              </q-item>-->
-<!--            </q-list>-->
-<!--            <q-separator/>-->
-<!--            <q-card-section class="row justify-end"-->
-<!--                            v-if="props.cols.filter(col => col.name === actionsColumnName).length>0">-->
-<!--              <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">-->
-<!--              </q-btn>-->
-<!--              <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">-->
-<!--              </q-btn>-->
-<!--            </q-card-section>-->
-
-<!--          </q-card>-->
-<!--        </div>-->
-<!--      </template>-->
       <template v-slot:bottom>
         <div class="full-width row justify-center q-mt-md">
           <q-pagination
@@ -147,7 +117,7 @@
                  class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.password=''" placeholder="password"
+        <q-input v-model="bean.password" placeholder="password"
                  label="password"
                  class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
@@ -171,7 +141,7 @@
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
-            <div>{{props.opt.fullName}}</div>
+            <div>{{ props.opt.fullName }}</div>
           </template>
         </q-select>
 
@@ -193,7 +163,7 @@
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
-            <div>{{props.opt.name}}</div>
+            <div>{{ props.opt.name }}</div>
           </template>
         </q-select>
       </div>
@@ -276,7 +246,7 @@ export default {
 
         {
           name: 'workerType',
-          field: row => row.workers.workerTypes.nameUz,
+          field: row => row.workers.workerTypes.nameBg,
           label: this.$t('xshop_captions.l_worker_type'),
           format: val => `${val}`,
           sortable: true,
@@ -311,7 +281,7 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-        {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
+        {name: 'actions', align: 'center', label: "Амаллар", style: 'width: 1rem'},
       ],
       data: [],
       regions: [],
@@ -321,7 +291,7 @@ export default {
     }
   },
   computed: {
-    pagesNumber () {
+    pagesNumber() {
       return Math.ceil(this.filter.rowsNumber / this.filter.rowsPerPage)
     }
   },
@@ -332,8 +302,9 @@ export default {
           console.log(res)
           this.workers.splice(0, this.workers.length, ...res.data)
         }).catch(err => {
-          this.showError(err)
-      }).finally(() => {})
+        this.showError(err)
+      }).finally(() => {
+      })
     },
     getRoles() {
       this.$axios.get(urls.ROLES)
@@ -342,7 +313,8 @@ export default {
           this.roles.splice(0, this.roles.length, ...res.data)
         }).catch(err => {
         this.showError(err)
-      }).finally(() => {})
+      }).finally(() => {
+      })
     },
 
     rowEdit(row) {
@@ -350,8 +322,9 @@ export default {
         this.$set(this.bean, k, row[k]);
       }
       this.$set(this.bean, 'workersId', row.workers.id);
-      if (row.roles.length > 0) {
-        this.$set(this.bean, 'rolesId', row.roles[0].id);
+      this.$set(this.bean, 'password', '');
+      if (row.roles.id) {
+        this.$set(this.bean, 'rolesId', row.roles.id);
       } else {
         this.$set(this.bean, 'rolesId', null);
       }
@@ -361,11 +334,18 @@ export default {
     goTrades(val) {
       console.log(val)
       this.$emit('goTab', val)
-    }
+    },
+
+    rowAdd() {
+      this.bean = Object.assign({}, this.beanDefault);
+      this.bean.password = ""
+      this.showForm();
+    },
+
   },
   watch: {
     model(newval) {
-      this.$set(this.filter, 'page', newval-1);
+      this.$set(this.filter, 'page', newval - 1);
     }
   },
   mounted() {
