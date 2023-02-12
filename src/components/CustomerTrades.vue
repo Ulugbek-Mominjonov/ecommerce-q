@@ -253,7 +253,7 @@
         class="shadow-0"
       >
         <template v-slot:top="props">
-          <div class="text-bold text-subtitle1 text-center full-width">Xarid cheki</div>
+          <div class="text-bold text-subtitle1 text-center full-width">Харид чеки</div>
         </template>
 
         <template v-slot:body-cell-name="props">
@@ -266,8 +266,15 @@
       </q-table>
 
       <div class="flex justify-between q-mx-auto" style="width: 80%; margin-top: 40px">
-        <p class="text-bold">{{user.user.workers.fullName}}</p>
-        <p>________________</p>
+        <p class="text-bold">Умумий савдо суммаси</p>
+        <p>
+          {{ totalTradeAmount }} сўм
+        </p>
+      </div>
+
+      <div class="flex justify-between q-mx-auto" style="width: 80%; margin-top: 40px">
+        <p class="text-bold">Ҳисобчи</p>
+        <p>{{user.user.workers.fullName}} ______ </p>
       </div>
     </div>
 
@@ -275,12 +282,12 @@
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="mdi-exclamation-thick" color="negative" text-color="white" size="md"/>
-          <span class="q-ml-sm">Xarid uchun chek chiqarilsinmi!!!</span>
+          <span class="q-ml-sm">Харид учун чек чиқарилсинми?</span>
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Yo'q" color="primary" v-close-popup />
-          <q-btn flat label="Ha" color="primary" @click="printMe" />
+          <q-btn flat label="Йўқ" color="primary" v-close-popup />
+          <q-btn flat label="Ҳа" color="primary" @click="printMe" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -312,7 +319,7 @@ export default {
         {
           name: 'name',
           required: true,
-          label: 'Mahsulot nomi',
+          label: 'Маҳсулот номи',
           align: 'left',
           field: row => row.productsId,
           format: val => `${val}`,
@@ -321,7 +328,7 @@ export default {
         {
           name: 'cost',
           required: true,
-          label: 'Mahsulot narxi',
+          label: 'Маҳсулот нархи',
           align: 'left',
           field: row => this.number_format_old(row.price, 0,'.', ''),
           sortable: true
@@ -329,9 +336,17 @@ export default {
         {
           name: 'amount',
           required: true,
-          label: 'Mahsulot miqdori',
+          label: 'Маҳсулот миқдори',
           align: 'left',
           field: row => this.number_format_old(row.amount, 0,'.', ''),
+          sortable: true
+        },
+        {
+          name: 'totalAmount',
+          required: true,
+          label: 'Умумий нарх',
+          align: 'left',
+          field: row => this.number_format_old(row.amount*row.price, 0,'.', ''),
           sortable: true
         }
       ],
@@ -485,6 +500,7 @@ export default {
       model: 1,
       formDialog2: false,
       print: false,
+      totalTradeAmount: 0,
       options: {
         // name: '_self',
         specs: [
@@ -580,8 +596,13 @@ export default {
       });
     },
     printMe() {
+      let a = 0;
+      for (let i=0;i<this.productData.length;i++){
+        a += this.productData[i].amount*this.productData[i].price;
+      }
+      this.totalTradeAmount = a;
       this.$htmlToPaper('print', this.options)
-      this.print = false
+      this.print = false;
     }
   },
   watch: {

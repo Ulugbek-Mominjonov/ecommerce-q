@@ -257,47 +257,6 @@
 
     </standart-input-dialog>
 
-    <div id="print">
-      <q-table
-        :data="productData"
-        :columns="columnsPrint"
-        row-key="name"
-        hide-bottom
-        class="shadow-0"
-      >
-        <template v-slot:top="props">
-          <div class="text-bold text-subtitle1 text-center full-width">Xarid cheki</div>
-        </template>
-
-        <template v-slot:body-cell-name="props">
-          <q-td :props="props">
-            <div>
-              {{products.filter(item => item.id === props.row.productsId)[0].nameBg}}
-            </div>
-          </q-td>
-        </template>
-      </q-table>
-
-      <div class="flex justify-between q-mx-auto" style="width: 80%; margin-top: 40px">
-        <p class="text-bold">{{user.user.workers.fullName}}</p>
-        <p>________________</p>
-      </div>
-    </div>
-
-    <q-dialog v-model="print" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="mdi-exclamation-thick" color="negative" text-color="white" size="md"/>
-          <span class="q-ml-sm">Xarid uchun chek chiqarilsinmi!!!</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Yo'q" color="primary" v-close-popup />
-          <q-btn flat label="Ha" color="primary" @click="printMe" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
   </div>
 </template>
 
@@ -471,7 +430,6 @@ export default {
       productData: [],
       model: 1,
       formDialog2: false,
-      print: false,
       options: {
         // name: '_self',
         specs: [
@@ -585,7 +543,6 @@ export default {
         .then(response => {
           this.closeForm2();
           this.refreshTable();
-          this.print = true;
         }).catch(error => {
         console.error(error);
       }).finally(() => {

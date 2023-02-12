@@ -6,7 +6,7 @@ export default {
     "l_all": "Жами",
     "l_amount": "Миқдор",
     "l_buy_product": "Сотиб олинган",
-    "l_cost": "Нархи (so'm)",
+    "l_cost": "Нархи (сўм)",
     "l_sum": "сўм",
     "l_created_date": "Яратилган сана",
     "l_fio": "Исм",

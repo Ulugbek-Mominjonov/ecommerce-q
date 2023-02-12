@@ -16,7 +16,7 @@
     </div>
 
     <div class="dashboard-statistic flex justify-between">
-      <div class="statistic-item strore">
+      <div class="statistic-item strore" style="height: 550px">
         <q-timeline color="primary">
           <q-timeline-entry heading>
             <div class="row">
@@ -50,7 +50,7 @@
           </template>
         </q-timeline>
       </div>
-      <div class="statistic-item strore">
+      <div class="statistic-item strore"  style="height: 550px">
         <q-timeline color="primary">
           <q-timeline-entry heading>
             <div class="row">
@@ -87,11 +87,11 @@
       </div>
     </div>
 
-    <div class="dashboard-statistic flex justify-between">
-      <div class="statistic-item2">
+    <div class="dashboard-statistic flex justify-between" style="margin-bottom: 20px">
+      <div class="statistic-item strore"  style="height: 950px">
         <q-timeline color="primary">
           <q-timeline-entry heading>
-            <div class="row flex align-self">
+            <div class="row">
               <div class="col col-lg-6 col-md-6">
                 <div class="text-h5">
                   Кам савдо қилган дистрибуторлар
@@ -99,7 +99,7 @@
               </div>
               <div class="col col-lg-6 col-md-6">
                 <q-input v-model="distributorFullName"
-                         :label="'Дистрибутор исми'"
+                         :label="'Харидор исми'"
                          class="q-pa-md col-4" dense outlined>
                   <template v-slot:append>
                     <q-icon v-if="distributorFullName" name="close" color="primary"
@@ -113,10 +113,48 @@
 
           <template v-for="item in topDistributor">
             <q-timeline-entry
-              icon="mdi-store">
+              icon="mdi-account-cash-outline"
+            >
               <div class="text-bold">{{ item.fullName }} ( {{ formatPrice(item.tradeAmount) }} сўм )</div>
               <div class="text-primary">
                 <div>{{ item.ownerName }} ({{ item.phone }})</div>
+              </div>
+            </q-timeline-entry>
+          </template>
+        </q-timeline>
+      </div>
+      <div class="statistic-item strore"  style="height: 950px">
+        <q-timeline color="primary">
+          <q-timeline-entry heading>
+            <div class="row">
+              <div class="col col-lg-6 col-md-6">
+                <div class="text-h5">
+                  Дўконлар охирги савдо саналари
+                </div>
+              </div>
+              <div class="col col-lg-6 col-md-6">
+                <q-input v-model="storeName2"
+                         :label="'Дўкон номи'"
+                         class="q-pa-md col-4" dense outlined>
+                  <template v-slot:append>
+                    <q-icon v-if="storeName2" name="close" color="primary"
+                            @click.stop="storeName2 = ''"
+                            class="cursor-pointer"/>
+                  </template>
+                </q-input>
+              </div>
+            </div>
+          </q-timeline-entry>
+
+          <template v-for="item in oldTradedStore">
+            <q-timeline-entry
+              icon="mdi-store">
+              <div class="text-bold">{{ item.storeName }} ( {{ formatPrice(item.balance) }} сўм ) &nbsp;&nbsp;&nbsp; <span class="text-negative">{{ item.lastTradeDate }}</span></div>
+              <div class="text-primary">
+                <div>{{ item.ownerName }} ({{ item.phone }})</div>
+              </div>
+              <div class="text-negative">
+                <div></div>
               </div>
             </q-timeline-entry>
           </template>
@@ -137,9 +175,11 @@ export default {
     return {
       cardInfo: {},
       debitorStore: [],
+      oldTradedStore: [],
       debitorCustomer: [],
       topDistributor: [],
       storeName: "",
+      storeName2: "",
       customerFullName: "",
       distributorFullName: "",
     }
@@ -160,6 +200,15 @@ export default {
       this.$axios.get(urls.DASHBOARD_DEBITOR_STORE + "?storeName=" + this.storeName)
         .then(res => {
           this.debitorStore.splice(0, this.debitorStore.length, ...res.data)
+        }).catch(err => {
+        this.showError(err)
+      }).finally(() => {
+      })
+    },
+    getOldTradedStore() {
+      this.$axios.get(urls.DASHBOARD_LAST_TRADE_DATE_STORE + "?storeName=" + this.storeName2)
+        .then(res => {
+          this.oldTradedStore.splice(0, this.oldTradedStore.length, ...res.data)
         }).catch(err => {
         this.showError(err)
       }).finally(() => {
@@ -189,6 +238,7 @@ export default {
   mounted() {
     this.getCardInfo()
     this.getDebitorStore()
+    this.getOldTradedStore()
     this.getDebitorCustomer()
     this.getDistributor()
   },
@@ -201,6 +251,9 @@ export default {
     },
     distributorFullName() {
       this.getDistributor()
+    },
+    storeName2() {
+      this.getOldTradedStore()
     }
   }
 }

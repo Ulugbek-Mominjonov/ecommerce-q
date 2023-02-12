@@ -21,7 +21,7 @@
       @row-click="rowClick"
       :dense="$q.screen.lt.md"
       :grid="$q.screen.xs"
-      class="sticky-first-column-table sticky-last-column-table q-mt-lg"
+      class="sticky-first-column-table q-mt-lg"
       style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
@@ -47,17 +47,6 @@
           </template>
         </q-input>
         <q-space/>
-<!--        <q-btn icon="refresh" class="q-mr-sm text-white" @click="refreshTable" dense style="background-color: #344767">-->
-<!--          <q-tooltip content-class="bg-primary">-->
-<!--            {{ $t('xshop_captions.l_refresh') }}-->
-<!--          </q-tooltip>-->
-<!--        </q-btn>-->
-
-<!--        <q-btn icon="add" class="text-white" @click="rowAdd" dense style="background-color: #344767">-->
-<!--          <q-tooltip content-class="bg-primary">-->
-<!--            {{ $t('system.add') }}-->
-<!--          </q-tooltip>-->
-<!--        </q-btn>-->
       </template>
 
       <template v-slot:body-cell-storeName="props">
@@ -95,22 +84,6 @@
           </div>
         </q-td>
       </template>
-
-      <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
-<!--          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">-->
-<!--            <q-tooltip content-class="bg-secondary">-->
-<!--              {{$t('system.edit')}}-->
-<!--            </q-tooltip>-->
-<!--          </q-btn>-->
-<!--          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">-->
-<!--            <q-tooltip content-class="bg-negative">-->
-<!--              {{$t('system.delete')}}-->
-<!--            </q-tooltip>-->
-<!--          </q-btn>-->
-        </q-td>
-      </template>
-
       <template v-slot:bottom>
         <div class="full-width row justify-center q-mt-md">
           <q-pagination
@@ -122,21 +95,6 @@
         </div>
       </template>
     </q-table>
-
-    <!--DIALOG-->
-    <standart-input-dialog v-model="formDialog" :model-id="bean.id" :on-submit="onSubmit"
-                           :on-validation-error="onValidationError">
-
-      <div class="row">
-        <q-input v-model="bean.nameBg" :placeholder="$t('xshop_captions.l_name_bg')"
-                 :label="$t('xshop_captions.l_name_bg')"
-                 class="q-pa-md col-12" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-        </q-input>
-      </div>
-
-    </standart-input-dialog>
-
   </div>
 </template>
 
@@ -192,6 +150,15 @@ export default {
           classes: 'col-1',
         },
         {
+          name: 'balance',
+          field: row => this.number_format_old(row.balance, 0, '.', ' ') + " сўм",
+          label: "Баланс",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
           name: 'ownerName',
           field: row => row.ownerName,
           label: 'Дўкон егаси',
@@ -228,15 +195,23 @@ export default {
           classes: 'col-1',
         },
         {
-          name: 'balance',
-          field: row => this.number_format_old(row.balance, 0, '.', ' '),
-          label: "balance",
+          name: 'totalReturnedTrade',
+          field: row => this.number_format_old(row.totalReturnedTrade, 0, '.', ' '),
+          label: "Умумий қайтарилган савдо",
           format: val => `${val}`,
           sortable: true,
           align: 'left',
           classes: 'col-1',
         },
-        {name: 'actions', align: 'center', label: "Harakatlar", style:'width: 1rem'},
+        {
+          name: 'totalReturnedPayment',
+          field: row => this.number_format_old(row.totalReturnedPayment, 0, '.', ' '),
+          label: "Умумий қайтарилган тўлов",
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
       ],
       data: [],
       regions: [],

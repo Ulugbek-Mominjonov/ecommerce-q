@@ -21,7 +21,7 @@
       @row-click="rowClick"
       :dense="$q.screen.lt.md"
       :grid="$q.screen.xs"
-      class="sticky-first-column-table q-mt-lg"
+      class="sticky-first-column-table sticky-last-column-table q-mt-lg"
       style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
@@ -54,6 +54,16 @@
         </q-td>
       </template>
 
+      <template v-slot:body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn size="sm" dense color="primary" icon="mdi-cash" @click.stop="addTransaction(props.row.id, props.row.fullName)" class="q-mr-sm">
+            <q-tooltip content-class="bg-negative">
+              Транзаксия яратиш
+            </q-tooltip>
+          </q-btn>
+        </q-td>
+      </template>
+
       <template v-slot:bottom>
         <div class="full-width row justify-center q-mt-md">
           <q-pagination
@@ -67,17 +77,42 @@
     </q-table>
 
     <!--DIALOG-->
-    <standart-input-dialog v-model="formDialog" :model-id="bean.id" :on-submit="onSubmit"
+    <standart-input-dialog v-model="formDialog" :on-submit="onSubmit"
                            :on-validation-error="onValidationError">
-
       <div class="row">
-        <q-input v-model="bean.nameBg" :placeholder="$t('xshop_captions.l_name_bg')"
-                 :label="$t('xshop_captions.l_name_bg')"
-                 class="q-pa-md col-12" dense
+        <q-input v-model="supplierName"
+                 :label="'Таъминотчи исми'"
+                 type="text"
+                 readonly
+                 class="q-pa-md col-12 col-md-12" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
+        <q-input v-model="bean.amount"
+                 :label="$t('xshop_captions.l_amount')"
+                 type="number"
+                 class="q-pa-md col-12 col-md-6 col-lg-6" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
+        <q-select
+          v-model="bean.isPayment"
+          emit-value
+          map-options
+          :options="transactionsTypes"
+          option-value="id"
+          option-label="name"
+          :label="$t('xshop_captions.l_transactions_type')"
+          class="q-pa-md col-12 col-md-6 col-lg-6" dense
+          lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
+        >
+          <template v-slot:append>
+            <q-icon name="close" color="primary" @click.stop="bean.isPayment = null"
+                    class="cursor-pointer"/>
+          </template>
+          <template v-slot:selected-item="props">
+            <div>{{ props.opt.name }}</div>
+          </template>
+        </q-select>
       </div>
-
     </standart-input-dialog>
 
   </div>
@@ -101,6 +136,17 @@ export default {
       rowKey: 'id',
       selectedRows: [],
       bean: {},
+      supplierName: "",
+      transactionsTypes: [
+        {
+          name: 'Тўлов',
+          id: 1
+        },
+        {
+          name: 'Қайтариш',
+          id: 0
+        }
+      ],
       cardCheckField: 'name',
       beanDefault: {
         id: null,
@@ -181,7 +227,7 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-
+        {name: 'actions', align: 'center', label: "Амаллар", style: 'width: 1rem'},
       ],
       data: [],
       regions: [],
@@ -194,6 +240,30 @@ export default {
     }
   },
   methods: {
+    addTransaction(id, name) {
+      this.bean = Object.assign({}, this.bean);
+      this.bean.suppliersId = id
+      this.bean.amount = ''
+      this.supplierName = name
+      this.showForm();
+    },
+    showForm() {
+      this.formDialog = true;
+    },
+
+    onSubmit() {
+      this.loading = true;
+      this.$axios.post(urls.SUPPLIERS_TRANSACTIONS, this.bean)
+        .then(response => {
+          this.closeForm();
+          this.refreshTable();
+        }).catch(error => {
+        this.showError(error)
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
   },
   watch: {
     model(newval) {

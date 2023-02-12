@@ -10,17 +10,6 @@
      }
    },
 
-   // {
-   //   path: "/report-store",
-   //   name: "reportStore",
-   //   show: true,
-   //   component: ()=> import("../../pages/UserCabinet/PageReportStore.vue"),
-   //   meta:{
-   //     title: "Омборчилар ҳисоботи",
-   //     icon: 'mdi-checkbook'
-   //   }
-   // },
-
    {
      path: "/report-supliers",
      name: "reportSupliers",

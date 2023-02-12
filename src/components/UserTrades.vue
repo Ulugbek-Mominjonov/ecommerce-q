@@ -171,7 +171,7 @@
           option-value="id"
           option-label="nameBg"
           :label="$t('xshop_captions.l_products')"
-          class="q-pa-md col-12 col-md-6" dense
+          class="q-pa-md col-12 col-md-12" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
@@ -184,6 +184,11 @@
         </q-select>
         <q-input v-model="bean.price"
                  :label="$t('xshop_captions.l_cost')"
+                 class="q-pa-md col-12 col-md-6" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
+        <q-input v-model="bean.sellingPrice"
+                 :label="'Сотиладиган нархи'"
                  class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
@@ -216,7 +221,7 @@
             option-value="id"
             option-label="nameBg"
             :label="$t('xshop_captions.l_products')"
-            class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
+            class="q-pa-md col-xs-12 col-sm-12 col-md-6 col-lg-6" dense
             lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
           >
             <template v-slot:append>
@@ -238,52 +243,16 @@
                    class="q-pa-md col-12 col-md-6" dense
                    lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
           </q-input>
+          <q-input v-model="item.sellingPrice"
+                   :label="'Сотиладиган нархи'"
+                   class="q-pa-md col-12 col-md-6" dense
+                   lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+          </q-input>
         </div>
         <q-btn color="teal-8" icon="add" round class="q-mx-auto block q-mt-lg" @click="addProductBean"/>
       </q-scroll-area>
 
     </standart-input-dialog>
-
-    <div id="print">
-      <q-table
-        :data="productData"
-        :columns="columnsPrint"
-        row-key="name"
-        hide-bottom
-        class="shadow-0"
-      >
-        <template v-slot:top="props">
-          <div class="text-bold text-subtitle1 text-center full-width">Xarid cheki</div>
-        </template>
-
-        <template v-slot:body-cell-name="props">
-          <q-td :props="props">
-            <div>
-              {{products.filter(item => item.id === props.row.productsId)[0].nameBg}}
-            </div>
-          </q-td>
-        </template>
-      </q-table>
-
-      <div class="flex justify-between q-mx-auto" style="width: 80%; margin-top: 40px">
-        <p class="text-bold">{{user.user.workers.fullName}}</p>
-        <p>________________</p>
-      </div>
-    </div>
-
-    <q-dialog v-model="print" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="mdi-exclamation-thick" color="negative" text-color="white" size="md"/>
-          <span class="q-ml-sm">Xarid uchun chek chiqarilsinmi!!!</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Yo'q" color="primary" v-close-popup />
-          <q-btn flat label="Ha" color="primary" @click="printMe" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
 
   </div>
 </template>
@@ -393,6 +362,15 @@ export default {
           name: 'price',
           field: row => this.number_format_old(row.price, 0, '.', ' ') + ' сўм',
           label: this.$t('xshop_captions.l_one_product_cost'),
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'sellingPrice',
+          field: row => this.number_format_old(row.sellingPrice, 0, '.', ' ') + ' сўм',
+          label: 'Сотиладиган нархи',
           format: val => `${val}`,
           sortable: true,
           align: 'left',
@@ -537,6 +515,7 @@ export default {
       this.$set(this.bean, 'id', row.id);
       this.$set(this.bean, 'amount', row.amount);
       this.$set(this.bean, 'price', row.price);
+      this.$set(this.bean, 'sellingPrice', row.sellingPrice);
       this.$set(this.bean, 'productsId', row.products.id);
       this.$set(this.bean, 'usersId', this.usersId);
       this.showForm();
@@ -572,7 +551,6 @@ export default {
         .then(response => {
           this.closeForm2();
           this.refreshTable();
-          this.print = true;
         }).catch(error => {
         console.error(error);
       }).finally(() => {

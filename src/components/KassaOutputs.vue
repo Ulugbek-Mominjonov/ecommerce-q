@@ -159,6 +159,15 @@ export default {
           classes: 'col-1'
         },
         {
+          name: 'amount',
+          field: row => row.amount,
+          label: 'Ҳаражат миқдори',
+          format: val => `${val}`,
+          sortable: true,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
           name: 'description',
           field: row => row.description,
           label: this.$t('xshop_captions.l_name'),
