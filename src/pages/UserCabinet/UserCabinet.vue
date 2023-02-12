@@ -162,16 +162,6 @@
 
           </q-list>
         </q-scroll-area>
-
-<!--        <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">-->
-<!--          <div class="absolute-bottom bg-transparent">-->
-<!--            <q-avatar size="56px" class="q-mb-sm">-->
-<!--              <img src="https://cdn.quasar.dev/img/boy-avatar.png">-->
-<!--            </q-avatar>-->
-<!--            <div class="text-weight-bold">{{getUser().user.workers.fullName}}</div>-->
-<!--            <div>{{getUser().user.workers.phone}}</div>-->
-<!--          </div>-->
-<!--        </q-img>-->
       </q-drawer>
 
       <q-page-container>
