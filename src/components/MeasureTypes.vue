@@ -97,7 +97,7 @@
 
     <!--DIALOG-->
     <standart-input-dialog v-model="formDialog" :model-id="bean.id" :on-submit="onSubmit"
-                           :on-validation-error="onValidationError">
+                           :on-validation-error="onValidationError" :loading="loading">
 
       <div class="row">
         <q-input v-model="bean.nameBg" :placeholder="$t('xshop_captions.l_name')"

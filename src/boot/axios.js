@@ -22,14 +22,8 @@ export default ({app, router, store, Vue}) => {
           errorDescription: "",
           errorMessage: app.i18n.t("http.session_timeout")
         });
-      } else if (error.response.status === 403) {
-        alert("Бу бўлимга кириш учун сизга рухсат йўқ")
-      } else{
-        if (error.response.data.status === 409 || error.response.data.status === 410){
-          alert("Логин ёки парол нотўғри киритилди")
-        } else{
-          alert(error.response.data.message)
-        }
+      } else {
+        return Promise.reject(error)
       }
     }
   );

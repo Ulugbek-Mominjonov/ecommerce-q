@@ -160,7 +160,7 @@
     <!--DIALOG-->
     <standart-input-dialog
       v-model="formDialog" :model-id="bean.id" :on-submit="onSubmit"
-      :on-validation-error="onValidationError">
+      :on-validation-error="onValidationError" :loading="loading">
 
       <div class="row">
         <q-select
@@ -208,7 +208,7 @@
 
     <standart-input-dialog
       v-model="formDialog2" :model-id="null" :on-submit="onSubmitProduct"
-      :on-validation-error="onValidationError">
+      :on-validation-error="onValidationError" :loading="loading">
 
       <q-scroll-area style="height: 600px">
         <div class="row" v-for="item in productData">
@@ -538,10 +538,12 @@ export default {
       this.productData.push(productBeanDefault)
     },
     onSubmitProduct() {
+      this.loading = true;
       this.$axios.post(this.apiUrl, this.productData)
         .then(response => {
           this.closeForm2();
           this.refreshTable();
+          this.loading = false
         }).catch(error => {
         console.error(error);
       }).finally(() => {
