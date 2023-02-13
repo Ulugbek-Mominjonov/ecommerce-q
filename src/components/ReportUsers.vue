@@ -90,7 +90,7 @@
 
     <!--DIALOG-->
     <standart-input-dialog v-model="formDialog" :on-submit="onSubmit"
-                           :on-validation-error="onValidationError">
+                           :on-validation-error="onValidationError" :loading="loading">
       <div class="row">
         <q-input v-model="workerName"
                  :label="'Ходим исми'"

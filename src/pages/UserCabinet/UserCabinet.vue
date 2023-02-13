@@ -165,7 +165,7 @@
       </q-drawer>
 
       <q-page-container>
-        <q-page class="q-pt-md q-pr-md" style="max-height: 100vh" >
+        <q-page class="q-pt-md q-pr-md" >
           <router-view/>
         </q-page>
       </q-page-container>

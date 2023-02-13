@@ -41,14 +41,12 @@ export default ({app, router, store, Vue}) => {
           return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
         },
         showError(error) {
-          if (error.type == 'warning') {
-            this.$q.notify({
-              caption: error.errorMessage + ' [' + error.errorCode + ']',
-              message: error.errorDescription,
-              icon: 'warning',
-              color: 'negative'
-            })
-          }
+          this.$q.notify({
+            caption: error.response.data.status,
+            message: error.response.data.message,
+            icon: 'warning',
+            color: 'negative'
+          })
         },
         showErrorToast(error){
           console.log('----e:', error)

@@ -151,9 +151,13 @@ export default {
               this.$router.push({
                 path: '/worker-types',
               })
-            }).catch(response => {
+            }).catch(error => {
             // this.error = error.errorMessage === '' ? error.errorDescription : error.errorMessage
-            this.showError(response)
+            this.$q.notify({
+              type: 'negative',
+              message: error.response.data.message,
+              caption: error.response.data.status
+            })
             }).finally(() => {
           });
         }

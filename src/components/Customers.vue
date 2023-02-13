@@ -119,7 +119,7 @@
 
     <!--DIALOG-->
     <standart-input-dialog v-model="formDialog" :model-id="bean.id" :on-submit="onSubmit"
-                           :on-validation-error="onValidationError">
+                           :on-validation-error="onValidationError" :loading="loading">
 
       <div class="row">
         <q-input v-model="bean.fullName"
@@ -262,7 +262,7 @@ export default {
         {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
       ],
       data: [],
-      model: 1
+      model: 1,
     }
   },
   computed: {
