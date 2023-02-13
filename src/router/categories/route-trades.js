@@ -29,6 +29,16 @@
        icon: 'mdi-account-outline'
      }
    },
+   {
+     path: "/store-trades",
+     name: "StoreTrades",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageStoreTrades.vue"),
+     meta:{
+       title: "Дўкон савдолари",
+       icon: 'mdi-store-outline'
+     }
+   },
 ]
 
 const main_trades = {

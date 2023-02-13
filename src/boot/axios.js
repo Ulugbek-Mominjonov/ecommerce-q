@@ -13,7 +13,7 @@ export default ({app, router, store, Vue}) => {
     },
     (error) => {
       store.commit("decrementAjaxRequestsCnt");
-      if (error.response.status === 401) {
+      if (error.response.status == 401) {
         store.commit('clearUserSession');
         router.push('/');
         return Promise.reject({
@@ -22,13 +22,13 @@ export default ({app, router, store, Vue}) => {
           errorDescription: "",
           errorMessage: app.i18n.t("http.session_timeout")
         });
-      } else if (error.response.status === 403) {
+      } else if (error.response.status == 403) {
         this.$q.notify({
           type: 'negative',
           message: `Бу бўлимга кириш учун сизга рухсат йўқ`
         })
       } else{
-        if (error.response.data.status === 409 || error.response.data.status === 410){
+        if (error.response.data.status == 409 || error.response.data.status == 410){
           this.$q.notify({
             type: 'negative',
             message: `Логин ёки парол нотўғри киритилди`
@@ -37,7 +37,7 @@ export default ({app, router, store, Vue}) => {
             icon: 'done',
             caption: '',
             color: 'positive',
-            message: 'Tizimga muvafiqiyatli kirildi!!!'
+            message: 'Tizimga muvafiqiyatli kirildi.'
           })
         } else{
           alert(error.response.data.message)

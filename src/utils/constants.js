@@ -16,6 +16,7 @@ export const urls = {
   WORKER_TYPES: prf.BASE_API + "/worker-types",
   WORKERS: prf.BASE_API + "/workers",
   WORKER_SALARY: prf.BASE_API + "/worker-salaries",
+  WORKER_WORKED_DAYS: prf.BASE_API + "/worker-worked-days",
   KASSA_OUTPUTS: prf.BASE_API + "/kassa-outputs",
   USERS: prf.BASE_API + "/users",
   FOUNDERS: prf.BASE_API + "/founders",
@@ -29,6 +30,7 @@ export const urls = {
   // Trades
   SUPPLIER_TRADES: prf.BASE_API + "/supplier-trades",
   CUSTOMER_TRADES: prf.BASE_API + "/customer-trades",
+  STORE_TRADES: prf.BASE_API + "/store-trades",
   USER_TRADES: prf.BASE_API + "/user-trades",
 
   // transactions

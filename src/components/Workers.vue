@@ -112,12 +112,12 @@
                            :on-validation-error="onValidationError">
 
       <div class="row">
-        <q-input v-model="bean.fullName" :placeholder="$t('xshop_captions.l_fullname')"
+        <q-input v-model="bean.fullName"
                  :label="$t('xshop_captions.l_fullname')"
                  class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.phone" :placeholder="$t('xshop_captions.l_phone')"
+        <q-input v-model="bean.phone"
                  :label="$t('xshop_captions.l_phone')"
                  mask="+### (##) ### ## ##"
                  unmasked-value
@@ -125,13 +125,13 @@
                  class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.passportSeries" :placeholder="$t('xshop_captions.l_p_seria')"
+        <q-input v-model="bean.passportSeries"
                  :label="$t('xshop_captions.l_p_seria')"
                  class="q-pa-md q-pr-none col-5 col-md-3" dense
                  mask="AA"
                  hint="AA">
         </q-input>
-        <q-input v-model="bean.passportNumber" :placeholder="$t('xshop_captions.l_p_number')"
+        <q-input v-model="bean.passportNumber"
                  :label="$t('xshop_captions.l_p_number')"
                  class="q-pa-md q-pl-none col-7 col-md-9" dense
                  mask="#######"
@@ -159,6 +159,12 @@
             <div>{{props.opt.nameBg}}</div>
           </template>
         </q-select>
+
+        <q-input v-model="bean.salary"
+                 :label="'Иш хақи миқдори'"
+                 class="q-pa-md q-pl-none col-12 col-md-12" dense
+                 inputmode="number">
+        </q-input>
       </div>
 
     </standart-input-dialog>
@@ -223,6 +229,15 @@ export default {
           name: 'phone',
           field: row => this.phone_format(row.phone),
           label: this.$t('xshop_captions.l_phone'),
+          format: val => `${val}`,
+
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'salary',
+          field: row => this.formatPrice(row.salary, 0,'.', ''),
+          label: 'Иш хақи (кунлик)',
           format: val => `${val}`,
 
           align: 'left',
@@ -315,6 +330,11 @@ export default {
       this.$set(this.bean, 'workerTypesId', row.workerTypes.id);
       this.showForm();
     },
+
+    goTrades(val) {
+      this.$emit('goTab', val)
+    },
+
   },
   watch: {
     model(newval) {

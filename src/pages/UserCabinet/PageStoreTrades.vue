@@ -1,17 +1,17 @@
 <template>
   <div class="fit full-height">
     <module-header/>
-    <workers-salary/>
+    <store-trades/>
   </div>
 </template>
 
 <script>
 import {mapGetters, mapMutations} from "vuex";
 import ModuleHeader from "components/ModuleHeader.vue";
-import WorkersSalary from "components/WorkersSalary.vue";
+import StoreTrades from "components/StoreTrades.vue";
 export default {
-  name: "PageWorkersSalary",
-  components: {WorkersSalary, ModuleHeader},
+  name: "PageWorkers",
+  components: {StoreTrades, ModuleHeader},
   methods: {
     ...mapGetters([
       'getUser'

@@ -30,12 +30,12 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
+          <q-btn v-if="props.row.id>3" size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('system.edit')}}
             </q-tooltip>
           </q-btn>
-          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
+          <q-btn v-if="props.row.id>3" size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
             <q-tooltip content-class="bg-negative">
               {{$t('system.delete')}}
             </q-tooltip>
@@ -66,37 +66,6 @@
         </q-btn>
       </template>
 
-<!--      <template v-slot:item="props">-->
-<!--        <div-->
-<!--          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"-->
-<!--        >-->
-<!--          <q-card :class="props.selected ? 'row-selected' : ''">-->
-<!--            <q-card-section>-->
-<!--              <q-checkbox dense v-model="props.selected" :label="props.row[cardCheckField]"/>-->
-<!--            </q-card-section>-->
-<!--            <q-separator/>-->
-<!--            <q-list dense>-->
-<!--              <q-item v-for="col in props.cols.filter(col_ => col_.name !== actionsColumnName)" :key="col.name">-->
-<!--                <q-item-section>-->
-<!--                  <q-item-label>{{ col.label }}</q-item-label>-->
-<!--                </q-item-section>-->
-<!--                <q-item-section side>-->
-<!--                  <q-item-label caption>{{ col.value }}</q-item-label>-->
-<!--                </q-item-section>-->
-<!--              </q-item>-->
-<!--            </q-list>-->
-<!--            <q-separator/>-->
-<!--            <q-card-section class="row justify-end"-->
-<!--                            v-if="props.cols.filter(col => col.name === actionsColumnName).length>0">-->
-<!--              <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">-->
-<!--              </q-btn>-->
-<!--              <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">-->
-<!--              </q-btn>-->
-<!--            </q-card-section>-->
-
-<!--          </q-card>-->
-<!--        </div>-->
-<!--      </template>-->
 
       <template v-slot:body-cell-modifyDate="props">
         <q-td :props="props">
@@ -132,28 +101,6 @@
                            :on-validation-error="onValidationError">
 
       <div class="row">
-
-<!--        <q-select-->
-<!--          v-model="bean.regions_id"-->
-<!--          emit-value-->
-<!--          map-options-->
-<!--          :options="regions"-->
-<!--          option-value="id"-->
-<!--          option-label="name"-->
-<!--          :label="$t('captions.l_region')"-->
-<!--          -->
-<!--          -->
-<!--          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense-->
-<!--          lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"-->
-<!--        >-->
-<!--          <template v-slot:append>-->
-<!--            <q-icon name="close" color="primary" @click.stop="bean.regions_id = null"-->
-<!--                    class="cursor-pointer"/>-->
-<!--          </template>-->
-<!--          <template v-slot:selected-item="props">-->
-<!--            <div>{{props.opt.name}}</div>-->
-<!--          </template>-->
-<!--        </q-select>-->
         <q-input v-model="bean.nameBg" :placeholder="$t('xshop_captions.l_name')"
                  :label="$t('xshop_captions.l_name')"
                  class="q-pa-md col-12" dense
@@ -212,7 +159,6 @@ export default {
           field: row => row.nameBg,
           label: this.$t('xshop_captions.l_name'),
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -221,7 +167,6 @@ export default {
           field: row => row.modifiedDate,
           label: this.$t('xshop_captions.l_update_date'),
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -230,7 +175,6 @@ export default {
           field: row => row.createdDate,
           label: this.$t('xshop_captions.l_created_date'),
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -239,7 +183,6 @@ export default {
           field: row => row.modifiedBy,
           label: "Ўзгартирган фойдаланувчи",
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -248,7 +191,6 @@ export default {
           field: row => row.createdBy,
           label: 'Яратган фойдаланувчи',
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },

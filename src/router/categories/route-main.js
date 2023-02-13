@@ -13,9 +13,9 @@
      path: "/workers-salary",
      name: "workers-salary",
      show: true,
-     component: ()=> import("../../pages/UserCabinet/PageWorkersSalary.vue"),
+     component: ()=> import("pages/UserCabinet/PageWorkersManagement.vue"),
      meta:{
-       title: "Ишчилар иш ҳақи",
+       title: "Ходимлар иш ҳақи",
        icon: 'mdi-account-cash-outline'
      }
    },

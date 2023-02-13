@@ -2,8 +2,9 @@
 
   <div>
     <q-table
+      id="customerTable"
       ref="table"
-      title="Mijozlar"
+      title="Xaridlar"
       :row-key="rowKey"
       :data="data"
       :columns="columns"
@@ -11,7 +12,6 @@
       :filter="filter"
       :pagination="filter"
       @request="refreshData"
-      selection="single"
       :selected.sync="selectedRows"
       separator="horizontal"
       color="secondary"
@@ -25,13 +25,13 @@
       style="height: calc(100vh - 150px)"
     >
       <template v-slot:no-data="props">
-        {{$t('system.no_matching_found')}}
+        {{ $t('system.no_matching_found') }}
       </template>
 
       <template v-slot:body-cell-modifyDate="props">
         <q-td :props="props">
           <div v-if="props.row.modifiedDate">
-            {{$dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY')}}
+            {{ $dateutil.formatDate(props.row.modifiedDate, 'DD.MM.YYYY') }}
           </div>
           <div v-else>
             --.--.----
@@ -39,9 +39,20 @@
         </q-td>
       </template>
 
+      <template v-slot:body-cell-passport="props">
+        <q-td :props="props">
+          <div v-if="props.row.passportSeries && props.row.passportNumber">
+            {{props.row.passportSeries}} {{props.row.passportNumber}}
+          </div>
+          <div v-else>
+            -- --- -- --
+          </div>
+        </q-td>
+      </template>
+
       <template v-slot:body-cell-createdDate="props">
         <q-td :props="props">
-          {{$dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY')}}
+          {{ $dateutil.formatDate(props.row.createdDate, 'DD.MM.YYYY') }}
         </q-td>
       </template>
 
@@ -49,12 +60,12 @@
         <q-td :props="props">
           <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
-              {{$t('system.edit')}}
+              {{ $t('system.edit') }}
             </q-tooltip>
           </q-btn>
           <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
             <q-tooltip content-class="bg-negative">
-              {{$t('system.delete')}}
+              {{ $t('system.delete') }}
             </q-tooltip>
           </q-btn>
         </q-td>
@@ -63,31 +74,30 @@
 
       <template v-slot:top="props">
         <q-select
-          v-if="!supplierId"
-          v-model="filter.suppliersId"
+          v-if="!customersId"
+          v-model="filter.customersId"
           emit-value
           map-options
-          :options="suppliers"
+          :options="customersId"
           option-value="id"
           option-label="fullName"
           :label="$t('xshop_captions.l_suppliers')"
-
-
           outlined
           class="q-pa-sm col-2 col-md-2" dense
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon v-if="filter.suppliersId !== null" name="close" color="primary" @click.stop="filter.suppliersId = null"
+            <q-icon v-if="filter.customersId !== null" name="close" color="primary"
+                    @click.stop="filter.customersId = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
-            <div>{{props.opt.fullName}}</div>
+            <div>{{ props.opt.fullName }}</div>
           </template>
         </q-select>
-        <q-btn v-if="supplierId" @click="goBack" class="text-capitalize" color="teal-8" outline icon="mdi-arrow-left">
-          <span class="q-ml-sm">Orqaga</span>
-        </q-btn>
+
+        <q-btn v-if="customersId" @click="goBack" color="teal-8" outline icon="mdi-arrow-left"/>
+
         <q-select
           v-model="filter.productsId"
           emit-value
@@ -96,47 +106,28 @@
           option-value="id"
           option-label="nameBg"
           :label="$t('xshop_captions.l_products')"
-
-
           outlined
-          class="q-pa-sm col-2 col-md-2" dense
+          class="q-pa-sm col-3 col-md-3" dense
           lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
-            <q-icon v-if="filter.productsId !== null" name="close" color="primary" @click.stop="filter.productsId = null"
+            <q-icon v-if="filter.productsId !== null" name="close" color="primary"
+                    @click.stop="filter.productsId = null"
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-item="props">
-            <div>{{props.opt.nameBg}}</div>
+            <div>{{ props.opt.nameBg }}</div>
           </template>
         </q-select>
-        <q-input v-model="filter.amount" :placeholder="$t('xshop_captions.l_amount')"
-                 :label="$t('xshop_captions.l_amount')"
-                 type="number"
-                 class="q-pa-sm col-2" dense outlined>
-          <template v-slot:append>
-            <q-icon v-if="filter.amount" name="close" color="primary" @click.stop="filter.amount = ''"
-                    class="cursor-pointer"/>
-          </template>
-        </q-input>
-        <q-input v-model="filter.price" :placeholder="$t('xshop_captions.l_cost')"
-                 :label="$t('xshop_captions.l_cost')"
-                 type="number"
-                 class="q-pa-sm col-2" dense outlined>
-          <template v-slot:append>
-            <q-icon v-if="filter.price" name="close" color="primary" @click.stop="filter.price = ''"
-                    class="cursor-pointer"/>
-          </template>
-        </q-input>
         <date-input
           v-model="filter.fromDate"
           :label="$t('xshop_captions.l_from_date')"
-          class="q-pa-sm col-2 text-white"
+          class="q-pa-sm col-3 text-white"
         />
         <date-input
           v-model="filter.toDate"
           :label="$t('xshop_captions.l_to_date')"
-          class="q-pa-sm col-2 text-white"
+          class="q-pa-sm col-3 text-white"
         />
         <q-space/>
         <div class="q-mt-sm q-ml-auto">
@@ -146,7 +137,7 @@
             </q-tooltip>
           </q-btn>
 
-          <q-btn v-if="supplierId" icon="add" class="bg-primary text-white" @click="rowAdd" dense>
+          <q-btn v-if="customersId" icon="add" class="bg-primary text-white" @click="rowAdd" dense>
             <q-tooltip content-class="bg-primary">
               {{ $t('system.add') }}
             </q-tooltip>
@@ -167,8 +158,9 @@
     </q-table>
 
     <!--DIALOG-->
-    <standart-input-dialog v-model="formDialog" :model-id="bean.id" :on-submit="onSubmit"
-                           :on-validation-error="onValidationError">
+    <standart-input-dialog
+      v-model="formDialog" :model-id="bean.id" :on-submit="onSubmit"
+      :on-validation-error="onValidationError">
 
       <div class="row">
         <q-select
@@ -179,9 +171,7 @@
           option-value="id"
           option-label="nameBg"
           :label="$t('xshop_captions.l_products')"
-
-
-          class="q-pa-md col-xs-12 col-sm-6 col-md-6 col-lg-6" dense
+          class="q-pa-md col-12 col-md-6" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
@@ -189,73 +179,29 @@
                     class="cursor-pointer"/>
           </template>
           <template v-slot:selected-bean="props">
-            <div>{{props.opt.nameBg}}</div>
+            <div>{{ props.opt.nameBg }}</div>
           </template>
         </q-select>
-        <q-input v-model="bean.returned" :placeholder="$t('xshop_captions.l_returned_amount')"
-                 :label="$t('xshop_captions.l_returned_amount')"
+        <q-input v-model="bean.price"
+                 :label="$t('xshop_captions.l_cost')"
                  class="q-pa-md col-12 col-md-6" dense
-                 type="number"
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.amount" :placeholder="$t('xshop_captions.l_amount')"
+        <q-input v-model="bean.amount"
                  :label="$t('xshop_captions.l_amount')"
                  class="q-pa-md col-12 col-md-6" dense
                  type="number"
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.price" :placeholder="$t('xshop_captions.l_cost')"
-                 :label="$t('xshop_captions.l_cost')"
-                 class="q-pa-md col-12 col-md-6" dense
-                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        <q-input v-model="bean.returned"
+                 :label="'Қайтарилган миқдор'"
+                 class="q-pa-md col-12 col-md-6" dense>
         </q-input>
       </div>
 
     </standart-input-dialog>
 
-    <standart-input-dialog :width="true" v-model="formDialog2" :model-id="null" :on-submit="onSubmitProduct"
-                           :on-validation-error="onValidationError">
 
-      <q-scroll-area style="height: 600px">
-        <div class="row full-width full-height" v-for="item in productData">
-          <hr class="col-12" v-if="productData.length > 1"/>
-          <q-select
-            v-model="item.productsId"
-            emit-value
-            map-options
-            :options="products"
-            option-value="id"
-            option-label="nameBg"
-            :label="$t('xshop_captions.l_products')"
-
-
-            class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
-            lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
-          >
-            <template v-slot:append>
-              <q-icon v-if="item.productsId" name="close" color="primary" @click.stop="item.productsId = null"
-                      class="cursor-pointer"/>
-            </template>
-            <template v-slot:selected-item="props">
-              <div>{{props.opt.nameBg}}</div>
-            </template>
-          </q-select>
-          <q-input v-model="item.amount" :placeholder="$t('xshop_captions.l_amount')"
-                   :label="$t('xshop_captions.l_amount')"
-                   class="q-pa-md col-12 col-md-6" dense
-                   type="number"
-                   lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-          </q-input>
-          <q-input v-model="item.price" :placeholder="$t('xshop_captions.l_cost')"
-                   :label="$t('xshop_captions.l_cost')"
-                   class="q-pa-md col-12 col-md-6" dense
-                   lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-          </q-input>
-        </div>
-        <q-btn color="teal-8" icon="add" round class="q-mx-auto block q-mt-lg" @click="addProductBean"/>
-      </q-scroll-area>
-
-    </standart-input-dialog>
 
   </div>
 </template>
@@ -269,21 +215,20 @@ import StandartInputDialog from "components/base/StandartInputDialog";
 import DateInput from "components/base/DateInput.vue";
 
 export default {
-  name: "SupplierTrades",
+  name: "StoreTrades",
   components: {DateInput, StandartInputDialog},
   mixins: [StandartTable],
   props: {
-    supplierId: {
+    customersId: {
       type: Number,
       default: null
     },
   },
   data() {
     return {
-      apiUrl: urls.SUPPLIER_TRADES,
+      apiUrl: urls.STORE_TRADES,
       loading: false,
       rowKey: 'id',
-      width: 700,
       selectedRows: [],
       bean: {},
       cardCheckField: 'name',
@@ -293,7 +238,7 @@ export default {
         price: null,
         returned: null,
         productsId: null,
-        suppliersId: this.supplierId,
+        customersId: this.customersId,
       },
       formDialog: false,
       filter: {
@@ -301,7 +246,7 @@ export default {
         rowsPerPage: 10,
         rowsNumber: 0,
         descending: false,
-        suppliersId: this.supplierId,
+        customersId: this.customersId,
         productsId: null,
         fromDate: null,
         toDate: null,
@@ -320,7 +265,7 @@ export default {
         {
           name: 'NameBg',
           field: row => row.products.nameBg,
-          label: this.$t('xshop_captions.l_name_bg'),
+          label: this.$t('xshop_captions.l_name'),
           format: val => `${val}`,
 
           align: 'left',
@@ -337,7 +282,7 @@ export default {
         },
         {
           name: 'price',
-          field: row => this.formatPrice(row.price),
+          field: row => this.formatPrice(row.price) + ' сўм',
           label: this.$t('xshop_captions.l_one_product_cost'),
           format: val => `${val}`,
 
@@ -347,7 +292,7 @@ export default {
 
         {
           name: 'allPrice',
-          field: row => this.formatPrice(row.price * row.amount),
+          field: row => this.formatPrice(row.price * row.amount) + ' сўм',
           label: this.$t('xshop_captions.l_all'),
           format: val => `${val}`,
 
@@ -367,7 +312,7 @@ export default {
 
         {
           name: 'returnPrice',
-          field: row => this.formatPrice(row.price * row.returned),
+          field: row => this.formatPrice(row.price * row.returned) + ' сўм',
           label: this.$t('xshop_captions.l_returned_summ'),
           format: val => `${val}`,
 
@@ -376,8 +321,17 @@ export default {
         },
 
         {
-          name: 'fullName',
-          field: row => row.suppliers.fullName,
+          name: 'storeName',
+          field: row => row.stores.storeName,
+          label: this.$t('xshop_captions.l_fio'),
+          format: val => `${val}`,
+
+          align: 'left',
+          classes: 'col-1 text-bold',
+        },
+        {
+          name: 'ownerName',
+          field: row => row.stores.ownerName,
           label: this.$t('xshop_captions.l_fio'),
           format: val => `${val}`,
 
@@ -386,7 +340,7 @@ export default {
         },
         {
           name: 'phone',
-          field: row => this.phone_format(row.suppliers.phone),
+          field: row => this.phone_format(row.stores.phone),
           label: this.$t('xshop_captions.l_phone'),
           format: val => `${val}`,
 
@@ -394,8 +348,8 @@ export default {
           classes: 'col-1',
         },
         {
-          name: 'passport',
-          field: row => `${row.suppliers.passportSeries} ${row.suppliers.passportNumber}`,
+          name: 'address',
+          field: row => row.stores.address,
           label: this.$t('xshop_captions.l_pasport'),
           format: val => `${val}`,
 
@@ -439,30 +393,19 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-        {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
+        {name: 'actions', align: 'center', label: "Амаллар", style: 'width: 1rem'},
       ],
       data: [],
       regions: [],
-      suppliers: [],
+      customers: [],
       products: [],
       productData: [],
       model: 1,
-      formDialog2: false,
-      options: {
-        // name: '_self',
-        specs: [
-          'fullscreen=yes',
-          'titlebar=yes',
-          'scrollbars=yes'
-        ],
-        styles: [
-          'https://cdn.jsdelivr.net/npm/quasar@1.22.5/dist/quasar.min.css'
-        ]
-      },
+      totalTradeAmount: 0
     }
   },
   computed: {
-    pagesNumber () {
+    pagesNumber() {
       return Math.ceil(this.filter.rowsNumber / this.filter.rowsPerPage)
     },
     user() {
@@ -473,16 +416,15 @@ export default {
     ...mapGetters([
       'getUser'
     ]),
-    goBack() {
-      this.$emit('goBack');
-    },
-    getSuppliers() {
-      this.$axios.get(urls.SUPPLIERS + '/all')
-        .then(res => {
-          this.suppliers.splice(0, this.suppliers.length, ...res.data)
-        }).catch(err => {
-          this.showError(err)
-      }).finally(() => {})
+
+    rowEdit(row) {
+      this.$set(this.bean, 'id', row.id);
+      this.$set(this.bean, 'amount', row.amount);
+      this.$set(this.bean, 'price', row.price);
+      this.$set(this.bean, 'productsId', row.products.id);
+      this.$set(this.bean, 'storesId', row.stores.id);
+      this.$set(this.bean, 'userTradesId', row.userTrades.id);
+      this.showForm();
     },
 
     getProducts() {
@@ -491,67 +433,16 @@ export default {
           this.products.splice(0, this.products.length, ...res.data)
         }).catch(err => {
         this.showError(err)
-      }).finally(() => {})
-    },
-
-    rowEdit(row) {
-      this.$set(this.bean, 'amount', row.amount);
-      this.$set(this.bean, 'id', row.id);
-      this.$set(this.bean, 'price', row.price);
-      this.$set(this.bean, 'productsId', row.products.id);
-      this.$set(this.bean, 'returned', row.returned);
-      this.$set(this.bean, 'suppliersId', row.suppliers.id);
-      this.showForm();
-    },
-    rowAdd() {
-      this.productData = []
-      let productBeanDefault = {
-          suppliersId: this.supplierId,
-          productsId: null,
-          price: null,
-          amount: null,
-      }
-      this.productData.push(productBeanDefault)
-      this.showForm2();
-    },
-    showForm2() {
-      this.formDialog2 = true;
-    },
-    closeForm2() {
-      this.formDialog2 = false;
-    },
-    addProductBean() {
-      let productBeanDefault = {
-        suppliersId: this.supplierId,
-        productsId: null,
-        price: null,
-        amount: null,
-      }
-      this.productData.push(productBeanDefault)
-    },
-    onSubmitProduct() {
-      this.$axios.post(this.apiUrl, this.productData)
-        .then(response => {
-          this.closeForm2();
-          this.refreshTable();
-        }).catch(error => {
-        console.error(error);
       }).finally(() => {
-        this.loading = false;
-      });
+      })
     },
-    printMe() {
-      this.$htmlToPaper('print', this.options)
-      this.print = false
-    }
   },
   watch: {
     model(newval) {
-      this.$set(this.filter, 'page', newval-1);
+      this.$set(this.filter, 'page', newval - 1);
     }
   },
   mounted() {
-    this.getSuppliers();
     this.getProducts();
   }
 }
@@ -563,3 +454,4 @@ export default {
 }
 
 </style>
+

@@ -28,62 +28,9 @@
         {{$t('system.no_matching_found')}}
       </template>
 
-      <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
-          <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTransactions(props.row.id)" class="q-mr-xs">
-            <q-tooltip content-class="bg-secondary">
-              Tranzaksiyalar
-            </q-tooltip>
-          </q-btn>
-          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
-            <q-tooltip content-class="bg-secondary">
-              {{$t('system.edit')}}
-            </q-tooltip>
-          </q-btn>
-          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
-            <q-tooltip content-class="bg-negative">
-              {{$t('system.delete')}}
-            </q-tooltip>
-          </q-btn>
-        </q-td>
-      </template>
-
-      <template v-slot:top="props">
-        <q-input v-model="filter.fullName" :placeholder="$t('xshop_captions.l_fullname')"
-                 :label="$t('xshop_captions.l_fullname')"
-                 class="q-pa-md col-4" dense outlined>
-          <template v-slot:append>
-            <q-icon v-if="filter.name" name="close" color="primary" @click.stop="filter.name = ''"
-                    class="cursor-pointer"/>
-          </template>
-        </q-input>
-        <q-space/>
-
-<!--&lt;!&ndash;        view&ndash;&gt;-->
-<!--        <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades(props.row.id)" class="q-mr-xs">-->
-<!--          <q-tooltip content-class="bg-secondary">-->
-<!--            {{$t('xshop_captions.l_show_trades')}}-->
-<!--          </q-tooltip>-->
-<!--        </q-btn>-->
-
-<!--        refresh-->
-        <q-btn icon="refresh" class="q-mr-sm bg-primary text-white" @click="refreshTable" dense>
-          <q-tooltip content-class="bg-primary">
-            {{ $t('xshop_captions.l_refresh') }}
-          </q-tooltip>
-        </q-btn>
-
-<!--        add-->
-        <q-btn icon="add" class="bg-primary text-white" @click="rowAdd" dense>
-          <q-tooltip content-class="bg-primary">
-            {{ $t('system.add') }}
-          </q-tooltip>
-        </q-btn>
-      </template>
-
       <template v-slot:body-cell-passport="props">
         <q-td :props="props">
-          <div v-if="props.row.passportNumber&&props.row.passportSeries">
+          <div v-if="props.row.passportSeries && props.row.passportNumber">
             {{props.row.passportSeries}} {{props.row.passportNumber}}
           </div>
           <div v-else>
@@ -109,6 +56,42 @@
         </q-td>
       </template>
 
+      <template v-slot:body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn size="sm" dense color="warning" icon="mdi-eye"
+                 @click.stop="goChild({ workers: {id: props.row.id, fullName: props.row.fullName}, tab: '2'})" class="q-mr-xs">
+          </q-btn>
+          <q-btn size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goChild({ workers: {id: props.row.id, fullName: props.row.fullName}, tab: '3'})" class="q-mr-sm">
+          </q-btn>
+          <q-btn
+            v-if="!props.row.checked"
+            size="sm" dense color="positive" icon="mdi-check" @click.stop="cameToWork(props.row.id, props.row.dailySalary)">
+            <q-tooltip content-class="bg-dark">
+              Ишга келди
+            </q-tooltip>
+          </q-btn>
+        </q-td>
+      </template>
+
+
+      <template v-slot:top="props">
+        <q-input v-model="filter.fullName" :placeholder="$t('xshop_captions.l_worker_name')"
+                 :label="$t('xshop_captions.l_worker_name')"
+                 class="q-pa-md col-4" dense outlined>
+          <template v-slot:append>
+            <q-icon v-if="filter.fullName" name="close" color="primary" @click.stop="filter.fullName = ''"
+                    class="cursor-pointer"/>
+          </template>
+        </q-input>
+        <q-space/>
+
+        <q-btn icon="refresh" class="q-mr-sm bg-primary text-white" @click="refreshTable" dense>
+          <q-tooltip content-class="bg-primary">
+            {{ $t('xshop_captions.l_refresh') }}
+          </q-tooltip>
+        </q-btn>
+
+      </template>
       <template v-slot:bottom>
         <div class="full-width row justify-center q-mt-md">
           <q-pagination
@@ -126,12 +109,12 @@
                            :on-validation-error="onValidationError">
 
       <div class="row">
-        <q-input v-model="bean.fullName" :placeholder="$t('xshop_captions.l_fullname')"
+        <q-input v-model="bean.fullName"
                  :label="$t('xshop_captions.l_fullname')"
                  class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.phone" :placeholder="$t('xshop_captions.l_phone')"
+        <q-input v-model="bean.phone"
                  :label="$t('xshop_captions.l_phone')"
                  mask="+### (##) ### ## ##"
                  unmasked-value
@@ -139,17 +122,45 @@
                  class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
-        <q-input v-model="bean.passportSeries" :placeholder="$t('xshop_captions.l_p_seria')"
+        <q-input v-model="bean.passportSeries"
                  :label="$t('xshop_captions.l_p_seria')"
                  class="q-pa-md q-pr-none col-5 col-md-3" dense
                  mask="AA"
                  hint="AA">
         </q-input>
-        <q-input v-model="bean.passportNumber" :placeholder="$t('xshop_captions.l_p_number')"
+        <q-input v-model="bean.passportNumber"
                  :label="$t('xshop_captions.l_p_number')"
                  class="q-pa-md q-pl-none col-7 col-md-9" dense
                  mask="#######"
                  hint="1234567">
+        </q-input>
+
+        <q-select
+          v-model="bean.workerTypesId"
+          emit-value
+          map-options
+          :options="workerTypes"
+          option-value="id"
+          option-label="nameBg"
+          :label="$t('xshop_captions.l_worker_type')"
+
+
+          class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
+          lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
+        >
+          <template v-slot:append>
+            <q-icon name="close" color="primary" @click.stop="bean.workerTypesId = null"
+                    class="cursor-pointer"/>
+          </template>
+          <template v-slot:selected-item="props">
+            <div>{{props.opt.nameBg}}</div>
+          </template>
+        </q-select>
+
+        <q-input v-model="bean.salary"
+                 :label="'Иш хақи миқдори'"
+                 class="q-pa-md q-pl-none col-12 col-md-12" dense
+                 inputmode="number">
         </q-input>
       </div>
 
@@ -166,22 +177,25 @@ import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
 
 export default {
-  name: "Founders",
+  name: "WorkersManagement",
   components: {StandartInputDialog},
   mixins: [StandartTable],
   data() {
     return {
-      apiUrl: urls.FOUNDERS,
+      apiUrl: urls.WORKERS + "/report",
       loading: false,
       rowKey: 'id',
       selectedRows: [],
       bean: {},
+      beanWorked: {},
       cardCheckField: 'name',
       beanDefault: {
         id: null,
-        nameUz: '',
-        nameRu: '',
-        nameBg: '',
+        fullName: '',
+        phone: '',
+        passportSeries: '',
+        passportNumber: null,
+        workerTypesId: null
       },
       formDialog: false,
       filter: {
@@ -199,6 +213,7 @@ export default {
            align: 'left',
           classes: 'col-1'
         },
+
         {
           name: 'fullName',
           field: row => row.fullName,
@@ -209,56 +224,38 @@ export default {
           classes: 'col-1 text-bold',
         },
         {
-          name: 'phone',
-          field: row => this.phone_format(row.phone),
-          label: this.$t('xshop_captions.l_phone'),
+          name: 'balance',
+          field: row => this.formatPrice(row.balance) + ' сўм',
+          label: "Берилиши керак",
           format: val => `${val}`,
 
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'passport',
-          field: row => `${row.passportSeries} ${row.passportNumber}`,
-          label: this.$t('xshop_captions.l_pasport'),
+          name: 'totalSalary',
+          field: row => this.formatPrice(row.totalSalary),
+          label: 'Жами иш хақи',
           format: val => `${val}`,
 
           align: 'left',
           classes: 'col-1',
         },
         {
-          name: 'modifyDate',
-          field: row => row.modifiedDate,
-          label: this.$t('xshop_captions.l_update_date'),
+          name: 'givenSalary',
+          field: row => this.formatPrice(row.givenSalary),
+          label: "Берилган иш хақи",
           format: val => `${val}`,
 
           align: 'left',
           classes: 'col-1',
         },
-        {
-          name: 'createdDate',
-          field: row => row.createdDate,
-          label: this.$t('xshop_captions.l_created_date'),
-          format: val => `${val}`,
 
-          align: 'left',
-          classes: 'col-1',
-        },
         {
-          name: 'modifyBy',
-          field: row => row.modifiedBy,
-          label: "Ўзгартирган фойдаланувчи",
+          name: 'dailySalary',
+          field: row => this.formatPrice(row.dailySalary),
+          label: 'Иш хақи (кунлик)',
           format: val => `${val}`,
-
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'createdBy',
-          field: row => row.createdBy,
-          label: 'Яратган фойдаланувчи',
-          format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -266,6 +263,7 @@ export default {
       ],
       data: [],
       regions: [],
+      workerTypes: [],
       model: 1
     }
   },
@@ -275,9 +273,26 @@ export default {
     }
   },
   methods: {
-    goTransactions(id) {
-      this.$emit('goTab', id)
-    }
+
+    goChild(val) {
+      this.$emit('goTab', val)
+    },
+
+    cameToWork(id, salary) {
+      this.loading = true;
+      this.beanWorked.workersId = id;
+      this.beanWorked.salary = salary;
+      this.$axios.post(urls.WORKER_WORKED_DAYS, this.beanWorked)
+        .then(response => {
+          this.closeForm();
+          this.refreshTable();
+        }).catch(error => {
+        this.showError(error)
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
   },
   watch: {
     model(newval) {
@@ -285,6 +300,7 @@ export default {
     }
   },
   mounted() {
+
   }
 }
 </script>

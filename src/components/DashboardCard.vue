@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     getValue() {
-      return this.number_format_old(this.value * 1, 0,  '')
+      return this.formatPrice(this.value)
     }
   },
 }

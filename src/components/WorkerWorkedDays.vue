@@ -87,12 +87,12 @@
           :label="$t('xshop_captions.l_to_date')"
           class="q-pa-sm col-3 text-white"
         />
-        <q-input v-model="filter.amount"
+        <q-input v-model="filter.salary"
                  :label="$t('xshop_captions.l_amount')"
                  type="number"
                  class="q-pa-sm col-2" dense outlined>
           <template v-slot:append>
-            <q-icon v-if="filter.amount" name="close" color="primary" @click.stop="filter.amount = ''"
+            <q-icon v-if="filter.salary" name="close" color="primary" @click.stop="filter.salary = ''"
                     class="cursor-pointer"/>
           </template>
         </q-input>
@@ -100,12 +100,6 @@
         <q-btn icon="refresh" class="q-mr-sm bg-primary text-white" @click="refreshTable" dense>
           <q-tooltip content-class="bg-primary">
             {{ $t('xshop_captions.l_refresh') }}
-          </q-tooltip>
-        </q-btn>
-
-        <q-btn v-if="workers.id" icon="add" class="bg-primary text-white" @click="rowAdd" dense>
-          <q-tooltip content-class="bg-primary">
-            {{ $t('system.add') }}
           </q-tooltip>
         </q-btn>
       </template>
@@ -162,7 +156,7 @@ import StandartInputDialog from "components/base/StandartInputDialog";
 import DateInput from "components/base/DateInput.vue";
 
 export default {
-  name: "WorkersSalary",
+  name: "WorkerWorkedDays",
   components: {DateInput, StandartInputDialog},
   mixins: [StandartTable],
   props: {
@@ -173,7 +167,7 @@ export default {
   },
   data() {
     return {
-      apiUrl: urls.WORKER_SALARY,
+      apiUrl: urls.WORKER_WORKED_DAYS,
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -181,9 +175,9 @@ export default {
       cardCheckField: 'name',
       beanDefault: {
         id: null,
-        amount: null,
+        salary: null,
         workersId: null,
-        fullName: null
+        workedDate: null
       },
       formDialog: false,
       filter: {
@@ -203,47 +197,29 @@ export default {
           classes: 'col-1'
         },
         {
-          name: 'amount',
+          name: 'salary',
           required: true,
-          label: 'Маош миқдори (сўм)',
+          label: 'Иш хақи миқдори (сўм)',
           align: 'left',
-          field: row => this.formatPrice(row.amount),
+          field: row => this.formatPrice(row.salary),
+          classes: 'col-1 text-bold',
+        },
+        {
+          name: 'workedDate',
+          field: row => row.workedDate,
+          label: 'Иш куни',
+          format: val => `${val}`,
+          align: 'left',
           classes: 'col-1 text-bold',
         },
         {
           name: 'fullName',
           field: row => row.workers.fullName,
-          label: this.$t('xshop_captions.l_fio'),
-          format: val => `${val}`,
-          align: 'left',
-          classes: 'col-1 text-bold',
-        },
-        {
-          name: 'phone',
-          field: row => this.phone_format(row.workers.phone),
           label: this.$t('xshop_captions.l_phone'),
           format: val => `${val}`,
           align: 'left',
           classes: 'col-1',
         },
-        {
-          name: 'passport',
-          field: row => `${row.workers.passportSeries} ${row.workers.passportNumber}`,
-          label: this.$t('xshop_captions.l_pasport'),
-          format: val => `${val}`,
-          align: 'left',
-          classes: 'col-1',
-        },
-
-        {
-          name: 'workerType',
-          field: row => row.workers.workerTypes.nameBg,
-          label: this.$t('xshop_captions.l_worker_type'),
-          format: val => `${val}`,
-          align: 'left',
-          classes: 'col-1',
-        },
-
         {
           name: 'modifyDate',
           field: row => row.modifiedDate,

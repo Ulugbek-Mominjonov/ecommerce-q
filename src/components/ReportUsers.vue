@@ -193,7 +193,7 @@ export default {
         },
         {
           name: 'balance',
-          field: row => this.number_format_old(row.balance, 0, '.', ' '),
+          field: row => this.formatPrice(row.balance),
           label: this.$t('xshop_captions.l_balance'),
           format: val => `${val}`,
 
@@ -202,7 +202,7 @@ export default {
         },
         {
           name: 'totalToKassa',
-          field: row => this.number_format_old(row.totalToKassa, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalToKassa),
           label: "Кассага",
           format: val => `${val}`,
 
@@ -211,7 +211,7 @@ export default {
         },
         {
           name: 'totalFromKassa',
-          field: row => this.number_format_old(row.totalFromKassa, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalFromKassa),
           label: "Кассадан",
           format: val => `${val}`,
 
@@ -220,7 +220,7 @@ export default {
         },
         {
           name: 'totalToStores',
-          field: row => this.number_format_old(row.totalToStores, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalToStores),
           label: "Дўконга",
           format: val => `${val}`,
 
@@ -229,7 +229,7 @@ export default {
         },
         {
           name: 'totalFromStores',
-          field: row => this.number_format_old(row.totalFromStores, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalFromStores),
           label: "Дўкондан",
           format: val => `${val}`,
 
@@ -239,7 +239,7 @@ export default {
 
         {
           name: 'totalToSuppliers',
-          field: row => this.number_format_old(row.totalToSuppliers, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalToSuppliers),
           label: "Таъминотчига",
           format: val => `${val}`,
 
@@ -248,7 +248,7 @@ export default {
         },
         {
           name: 'totalFromSuppliers',
-          field: row => this.number_format_old(row.totalFromSuppliers, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalFromSuppliers),
           label: "Таъминотчидан",
           format: val => `${val}`,
 
@@ -257,7 +257,7 @@ export default {
         },
         {
           name: 'totalToCustomers',
-          field: row => this.number_format_old(row.totalToCustomers, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalToCustomers),
           label: "Харидорга",
           format: val => `${val}`,
 
@@ -266,7 +266,7 @@ export default {
         },
         {
           name: 'totalFromCustomers',
-          field: row => this.number_format_old(row.totalFromCustomers, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalFromCustomers),
           label: "Харидордан",
           format: val => `${val}`,
 
@@ -275,7 +275,7 @@ export default {
         },
         {
           name: 'totalToFounders',
-          field: row => this.number_format_old(row.totalToFounders, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalToFounders),
           label: "Таъсисчига",
           format: val => `${val}`,
 
@@ -284,7 +284,7 @@ export default {
         },
         {
           name: 'totalFromFounders',
-          field: row => this.number_format_old(row.totalFromFounders, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalFromFounders),
           label: "Таъсисчидан",
           format: val => `${val}`,
 
@@ -293,7 +293,7 @@ export default {
         },
         {
           name: 'distributorEarning',
-          field: row => this.number_format_old(row.distributorEarning, 0, '.', ' '),
+          field: row => this.formatPrice(row.distributorEarning),
           label: "Дистрибутор даромади",
           format: val => `${val}`,
 

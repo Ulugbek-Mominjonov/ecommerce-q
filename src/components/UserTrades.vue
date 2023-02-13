@@ -171,7 +171,7 @@
           option-value="id"
           option-label="nameBg"
           :label="$t('xshop_captions.l_products')"
-          class="q-pa-md col-12 col-md-12" dense
+          class="q-pa-md col-12 col-md-6 col-lg-6" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
           <template v-slot:append>
@@ -182,6 +182,11 @@
             <div>{{ props.opt.nameBg }}</div>
           </template>
         </q-select>
+        <q-input v-model="bean.sold"
+                 :label="'Етказилган'"
+                 readonly
+                 class="q-pa-md col-12 col-md-6" dense>
+        </q-input>
         <q-input v-model="bean.price"
                  :label="$t('xshop_captions.l_cost')"
                  class="q-pa-md col-12 col-md-6" dense
@@ -324,7 +329,7 @@ export default {
         },
         {
           name: 'amount',
-          field: row => this.number_format_old(row.amount, 0, '.', ' ') + " " + row.products.measureTypes.nameBg,
+          field: row => this.formatPrice(row.amount) + " " + row.products.measureTypes.nameBg,
           label: this.$t('xshop_captions.l_buy_product'),
           format: val => `${val}`,
 
@@ -332,8 +337,17 @@ export default {
           classes: 'col-1',
         },
         {
+          name: 'delivered',
+          field: row => this.formatPrice(row.sold) + " " + row.products.measureTypes.nameBg,
+          label: "Етказилган",
+          format: val => `${val}`,
+
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
           name: 'price',
-          field: row => this.number_format_old(row.price, 0, '.', ' ') + ' сўм',
+          field: row => this.formatPrice(row.price) + ' сўм',
           label: this.$t('xshop_captions.l_one_product_cost'),
           format: val => `${val}`,
 
@@ -342,7 +356,7 @@ export default {
         },
         {
           name: 'sellingPrice',
-          field: row => this.number_format_old(row.sellingPrice, 0, '.', ' ') + ' сўм',
+          field: row => this.formatPrice(row.sellingPrice) + ' сўм',
           label: 'Сотиладиган нархи',
           format: val => `${val}`,
 
@@ -352,7 +366,7 @@ export default {
 
         {
           name: 'allPrice',
-          field: row => this.number_format_old(row.price * row.amount, 0, '.', ' ') + ' сўм',
+          field: row => this.formatPrice(row.price * row.amount) + ' сўм',
           label: this.$t('xshop_captions.l_all'),
           format: val => `${val}`,
 
@@ -362,7 +376,7 @@ export default {
 
         {
           name: 'returned',
-          field: row => this.number_format_old(row.returned, 0, '.', ' ') + " " + row.products.measureTypes.nameBg,
+          field: row => this.formatPrice(row.returned) + " " + row.products.measureTypes.nameBg,
           label: this.$t('xshop_captions.l_returned_amount'),
           format: val => `${val}`,
 
@@ -372,7 +386,7 @@ export default {
 
         {
           name: 'returnPrice',
-          field: row => this.number_format_old(row.price * row.returned, 0, '.', ' ') + ' сўм',
+          field: row => this.formatPrice(row.price * row.returned) + ' сўм',
           label: this.$t('xshop_captions.l_returned_summ'),
           format: val => `${val}`,
 
@@ -382,7 +396,7 @@ export default {
 
         {
           name: 'fullName',
-          field: row => row.users.fullName,
+          field: row => row.users.workers.fullName,
           label: this.$t('xshop_captions.l_fio'),
           format: val => `${val}`,
 
@@ -391,7 +405,7 @@ export default {
         },
         {
           name: 'phone',
-          field: row => this.phone_format(row.users.phone),
+          field: row => this.phone_format(row.users.workers.phone),
           label: this.$t('xshop_captions.l_phone'),
           format: val => `${val}`,
 
@@ -400,7 +414,7 @@ export default {
         },
         {
           name: 'passport',
-          field: row => `${row.users.passportSeries} ${row.users.passportNumber}`,
+          field: row => `${row.users.workers.passportSeries} ${row.users.workers.passportNumber}`,
           label: this.$t('xshop_captions.l_pasport'),
           format: val => `${val}`,
 
@@ -506,9 +520,11 @@ export default {
       this.$set(this.bean, 'id', row.id);
       this.$set(this.bean, 'amount', row.amount);
       this.$set(this.bean, 'price', row.price);
+      this.$set(this.bean, 'sold', row.sold);
       this.$set(this.bean, 'sellingPrice', row.sellingPrice);
       this.$set(this.bean, 'productsId', row.products.id);
       this.$set(this.bean, 'usersId', this.usersId);
+      this.$set(this.bean, 'returned', row.returned);
       this.showForm();
     },
     rowAdd() {

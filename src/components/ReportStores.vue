@@ -73,6 +73,19 @@
         </q-td>
       </template>
 
+      <template v-slot:body-cell-totalPayment="props">
+        <q-td :props="props">
+          <div v-if="props.row.totalPayment">
+            Нақд: {{ formatPrice(props.row.totalCashPayment) }} <br>
+            Пластик: {{ formatPrice(props.row.totalCardPayment) }} <br>
+            Жами: {{ formatPrice(props.row.totalPayment) }}
+          </div>
+          <div v-else>
+            0 {{ $t('xshop_captions.l_sum') }}
+          </div>
+        </q-td>
+      </template>
+
       <template v-slot:body-cell-distributorName="props">
         <q-td :props="props">
           <div>
@@ -151,7 +164,7 @@ export default {
         },
         {
           name: 'balance',
-          field: row => this.number_format_old(row.balance, 0, '.', ' ') + " сўм",
+          field: row => this.formatPrice(row.balance) + " сўм",
           label: "Баланс",
           format: val => `${val}`,
 
@@ -178,7 +191,7 @@ export default {
         },
         {
           name: 'totalTrade',
-          field: row => this.number_format_old(row.totalTrade, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalTrade),
           label: "Умумий савдо",
           format: val => `${val}`,
 
@@ -187,7 +200,7 @@ export default {
         },
         {
           name: 'totalPayment',
-          field: row => this.number_format_old(row.totalPayment, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalPayment),
           label: "Умумий тўлов",
           format: val => `${val}`,
 
@@ -196,7 +209,7 @@ export default {
         },
         {
           name: 'totalReturnedTrade',
-          field: row => this.number_format_old(row.totalReturnedTrade, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalReturnedTrade),
           label: "Умумий қайтарилган савдо",
           format: val => `${val}`,
 
@@ -205,7 +218,7 @@ export default {
         },
         {
           name: 'totalReturnedPayment',
-          field: row => this.number_format_old(row.totalReturnedPayment, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalReturnedPayment),
           label: "Умумий қайтарилган тўлов",
           format: val => `${val}`,
 

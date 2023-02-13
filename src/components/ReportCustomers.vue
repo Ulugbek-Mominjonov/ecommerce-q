@@ -60,9 +60,9 @@
       <template v-slot:body-cell-totalPayment="props">
         <q-td :props="props">
           <div v-if="props.row.totalPayment">
-            Нақд: {{ number_format_old(props.row.totalCashPayment, 0, '.', ' ') }} <br>
-            Пластик: {{ number_format_old(props.row.totalCardPayment, 0, '.', ' ') }} <br>
-            Жами: {{ number_format_old(props.row.totalPayment, 0, '.', ' ') }}
+            Нақд: {{ formatPrice(props.row.totalCashPayment) }} <br>
+            Пластик: {{ formatPrice(props.row.totalCardPayment) }} <br>
+            Жами: {{ formatPrice(props.row.totalPayment) }}
           </div>
           <div v-else>
             0 {{ $t('xshop_captions.l_sum') }}
@@ -73,7 +73,7 @@
       <template v-slot:body-cell-balance="props">
         <q-td :props="props">
           <div v-if="props.row.balance">
-            <b>{{ number_format_old(props.row.balance) }} {{ $t('xshop_captions.l_sum') }}</b>
+            <b>{{ formatPrice(props.row.balance) }} {{ $t('xshop_captions.l_sum') }}</b>
           </div>
           <div v-else>
             0 {{ $t('xshop_captions.l_sum') }}
@@ -238,7 +238,7 @@ export default {
         },
         {
           name: 'balance',
-          field: row => this.number_format_old(row.balance, 0, '.', ' '),
+          field: row => this.formatPrice(row.balance, 0, ),
           label: "баланс",
           format: val => `${val}`,
 
@@ -247,7 +247,7 @@ export default {
         },
         {
           name: 'totalTrade',
-          field: row => this.number_format_old(row.totalTrade, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalTrade, 0, ),
           label: "Умумий савдо",
           format: val => `${val}`,
 
@@ -256,7 +256,7 @@ export default {
         },
         {
           name: 'totalPayment',
-          field: row => this.number_format_old(row.totalPayment, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalPayment, 0, ),
           label: "Умумий тўлов",
           format: val => `${val}`,
 
@@ -265,7 +265,7 @@ export default {
         },
         {
           name: 'totalReturnedTrade',
-          field: row => this.number_format_old(row.totalReturnedTrade, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalReturnedTrade, 0, ),
           label: "Қайтарилган умумий савдо",
           format: val => `${val}`,
 
@@ -274,7 +274,7 @@ export default {
         },
         {
           name: 'totalReturnedPayment',
-          field: row => this.number_format_old(row.totalReturnedPayment, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalReturnedPayment, 0, ),
           label: "Қайтарилган умумий тўлов",
           format: val => `${val}`,
 

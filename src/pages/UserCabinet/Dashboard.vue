@@ -149,7 +149,7 @@
           <template v-for="item in oldTradedStore">
             <q-timeline-entry
               icon="mdi-store">
-              <div class="text-bold">{{ item.storeName }} ( {{ formatPrice(item.balance) }} сўм ) &nbsp;&nbsp;&nbsp; <span class="text-negative">{{ item.lastTradeDate }}</span></div>
+              <div class="text-bold">{{ item.storeName }} ( {{ formatPrice(item.balance) }} сўм ) &nbsp;&nbsp;&nbsp; <span class="text-negative">{{ item.lastTradeDate.toString().substring(0,10) }}</span></div>
               <div class="text-primary">
                 <div>{{ item.ownerName }} ({{ item.phone }})</div>
               </div>

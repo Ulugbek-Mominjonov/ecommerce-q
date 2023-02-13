@@ -183,7 +183,7 @@ export default {
 
         {
           name: 'balance',
-          field: row => this.number_format_old(row.balance, 0, '.', ' '),
+          field: row => this.formatPrice(row.balance),
           label: this.$t('xshop_captions.l_balance'),
           format: val => `${val}`,
 
@@ -193,7 +193,7 @@ export default {
 
         {
           name: 'totalTrade',
-          field: row => this.number_format_old(row.totalTrade, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalTrade),
           label: "Умумий савдо",
           format: val => `${val}`,
 
@@ -202,7 +202,7 @@ export default {
         },
         {
           name: 'totalPayment',
-          field: row => this.number_format_old(row.totalPayment, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalPayment),
           label: "Умумий тўлов",
           format: val => `${val}`,
 
@@ -211,7 +211,7 @@ export default {
         },
         {
           name: 'totalReturnedTrade',
-          field: row => this.number_format_old(row.totalReturnedTrade, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalReturnedTrade),
           label: "Қайтарилган умумий савдо",
           format: val => `${val}`,
 
@@ -220,7 +220,7 @@ export default {
         },
         {
           name: 'totalReturnedPayment',
-          field: row => this.number_format_old(row.totalReturnedPayment, 0, '.', ' '),
+          field: row => this.formatPrice(row.totalReturnedPayment),
           label: "Қайтарилган умумий тўлов",
           format: val => `${val}`,
 

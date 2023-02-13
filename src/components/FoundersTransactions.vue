@@ -50,40 +50,18 @@
         <date-input
           v-model="filter.fromDate"
           :label="$t('xshop_captions.l_from_date')"
-          class="q-pa-sm col-2 text-white"
+          class="q-pa-sm col-3 text-white"
         />
         <date-input
           v-model="filter.toDate"
           :label="$t('xshop_captions.l_to_date')"
-          class="q-pa-sm col-2 text-white"
+          class="q-pa-sm col-3 text-white"
         />
 
-        <q-select
-          v-model="filter.income"
-          emit-value
-          map-options
-          :options="transactionsTypes"
-          option-value="id"
-          option-label="name"
-          :label="$t('xshop_captions.l_transactions_type')"
-
-
-          outlined
-          class="q-pa-sm col-2 col-md-2" dense
-          lazy-rules :rules="[val => val>=0 || this.$t('system.field_is_required')]"
-        >
-          <template v-slot:append>
-            <q-icon v-if="filter.income !== null" name="close" color="primary" @click.stop="filter.income = null"
-                    class="cursor-pointer"/>
-          </template>
-          <template v-slot:selected-item="props">
-            <div>{{props.opt.name}}</div>
-          </template>
-        </q-select>
-        <q-input v-model="filter.amount" :placeholder="$t('xshop_captions.l_amount')"
+        <q-input v-model="filter.amount"
                  :label="$t('xshop_captions.l_amount')"
                  type="number"
-                 class="q-pa-sm col-2" dense outlined>
+                 class="q-pa-sm col-3" dense outlined>
           <template v-slot:append>
             <q-icon v-if="filter.amount" name="close" color="primary" @click.stop="filter.amount = ''"
                     class="cursor-pointer"/>
@@ -103,10 +81,21 @@
         </q-btn>
       </template>
 
+      <template v-slot:body-cell-passport="props">
+        <q-td :props="props">
+          <div v-if="props.row.passportNumber&&props.row.passportSeries">
+            {{props.row.passportSeries}} {{props.row.passportNumber}}
+          </div>
+          <div v-else>
+            -- --- -- --
+          </div>
+        </q-td>
+      </template>
+
       <template v-slot:body-cell-incomeAmount="props">
         <q-td :props="props">
           <div v-if="props.row.income">
-            {{number_format_old(props.row.amount, 0, '.', ' ')}}
+            {{formatPrice(props.row.amount)}}
           </div>
           <div v-else>
             0
@@ -116,7 +105,7 @@
       <template v-slot:body-cell-outcomeAmount="props">
         <q-td :props="props">
           <div v-if="!props.row.income">
-            {{number_format_old(props.row.amount, 0, '.', ' ')}}
+            {{formatPrice(props.row.amount)}}
           </div>
           <div v-else>
             0
@@ -256,7 +245,7 @@ export default {
         income: null,
         fromDate: null,
         foundersId: this.founderId,
-        toDate: this.$dateutil.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 'YYYY-MM-DD'),
+        toDate: null,
       },
       columns: [
         {
@@ -352,11 +341,11 @@ export default {
       founders: [],
       transactionsTypes: [
         {
-          name: 'Kirim',
+          name: 'Кассага',
           id: 1
         },
         {
-          name: 'Chiqim',
+          name: 'Кассадан',
           id: 0
         }
       ]

@@ -330,7 +330,7 @@ export default {
           required: true,
           label: 'Маҳсулот нархи',
           align: 'left',
-          field: row => this.number_format_old(row.price, 0,'.', ''),
+          field: row => this.formatPrice(row.price, 0,'.', ''),
           sortable: true
         },
         {
@@ -338,7 +338,7 @@ export default {
           required: true,
           label: 'Маҳсулот миқдори',
           align: 'left',
-          field: row => this.number_format_old(row.amount, 0,'.', ''),
+          field: row => this.formatPrice(row.amount, 0,'.', ''),
           sortable: true
         },
         {
@@ -346,7 +346,7 @@ export default {
           required: true,
           label: 'Умумий нарх',
           align: 'left',
-          field: row => this.number_format_old(row.amount*row.price, 0,'.', ''),
+          field: row => this.formatPrice(row.amount*row.price, 0,'.', ''),
           sortable: true
         }
       ],
@@ -397,7 +397,7 @@ export default {
         },
         {
           name: 'amount',
-          field: row => this.number_format_old(row.amount, 0, '.', ' ') + " " + row.products.measureTypes.nameBg,
+          field: row => this.formatPrice(row.amount) + " " + row.products.measureTypes.nameBg,
           label: this.$t('xshop_captions.l_buy_product'),
           format: val => `${val}`,
 
@@ -406,7 +406,7 @@ export default {
         },
         {
           name: 'price',
-          field: row => this.number_format_old(row.price, 0, '.', ' ') + ' сўм',
+          field: row => this.formatPrice(row.price) + ' сўм',
           label: this.$t('xshop_captions.l_one_product_cost'),
           format: val => `${val}`,
 
@@ -416,7 +416,7 @@ export default {
 
         {
           name: 'allPrice',
-          field: row => this.number_format_old(row.price * row.amount, 0, '.', ' ') + ' сўм',
+          field: row => this.formatPrice(row.price * row.amount) + ' сўм',
           label: this.$t('xshop_captions.l_all'),
           format: val => `${val}`,
 
@@ -426,7 +426,7 @@ export default {
 
         {
           name: 'returned',
-          field: row => this.number_format_old(row.returned, 0, '.', ' ') + " " + row.products.measureTypes.nameBg,
+          field: row => this.formatPrice(row.returned) + " " + row.products.measureTypes.nameBg,
           label: this.$t('xshop_captions.l_returned_amount'),
           format: val => `${val}`,
 
@@ -436,7 +436,7 @@ export default {
 
         {
           name: 'returnPrice',
-          field: row => this.number_format_old(row.price * row.returned, 0, '.', ' ') + ' сўм',
+          field: row => this.formatPrice(row.price * row.returned) + ' сўм',
           label: this.$t('xshop_captions.l_returned_summ'),
           format: val => `${val}`,
 

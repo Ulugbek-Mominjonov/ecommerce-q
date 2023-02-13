@@ -102,7 +102,7 @@
       <template v-slot:body-cell-incomeAmount="props">
         <q-td :props="props">
           <div v-if="props.row.isToKassa">
-            {{number_format_old(props.row.amount, 0, '.', ' ')}} сўм
+            {{formatPrice(props.row.amount)}} сўм
           </div>
           <div v-else>
             0
@@ -112,7 +112,7 @@
       <template v-slot:body-cell-outcomeAmount="props">
         <q-td :props="props">
           <div v-if="!props.row.isToKassa">
-            {{number_format_old(props.row.amount, 0, '.', ' ')}} сўм
+            {{formatPrice(props.row.amount)}} сўм
           </div>
           <div v-else>
             0 сўм
@@ -173,7 +173,7 @@
           :options="users"
           option-value="id"
           option-label="username"
-          label="Foydalanuvchi"
+          label="ФойдаланувчиФойдаланувчи"
           class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >

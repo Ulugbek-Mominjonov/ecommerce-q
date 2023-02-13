@@ -102,10 +102,10 @@
       <template v-slot:body-cell-amount="props">
         <q-td :props="props">
           <div v-if="props.row.isPayment">
-            Тўлов <br> {{number_format_old(props.row.amount, 0, '.', ' ')}} сўм
+            Тўлов <br> {{formatPrice(props.row.amount)}} сўм
           </div>
           <div v-else>
-            Қайтариш <br> {{number_format_old(props.row.amount, 0, '.', ' ')}} сўм
+            Қайтариш <br> {{formatPrice(props.row.amount)}} сўм
           </div>
         </q-td>
       </template>
