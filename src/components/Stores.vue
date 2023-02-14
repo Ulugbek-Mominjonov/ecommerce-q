@@ -59,7 +59,7 @@
 
         <template v-slot:body-cell-qrcode="props">
           <q-td :props="props">
-            <div v-if="props.row.qrcode">
+            <div v-if="props.row.qrcode && getUser().user.roles.id === 1">
               <q-btn size="sm" dense color="positive" icon="mdi-eye" @click.stop="showQueryCode(props.row)" class="q-mr-sm">
                 <q-tooltip content-class="bg-positive">
                   Query кодни кўриш
@@ -75,12 +75,12 @@
 
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
-            <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
+            <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
               <q-tooltip content-class="bg-secondary">
                 {{$t('system.edit')}}
               </q-tooltip>
             </q-btn>
-            <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
+            <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
               <q-tooltip content-class="bg-negative">
                 {{$t('system.delete')}}
               </q-tooltip>
@@ -281,12 +281,10 @@
 
 <script>
 import {urls} from 'src/utils/constants';
-import {mapMutations} from 'vuex';
-import {mapState} from 'vuex';
+import {mapGetters} from 'vuex';
 import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
 import { yandexMap, ymapMarker } from 'vue-yandex-maps';
-import {date} from "quasar";
 
 export default {
   name: "Stores",
@@ -432,6 +430,9 @@ export default {
     }
   },
   methods: {
+    ...mapGetters([
+      'getUser'
+    ]),
     showQueryCode(row) {
       this.qrData = row
       console.log(row)
