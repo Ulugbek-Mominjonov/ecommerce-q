@@ -63,11 +63,6 @@
               {{ $t('system.edit') }}
             </q-tooltip>
           </q-btn>
-          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
-            <q-tooltip content-class="bg-negative">
-              {{ $t('system.delete') }}
-            </q-tooltip>
-          </q-btn>
         </q-td>
       </template>
 
@@ -184,6 +179,7 @@
         </q-select>
         <q-input v-model="bean.price"
                  :label="$t('xshop_captions.l_cost')"
+                 readonly
                  class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
@@ -191,6 +187,7 @@
                  :label="$t('xshop_captions.l_amount')"
                  class="q-pa-md col-12 col-md-6" dense
                  type="number"
+                 readonly
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
         <q-input v-model="bean.returned"
@@ -214,6 +211,7 @@
             map-options
             :options="products"
             option-value="id"
+            @input="item.price=products.filter(it => it.id === item.productsId)[0].customerPrice"
             option-label="nameBg"
             :label="$t('xshop_captions.l_products')"
             class="q-pa-md col-xs-12 col-sm-12 col-md-12 col-lg-12" dense
@@ -227,15 +225,16 @@
               <div>{{ props.opt.nameBg }}</div>
             </template>
           </q-select>
+          <q-input v-model="item.price"
+                   :label="$t('xshop_captions.l_cost')"
+                   class="q-pa-md col-12 col-md-6" dense
+                   readonly
+                   lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+          </q-input>
           <q-input v-model="item.amount"
                    :label="$t('xshop_captions.l_amount')"
                    class="q-pa-md col-12 col-md-6" dense
                    type="number"
-                   lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
-          </q-input>
-          <q-input v-model="item.price"
-                   :label="$t('xshop_captions.l_cost')"
-                   class="q-pa-md col-12 col-md-6" dense
                    lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
           </q-input>
         </div>
@@ -623,6 +622,10 @@ export default {
       this.totalTradeAmount = a;
       this.$htmlToPaper('print', this.options)
       this.print = false;
+    },
+
+    getPrice(val){
+
     }
   },
   watch: {

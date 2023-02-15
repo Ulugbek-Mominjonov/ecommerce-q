@@ -63,17 +63,17 @@
               {{$t('xshop_captions.l_show_trades')}}
             </q-tooltip>
           </q-btn>
-          <q-btn size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
+          <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               Tranzaksiyalarni ko'rish
             </q-tooltip>
           </q-btn>
-          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
+          <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('system.edit')}}
             </q-tooltip>
           </q-btn>
-          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
+          <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
             <q-tooltip content-class="bg-negative">
               {{$t('system.delete')}}
             </q-tooltip>
@@ -156,7 +156,7 @@
 
 <script>
 import {urls} from 'src/utils/constants';
-import {mapMutations} from 'vuex';
+import {mapGetters, mapMutations} from 'vuex';
 import {mapState} from 'vuex';
 import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
@@ -271,6 +271,11 @@ export default {
     }
   },
   methods: {
+
+    ...mapGetters([
+      'getUser'
+    ]),
+
     goTrades(val) {
       console.log(val)
       this.$emit('goTab', val)

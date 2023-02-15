@@ -58,14 +58,9 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
+          <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('system.edit')}}
-            </q-tooltip>
-          </q-btn>
-          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
-            <q-tooltip content-class="bg-negative">
-              {{$t('system.delete')}}
             </q-tooltip>
           </q-btn>
         </q-td>
@@ -89,7 +84,7 @@
           </q-tooltip>
         </q-btn>
 
-        <q-btn icon="add" class="bg-primary text-white" @click="rowAdd" dense>
+        <q-btn v-if="getUser().user.roles.id === 1" icon="add" class="bg-primary text-white" @click="rowAdd" dense>
           <q-tooltip content-class="bg-primary">
             {{ $t('system.add') }}
           </q-tooltip>
@@ -174,7 +169,7 @@
 
 <script>
 import {urls} from 'src/utils/constants';
-import {mapMutations} from 'vuex';
+import {mapGetters, mapMutations} from 'vuex';
 import {mapState} from 'vuex';
 import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
@@ -313,6 +308,9 @@ export default {
     }
   },
   methods: {
+    ...mapGetters([
+      'getUser'
+    ]),
     getWorkerTypes() {
       this.$axios.get(urls.WORKER_TYPES + '/all')
         .then(res => {

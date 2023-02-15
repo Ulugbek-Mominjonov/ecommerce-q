@@ -106,6 +106,36 @@
                  class="q-pa-md col-12" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
+
+        <q-input v-model="bean.cost"
+                 :label="'Tan narx'"
+                 type="number"
+                 class="q-pa-md col-12" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
+
+        <q-input v-model="bean.distributorPrice"
+                 :label="'Narx (Distributor)'"
+                 type="number"
+                 class="q-pa-md col-12" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
+
+        <q-input v-model="bean.sellingPrice"
+                 :label="'Narx (Do\'kon)'"
+                 type="number"
+                 class="q-pa-md col-12" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
+
+        <q-input v-model="bean.customerPrice"
+                 :label="'Narx (Xaridor)'"
+                 type="number"
+                 class="q-pa-md col-12" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
+
+
         <q-select
           v-model="bean.measureTypesId"
           emit-value
@@ -156,7 +186,10 @@ export default {
         nameUz: '',
         nameBg: '',
         nameRu: '',
-        measureTypesId: null
+        cost: null,
+        distributorPrice: null,
+        sellingPrice: null,
+        customerPrice: null
       },
       formDialog: false,
       filter: {
@@ -179,7 +212,38 @@ export default {
           field: row => row.nameBg,
           label: this.$t('xshop_captions.l_name'),
           format: val => `${val}`,
-
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'cost',
+          field: row => this.formatPrice(row.cost),
+          label: "Tan narx",
+          format: val => `${val}`,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'distributorPrice',
+          field: row => this.formatPrice(row.distributorPrice),
+          label: "Narx (Distributor)",
+          format: val => `${val}`,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'sellingPrice',
+          field: row => this.formatPrice(row.sellingPrice),
+          label: "Narx (Do'kon)",
+          format: val => `${val}`,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'customerPrice',
+          field: row => this.formatPrice(row.customerPrice),
+          label: "Narx (Xaridor)",
+          format: val => `${val}`,
           align: 'left',
           classes: 'col-1',
         },

@@ -63,11 +63,6 @@
               {{ $t('system.edit') }}
             </q-tooltip>
           </q-btn>
-          <q-btn v-if="getUser().user.roles.id===1" size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
-            <q-tooltip content-class="bg-negative">
-              {{ $t('system.delete') }}
-            </q-tooltip>
-          </q-btn>
         </q-td>
       </template>
 

@@ -58,10 +58,10 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn size="sm" dense color="warning" icon="mdi-eye"
+          <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="warning" icon="mdi-eye"
                  @click.stop="goChild({ workers: {id: props.row.id, fullName: props.row.fullName}, tab: '2'})" class="q-mr-xs">
           </q-btn>
-          <q-btn size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goChild({ workers: {id: props.row.id, fullName: props.row.fullName}, tab: '3'})" class="q-mr-sm">
+          <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goChild({ workers: {id: props.row.id, fullName: props.row.fullName}, tab: '3'})" class="q-mr-sm">
           </q-btn>
           <q-btn
             v-if="!props.row.checked"
@@ -171,7 +171,7 @@
 
 <script>
 import {urls} from 'src/utils/constants';
-import {mapMutations} from 'vuex';
+import {mapGetters, mapMutations} from 'vuex';
 import {mapState} from 'vuex';
 import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
@@ -273,7 +273,9 @@ export default {
     }
   },
   methods: {
-
+    ...mapGetters([
+      'getUser'
+    ]),
     goChild(val) {
       this.$emit('goTab', val)
     },

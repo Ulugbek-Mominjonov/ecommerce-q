@@ -52,11 +52,6 @@
               {{$t('system.edit')}}
             </q-tooltip>
           </q-btn>
-          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
-            <q-tooltip content-class="bg-negative">
-              {{$t('system.delete')}}
-            </q-tooltip>
-          </q-btn>
         </q-td>
       </template>
 
@@ -225,6 +220,7 @@
             map-options
             :options="products"
             option-value="id"
+            @input="item.price=products.filter(it => it.id === item.productsId)[0].cost"
             option-label="nameBg"
             :label="$t('xshop_captions.l_products')"
 
@@ -249,6 +245,7 @@
           <q-input v-model="item.price" :placeholder="$t('xshop_captions.l_cost')"
                    :label="$t('xshop_captions.l_cost')"
                    class="q-pa-md col-12 col-md-6" dense
+                   readonly
                    lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
           </q-input>
         </div>

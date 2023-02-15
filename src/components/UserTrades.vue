@@ -58,14 +58,9 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
+          <q-btn v-if="getUser().user.roles.id < 3" size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{ $t('system.edit') }}
-            </q-tooltip>
-          </q-btn>
-          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
-            <q-tooltip content-class="bg-negative">
-              {{ $t('system.delete') }}
             </q-tooltip>
           </q-btn>
         </q-td>
@@ -168,16 +163,13 @@
           emit-value
           map-options
           :options="products"
+          readonly
           option-value="id"
           option-label="nameBg"
           :label="$t('xshop_captions.l_products')"
-          class="q-pa-md col-12 col-md-6 col-lg-6" dense
+          class="q-pa-md col-12" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
-          <template v-slot:append>
-            <q-icon v-if="bean.productsId" name="close" color="primary" @click.stop="bean.productsId = null"
-                    class="cursor-pointer"/>
-          </template>
           <template v-slot:selected-bean="props">
             <div>{{ props.opt.nameBg }}</div>
           </template>
@@ -185,27 +177,36 @@
         <q-input v-model="bean.sold"
                  :label="'Етказилган'"
                  readonly
-                 class="q-pa-md col-12 col-md-6" dense>
+                 class="q-pa-md col-12 col-md-4 col-lg-4" dense>
+        </q-input>
+        <q-input v-model="bean.cost"
+                 :label="'Tan narx'"
+                 readonly
+                 class="q-pa-md col-12 col-md-4 col-lg-4" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
         <q-input v-model="bean.price"
                  :label="$t('xshop_captions.l_cost')"
-                 class="q-pa-md col-12 col-md-6" dense
+                 class="q-pa-md col-12 col-md-4 col-lg-4" dense
+                 readonly
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
         <q-input v-model="bean.sellingPrice"
                  :label="'Сотиладиган нархи'"
-                 class="q-pa-md col-12 col-md-6" dense
+                 readonly
+                 class="q-pa-md col-12 col-md-4 col-lg-4" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
         <q-input v-model="bean.amount"
                  :label="$t('xshop_captions.l_amount')"
-                 class="q-pa-md col-12 col-md-6" dense
+                 class="q-pa-md col-12 col-md-4 col-lg-4" dense
                  type="number"
+                 readonly
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
         <q-input v-model="bean.returned"
                  :label="'Қайтарилган миқдор'"
-                 class="q-pa-md col-12 col-md-6" dense>
+                 class="q-pa-md col-12 col-md-4 col-lg-4" dense>
         </q-input>
       </div>
 
@@ -223,6 +224,9 @@
             emit-value
             map-options
             :options="products"
+            @input="item.price=products.filter(it => it.id === item.productsId)[0].distributorPrice;
+            item.sellingPrice=products.filter(it => it.id === item.productsId)[0].sellingPrice;
+            item.cost=products.filter(it => it.id === item.productsId)[0].cost;"
             option-value="id"
             option-label="nameBg"
             :label="$t('xshop_captions.l_products')"
@@ -243,14 +247,23 @@
                    type="number"
                    lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
           </q-input>
+          <q-input v-model="item.cost"
+                   label="Tan narxi"
+                   readonly
+                   type="password"
+                   class="q-pa-md col-12 col-md-4 col-lg-4" dense
+                   lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+          </q-input>
           <q-input v-model="item.price"
+                   readonly
                    :label="$t('xshop_captions.l_cost')"
-                   class="q-pa-md col-12 col-md-6" dense
+                   class="q-pa-md col-12 col-md-4 col-lg-4" dense
                    lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
           </q-input>
           <q-input v-model="item.sellingPrice"
                    :label="'Сотиладиган нархи'"
-                   class="q-pa-md col-12 col-md-6" dense
+                   readonly
+                   class="q-pa-md col-12 col-md-4 col-lg-4" dense
                    lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
           </q-input>
         </div>
@@ -519,6 +532,7 @@ export default {
     rowEdit(row) {
       this.$set(this.bean, 'id', row.id);
       this.$set(this.bean, 'amount', row.amount);
+      this.$set(this.bean, 'cost', row.cost);
       this.$set(this.bean, 'price', row.price);
       this.$set(this.bean, 'sold', row.sold);
       this.$set(this.bean, 'sellingPrice', row.sellingPrice);
