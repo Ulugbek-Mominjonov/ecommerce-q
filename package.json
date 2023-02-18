@@ -13,7 +13,7 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "quasar": "^1.0.0",
+    "quasar": "^1.22.5",
     "secure-ls": "^1.2.6",
     "vue-apexcharts": "^1.6.2",
     "vue-html-to-paper": "^1.4.4",

@@ -33,12 +33,23 @@
 
    {
      path: "/cutomers-transactions",
-     name: "customersTransactions",
+     name: "CustomersTransactions",
      show: true,
      component: ()=> import("../../pages/UserCabinet/PageCustomersTransactions.vue"),
      meta:{
        title: "Харидор транзаксиялри",
        icon: 'mdi-account-outline'
+     }
+   },
+
+   {
+     path: "/store-transactions",
+     name: "storeTransactions",
+     show: true,
+     component: ()=> import("../../pages/UserCabinet/PageStoreTransactions.vue"),
+     meta:{
+       title: "До'кон транзаксиялри",
+       icon: 'mdi-store-outline'
      }
    },
 ]

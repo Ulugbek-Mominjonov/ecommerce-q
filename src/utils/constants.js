@@ -37,6 +37,7 @@ export const urls = {
   FOUNDERS_TRANSACTIONS: prf.BASE_API + "/founder-transactions",
   SUPPLIERS_TRANSACTIONS: prf.BASE_API + "/supplier-transactions",
   CUSTOMERS_TRANSACTIONS: prf.BASE_API + "/customer-transactions",
+  STORE_TRANSACTIONS: prf.BASE_API + "/store-transactions",
   USERS_TRANSACTIONS: prf.BASE_API + "/user-transactions",
 
   // report
