@@ -47,5 +47,6 @@ export const urls = {
   DASHBOARD_LAST_TRADE_DATE_STORE: prf.BASE_API + "/dashboard/last-trade-date-stores",
   DASHBOARD_DEBITOR_CUSTOMER: prf.BASE_API + "/dashboard/top-debtor-customers",
   DASHBOARD_TOP_DISTRIBUTOR: prf.BASE_API + "/dashboard/top-less-trade-distributors",
+  DASHBOARD_CHART: prf.BASE_API + "/dashboard/income",
 }
 // 'http://65.108.83.140:8282/api/v1'

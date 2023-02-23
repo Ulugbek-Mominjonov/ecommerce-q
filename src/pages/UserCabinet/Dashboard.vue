@@ -15,6 +15,10 @@
                       icon="mdi-cash-check"/>
     </div>
 
+    <div class="q-mt-lg">
+      <dashboard-chart/>
+    </div>
+
     <div class="dashboard-statistic flex justify-between">
       <div class="statistic-item strore" style="height: 550px">
         <q-timeline color="primary">
@@ -167,10 +171,11 @@
 <script>
 import DashboardCard from "components/DashboardCard.vue";
 import {urls} from 'src/utils/constants';
+import DashboardChart from "components/DashboardChart.vue";
 
 export default {
   name: "Dashboard",
-  components: {DashboardCard},
+  components: {DashboardChart, DashboardCard},
   data() {
     return {
       cardInfo: {},
