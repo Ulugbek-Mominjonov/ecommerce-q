@@ -30,12 +30,12 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn v-if="props.row.id>3" size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
+          <q-btn v-if="props.row.id>4" size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('system.edit')}}
             </q-tooltip>
           </q-btn>
-          <q-btn v-if="props.row.id>3" size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
+          <q-btn v-if="props.row.id>4" size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
             <q-tooltip content-class="bg-negative">
               {{$t('system.delete')}}
             </q-tooltip>

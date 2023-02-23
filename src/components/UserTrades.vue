@@ -167,13 +167,18 @@
           option-value="id"
           option-label="nameBg"
           :label="$t('xshop_captions.l_products')"
-          class="q-pa-md col-12" dense
+          class="q-pa-md col-12 col-md-6" dense
           lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]"
         >
           <template v-slot:selected-bean="props">
             <div>{{ props.opt.nameBg }}</div>
           </template>
         </q-select>
+        <q-input v-model="bean.usersId"
+                 :label="'Foydalanuvchi idsi'"
+                 readonly
+                 class="q-pa-md col-12 col-md-6 col-lg-6" dense>
+        </q-input>
         <q-input v-model="bean.sold"
                  :label="'Етказилган'"
                  readonly
@@ -238,7 +243,7 @@
                       class="cursor-pointer"/>
             </template>
             <template v-slot:selected-item="props">
-              <div>{{ props.opt.nameBg }}</div>
+              <div>{{ props.opt.nameBg }} (Mavjud: {{props.opt.amount}} ta)</div>
             </template>
           </q-select>
           <q-input v-model="item.amount"
@@ -307,7 +312,7 @@ export default {
         price: null,
         returned: null,
         productsId: null,
-        usersId: this.usersId,
+        usersId: null,
       },
       formDialog: false,
       filter: {
@@ -531,13 +536,13 @@ export default {
 
     rowEdit(row) {
       this.$set(this.bean, 'id', row.id);
+      this.$set(this.bean, 'usersId', row.users.id);
       this.$set(this.bean, 'amount', row.amount);
       this.$set(this.bean, 'cost', row.cost);
       this.$set(this.bean, 'price', row.price);
       this.$set(this.bean, 'sold', row.sold);
       this.$set(this.bean, 'sellingPrice', row.sellingPrice);
       this.$set(this.bean, 'productsId', row.products.id);
-      this.$set(this.bean, 'usersId', this.usersId);
       this.$set(this.bean, 'returned', row.returned);
       this.showForm();
     },

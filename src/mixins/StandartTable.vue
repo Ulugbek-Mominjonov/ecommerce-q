@@ -36,7 +36,6 @@ export default {
         }).finally(() => {
         this.loading = false;
       });
-
     },
     showForm() {
       this.formDialog = true;

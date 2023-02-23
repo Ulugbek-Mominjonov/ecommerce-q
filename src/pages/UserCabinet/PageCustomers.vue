@@ -7,7 +7,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="2" class="q-pa-none">
-        <customer-trades :customersId = "customerId" @goBack="goCustomers"/>
+        <customer-trades :customersId = "customerId" :balance = "balance" @goBack="goCustomers"/>
       </q-tab-panel>
 
       <q-tab-panel name="3" class="q-pa-none">
@@ -33,6 +33,7 @@ export default {
     return {
       panel: "1",
       customerId: null,
+      balance: null,
     }
   },
   methods: {
@@ -41,6 +42,7 @@ export default {
     ]),
     goTrades(val) {
       this.customerId = val.id;
+      this.balance = val.balance;
       this.panel = val.tab;
     },
     goCustomers() {

@@ -177,22 +177,28 @@
             <div>{{ props.opt.nameBg }}</div>
           </template>
         </q-select>
-        <q-input v-model="bean.price"
-                 :label="$t('xshop_captions.l_cost')"
+        <q-input v-model="bean.customersId"
+                 :label="'Xaridor idsi'"
                  readonly
                  class="q-pa-md col-12 col-md-6" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
+        <q-input v-model="bean.price"
+                 :label="$t('xshop_captions.l_cost')"
+                 readonly
+                 class="q-pa-md col-12 col-md-4 colo-lg-4" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
         <q-input v-model="bean.amount"
                  :label="$t('xshop_captions.l_amount')"
-                 class="q-pa-md col-12 col-md-6" dense
+                 class="q-pa-md col-12 col-md-4 colo-lg-4" dense
                  type="number"
                  readonly
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
         <q-input v-model="bean.returned"
                  :label="'Қайтарилган миқдор'"
-                 class="q-pa-md col-12 col-md-6" dense>
+                 class="q-pa-md col-12 col-md-4 colo-lg-4" dense>
         </q-input>
       </div>
 
@@ -222,7 +228,7 @@
                       class="cursor-pointer"/>
             </template>
             <template v-slot:selected-item="props">
-              <div>{{ props.opt.nameBg }}</div>
+              <div>{{ props.opt.nameBg }} (Mavjud: {{props.opt.amount}} ta)</div>
             </template>
           </q-select>
           <q-input v-model="item.price"
@@ -239,6 +245,20 @@
           </q-input>
         </div>
         <q-btn color="teal-8" icon="add" round class="q-mx-auto block q-mt-lg" @click="addProductBean"/>
+        <q-input v-model="payment"
+                 :label="'Tulov миқдори'"
+                 class="q-pa-md col-12 col-md-4 colo-lg-4" dense>
+        </q-input>
+        <q-select
+          v-model="paymentType"
+          emit-value
+          map-options
+          :options="paymentTypes"
+          option-value="id"
+          option-label="name"
+          :label="'Нақд ёки пластик'"
+          class="q-pa-md col-12 col-md-12 col-lg-12" dense>
+        </q-select>
       </q-scroll-area>
 
     </standart-input-dialog>
@@ -264,16 +284,40 @@
         </template>
       </q-table>
 
-      <div class="flex justify-between q-mx-auto" style="width: 80%; margin-top: 40px">
+      <div class="flex justify-between q-mx-auto" style="width: 80%; margin-top: 20px">
         <p class="text-bold">Умумий савдо суммаси</p>
         <p>
-          {{ totalTradeAmount }} сўм
+          {{ formatPrice(totalTradeAmount) }} сўм
         </p>
       </div>
 
-      <div class="flex justify-between q-mx-auto" style="width: 80%; margin-top: 40px">
+      <div class="flex justify-between q-mx-auto" style="width: 80%;">
+        <p class="text-bold">Умумий тўлов суммаси</p>
+        <p>
+          {{ formatPrice(payment) }} сўм
+        </p>
+      </div>
+
+      <div v-if="(balance+totalTradeAmount-payment) > 0" class="flex justify-between q-mx-auto" style="width: 80%;">
+        <p class="text-bold">Қолган қарз миқдори</p>
+        <p>
+          {{ formatPrice(balance+totalTradeAmount-payment) }} сўм
+        </p>
+      </div>
+      <div v-else class="flex justify-between q-mx-auto" style="width: 80%;">
+        <p class="text-bold">Харидор хақдорлиги</p>
+        <p>
+          {{ formatPrice(-1*(balance+totalTradeAmount-payment)) }} сўм
+        </p>
+      </div>
+
+      <div class="flex justify-between q-mx-auto" style="width: 80%;">
         <p class="text-bold">Ҳисобчи</p>
         <p>{{user.user.workers.fullName}} ______ </p>
+      </div>
+      <div class="flex justify-between q-mx-auto" style="width: 80%;">
+        <p class="text-bold">Xaridor</p>
+        <p>{{customers.filter(item => item.id === customersId)[0].fullName}} ______ </p>
       </div>
     </div>
 
@@ -311,6 +355,10 @@ export default {
       type: Number,
       default: null
     },
+    balance: {
+      type: Number,
+      default: null
+    },
   },
   data() {
     return {
@@ -322,7 +370,7 @@ export default {
           align: 'left',
           field: row => row.productsId,
           format: val => `${val}`,
-          sortable: true
+          sortable: false
         },
         {
           name: 'cost',
@@ -330,7 +378,7 @@ export default {
           label: 'Маҳсулот нархи',
           align: 'left',
           field: row => this.formatPrice(row.price, 0,'.', ''),
-          sortable: true
+          sortable: false
         },
         {
           name: 'amount',
@@ -338,7 +386,7 @@ export default {
           label: 'Маҳсулот миқдори',
           align: 'left',
           field: row => this.formatPrice(row.amount, 0,'.', ''),
-          sortable: true
+          sortable: false
         },
         {
           name: 'totalAmount',
@@ -346,7 +394,7 @@ export default {
           label: 'Умумий нарх',
           align: 'left',
           field: row => this.formatPrice(row.amount*row.price, 0,'.', ''),
-          sortable: true
+          sortable: false
         }
       ],
       apiUrl: urls.CUSTOMER_TRADES,
@@ -438,7 +486,6 @@ export default {
           field: row => this.formatPrice(row.price * row.returned) + ' сўм',
           label: this.$t('xshop_captions.l_returned_summ'),
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -448,7 +495,6 @@ export default {
           field: row => row.customers.fullName,
           label: this.$t('xshop_captions.l_fio'),
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1 text-bold',
         },
@@ -457,7 +503,6 @@ export default {
           field: row => this.phone_format(row.customers.phone),
           label: this.$t('xshop_captions.l_phone'),
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -466,7 +511,6 @@ export default {
           field: row => `${row.customers.passportSeries} ${row.customers.passportNumber}`,
           label: this.$t('xshop_captions.l_pasport'),
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -476,7 +520,6 @@ export default {
           field: row => row.modifiedDate,
           label: this.$t('xshop_captions.l_update_date'),
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -485,7 +528,6 @@ export default {
           field: row => row.createdDate,
           label: this.$t('xshop_captions.l_created_date'),
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -494,7 +536,6 @@ export default {
           field: row => row.modifiedBy,
           label: "Ўзгартирган фойдаланувчи",
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -503,7 +544,6 @@ export default {
           field: row => row.createdBy,
           label: 'Яратган фойдаланувчи',
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -518,6 +558,18 @@ export default {
       formDialog2: false,
       print: false,
       totalTradeAmount: 0,
+      payment: null,
+      paymentType: null,
+      paymentTypes: [
+        {
+          name: 'Нақд',
+          id: 1
+        },
+        {
+          name: 'Пластик',
+          id: 2
+        }
+      ],
       options: {
         // name: '_self',
         specs: [
@@ -571,7 +623,7 @@ export default {
       this.$set(this.bean, 'amount', row.amount);
       this.$set(this.bean, 'price', row.price);
       this.$set(this.bean, 'productsId', row.products.id);
-      this.$set(this.bean, 'customersId', this.customersId);
+      this.$set(this.bean, 'customersId', row.customers.id);
       this.showForm();
     },
     rowAdd() {
@@ -602,12 +654,13 @@ export default {
     },
     onSubmitProduct() {
       this.loading = true
-      this.$axios.post(this.apiUrl, this.productData)
+      this.$axios.post(this.apiUrl,{"trades": this.productData, "payment": this.payment, "paymentType": this.paymentType})
         .then(response => {
           this.closeForm2();
           this.refreshTable();
           this.print = true;
-          this.loading = false
+          this.loading = false;
+          productData = [];
         }).catch(error => {
         console.error(error);
       }).finally(() => {
@@ -620,13 +673,9 @@ export default {
         a += this.productData[i].amount*this.productData[i].price;
       }
       this.totalTradeAmount = a;
-      this.$htmlToPaper('print', this.options)
+      setTimeout(() => this.$htmlToPaper('print', this.options), 1000);
       this.print = false;
     },
-
-    getPrice(val){
-
-    }
   },
   watch: {
     model(newval) {

@@ -58,12 +58,12 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades({id: props.row.id, tab: '2'})" class="q-mr-xs">
+          <q-btn size="sm" dense color="warning" icon="mdi-eye" @click.stop="goTrades({id: props.row.id, balance: props.row.balance, tab: '2'})" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('xshop_captions.l_show_trades')}}
             </q-tooltip>
           </q-btn>
-          <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
+          <q-btn v-if="getUser().user.roles.id < 3" size="sm" dense color="positive" icon="mdi-table-eye" @click.stop="goTrades({id: props.row.id, tab: '3'})" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               Tranzaksiyalarni ko'rish
             </q-tooltip>
@@ -71,11 +71,6 @@
           <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('system.edit')}}
-            </q-tooltip>
-          </q-btn>
-          <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
-            <q-tooltip content-class="bg-negative">
-              {{$t('system.delete')}}
             </q-tooltip>
           </q-btn>
         </q-td>
@@ -167,7 +162,7 @@ export default {
   mixins: [StandartTable],
   data() {
     return {
-      apiUrl: urls.CUSTOMERS,
+      apiUrl: urls.CUSTOMERS + "/report",
       loading: false,
       rowKey: 'id',
       selectedRows: [],
@@ -214,6 +209,14 @@ export default {
           classes: 'col-1',
         },
         {
+          name: 'balance',
+          field: row => this.formatPrice(row.balance) + " сўм",
+          label: "Баланс",
+          format: val => `${val}`,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
           name: 'passport',
           field: row => `${row.passportSeries} ${row.passportNumber}`,
           label: this.$t('xshop_captions.l_pasport'),
@@ -222,7 +225,6 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-
         {
           name: 'modifyDate',
           field: row => row.modifiedDate,
@@ -279,7 +281,48 @@ export default {
     goTrades(val) {
       console.log(val)
       this.$emit('goTab', val)
-    }
+    },
+
+    onSubmit() {
+      if (!!this.bean.id) {
+        this.loading = true;
+        this.$axios.put(urls.CUSTOMERS, this.bean)
+          .then(response => {
+            this.closeForm();
+            this.refreshTable();
+          }).catch(error => {
+          this.showError(error)
+          console.error(error);
+        }).finally(() => {
+          this.loading = false;
+        });
+      } else {
+        this.loading = true;
+        this.$axios.post(urls.CUSTOMERS, this.bean)
+          .then(response => {
+            this.closeForm();
+            this.refreshTable();
+          }).catch(error => {
+            this.showError(error)
+          console.error(error);
+        }).finally(() => {
+          this.loading = false;
+        });
+
+      }
+    },
+    rowDelete(row) {
+      this.ask(this.$t('app_name'), this.$t('system.confirm', [row.id]), () => {
+        this.$axios.delete(urls.CUSTOMERS + '/' + row.id)
+          .then(response => {
+            this.refreshTable();
+          }).catch(error => {
+          console.error(error);
+          this.showError(error)
+        });
+      });
+
+    },
   },
   watch: {
     model(newval) {

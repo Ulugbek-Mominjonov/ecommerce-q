@@ -47,7 +47,7 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
+          <q-btn v-if="getUser().user.roles.id===1 || getUser().user.roles.id===4 || supplierId === 1" size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{$t('system.edit')}}
             </q-tooltip>
@@ -141,7 +141,7 @@
             </q-tooltip>
           </q-btn>
 
-          <q-btn v-if="supplierId" icon="add" class="bg-primary text-white" @click="rowAdd" dense>
+          <q-btn v-if="getUser().user.roles.id !== 2 && supplierId && (getUser().user.roles.id === 1 || supplierId !== 1) " icon="add" class="bg-primary text-white" @click="rowAdd" dense>
             <q-tooltip content-class="bg-primary">
               {{ $t('system.add') }}
             </q-tooltip>

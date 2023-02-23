@@ -106,7 +106,7 @@
           </q-tooltip>
         </q-btn>
 
-        <q-btn icon="add" class="bg-primary text-white" @click="rowAdd" dense>
+        <q-btn v-if="getUser().user.roles.id===1 || getUser().user.roles.id===4" icon="add" class="bg-primary text-white" @click="rowAdd" dense>
           <q-tooltip content-class="bg-primary">
             {{ $t('system.add') }}
           </q-tooltip>

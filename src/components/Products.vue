@@ -47,12 +47,12 @@
 
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
-          <q-btn size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
+          <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="secondary" icon="edit" @click.stop="rowEdit(props.row)" class="q-mr-xs">
             <q-tooltip content-class="bg-secondary">
               {{ $t('system.edit') }}
             </q-tooltip>
           </q-btn>
-          <q-btn size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
+          <q-btn v-if="getUser().user.roles.id === 1" size="sm" dense color="negative" icon="delete" @click.stop="rowDelete(props.row)" class="q-mr-sm">
             <q-tooltip content-class="bg-negative">
               {{ $t('system.delete') }}
             </q-tooltip>
@@ -77,7 +77,7 @@
           </q-tooltip>
         </q-btn>
 
-        <q-btn icon="add" class="bg-primary text-white" @click="rowAdd" dense>
+        <q-btn v-if="getUser().user.roles.id === 1" icon="add" class="bg-primary text-white" @click="rowAdd" dense>
           <q-tooltip content-class="bg-primary">
             {{ $t('system.add') }}
           </q-tooltip>
@@ -103,6 +103,13 @@
       <div class="row">
         <q-input v-model="bean.nameBg"
                  :label="$t('xshop_captions.l_name')"
+                 class="q-pa-md col-12" dense
+                 lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
+        </q-input>
+
+        <q-input v-model="bean.amount"
+                 :label="'Miqdor'"
+                 type="number"
                  class="q-pa-md col-12" dense
                  lazy-rules :rules="[val => !!val || this.$t('system.field_is_required')]">
         </q-input>
@@ -164,7 +171,7 @@
 
 <script>
 import {urls} from 'src/utils/constants';
-import {mapMutations} from 'vuex';
+import {mapGetters, mapMutations} from 'vuex';
 import {mapState} from 'vuex';
 import StandartTable from "src/mixins/StandartTable";
 import StandartInputDialog from "components/base/StandartInputDialog";
@@ -211,6 +218,14 @@ export default {
           name: 'nameBg',
           field: row => row.nameBg,
           label: this.$t('xshop_captions.l_name'),
+          format: val => `${val}`,
+          align: 'left',
+          classes: 'col-1',
+        },
+        {
+          name: 'amount',
+          field: row => this.formatPrice(row.amount),
+          label: "Mavjud",
           format: val => `${val}`,
           align: 'left',
           classes: 'col-1',
@@ -306,6 +321,10 @@ export default {
     }
   },
   methods: {
+    ...mapGetters([
+      'getUser'
+    ]),
+
     getWorkerTypes() {
       this.$axios.get(urls.MEASURE_TYPES + '/all')
         .then(res => {

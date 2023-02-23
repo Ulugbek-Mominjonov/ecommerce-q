@@ -6,8 +6,8 @@ export const cfghttp = {
 }
 
 export const prf = {
-  BASE_API: 'http://localhost:8585/api/v1',
-  //BASE_API: '/java/api/v1',
+  //BASE_API: 'http://localhost:8585/api/v1',
+  BASE_API: '/java/api/v1',
 };
 
 export const urls = {
