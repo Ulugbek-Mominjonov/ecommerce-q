@@ -26,6 +26,15 @@ export default  {
         data: [11, 32, 45, 32, 34, 52, 41]
       }],
       chartOptions: {
+        title: {
+          text: 'Сотув, харид, касса, даромад диаграммаси',
+          style: {
+            fontSize:  '15px',
+            fontWeight:  'bold',
+            fontFamily:  undefined,
+            color:  '#263238'
+          },
+        },
         chart: {
           height: 350,
           type: 'area'
@@ -68,6 +77,7 @@ export default  {
       let paymentFromCustomers = [];
       let salaryForWorkers = [];
       let kassaOutputs = [];
+      let actualIncome = [];
 
       data.forEach(item => {
         month.push(item.month)
@@ -76,6 +86,7 @@ export default  {
         paymentFromCustomers.push(item.paymentFromCustomers)
         salaryForWorkers.push(item.salaryForWorkers)
         kassaOutputs.push(item.kassaOutputs)
+        actualIncome.push(item.actualIncome)
       })
       this.$refs.apexChart.updateOptions({
         xaxis: {
@@ -86,24 +97,28 @@ export default  {
 
       this.$refs.apexChart.updateSeries([
         {
-          name: 'paymentToSuppliers',
+          name: 'Таминотчидан харид',
           data: paymentToSuppliers
         },
         {
-          name: 'paymentFromUsers',
+          name: 'Тарқатувчига сотув',
           data: paymentFromUsers
         },
         {
-          name: 'paymentFromCustomers',
+          name: 'Харидорга сотув',
           data: paymentFromCustomers
         },
         {
-          name: 'salaryForWorkers',
+          name: 'Ишчиларга маош',
           data: salaryForWorkers
         },
         {
-          name: 'kassaOutputs',
+          name: 'Касса харажати',
           data: kassaOutputs
+        },
+        {
+          name: 'Даромад',
+          data: actualIncome
         },
       ])
     }

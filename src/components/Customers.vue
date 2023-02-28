@@ -216,51 +216,6 @@ export default {
           align: 'left',
           classes: 'col-1',
         },
-        {
-          name: 'passport',
-          field: row => `${row.passportSeries} ${row.passportNumber}`,
-          label: this.$t('xshop_captions.l_pasport'),
-          format: val => `${val}`,
-
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'modifyDate',
-          field: row => row.modifiedDate,
-          label: this.$t('xshop_captions.l_update_date'),
-          format: val => `${val}`,
-
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'createdDate',
-          field: row => row.createdDate,
-          label: this.$t('xshop_captions.l_created_date'),
-          format: val => `${val}`,
-
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'modifyBy',
-          field: row => row.modifiedBy,
-          label: "Ўзгартирган фойдаланувчи",
-          format: val => `${val}`,
-
-          align: 'left',
-          classes: 'col-1',
-        },
-        {
-          name: 'createdBy',
-          field: row => row.createdBy,
-          label: 'Яратган фойдаланувчи',
-          format: val => `${val}`,
-
-          align: 'left',
-          classes: 'col-1',
-        },
         {name: 'actions', align: 'center', label: "Амаллар", style:'width: 1rem'},
       ],
       data: [],

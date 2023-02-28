@@ -263,7 +263,7 @@
 
     </standart-input-dialog>
 
-    <div id="print">
+    <div id="print" v-if="customersId">
       <q-table
         :data="productData"
         :columns="columnsPrint"
@@ -313,7 +313,7 @@
 
       <div class="flex justify-between q-mx-auto" style="width: 80%;">
         <p class="text-bold">Ҳисобчи</p>
-        <p>{{user.user.workers.fullName}} ______ </p>
+        <p>{{getUser().user.workers.fullName}} ______ </p>
       </div>
       <div class="flex justify-between q-mx-auto" style="width: 80%;">
         <p class="text-bold">Xaridor</p>
@@ -329,7 +329,7 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Йўқ" color="primary" v-close-popup />
+          <q-btn flat label="Йўқ" color="primary" @click="closePrint" />
           <q-btn flat label="Ҳа" color="primary" @click="printMe" />
         </q-card-actions>
       </q-card>
@@ -437,8 +437,6 @@ export default {
           name: 'NameBg',
           field: row => row.products.nameBg,
           label: this.$t('xshop_captions.l_name'),
-          format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1 text-bold',
         },
@@ -446,8 +444,6 @@ export default {
           name: 'amount',
           field: row => this.formatPrice(row.amount) + " " + row.products.measureTypes.nameBg,
           label: this.$t('xshop_captions.l_buy_product'),
-          format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -455,8 +451,6 @@ export default {
           name: 'price',
           field: row => this.formatPrice(row.price) + ' сўм',
           label: this.$t('xshop_captions.l_one_product_cost'),
-          format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -465,7 +459,6 @@ export default {
           name: 'allPrice',
           field: row => this.formatPrice(row.price * row.amount) + ' сўм',
           label: this.$t('xshop_captions.l_all'),
-          format: val => `${val}`,
           align: 'left',
           classes: 'col-1',
         },
@@ -474,8 +467,6 @@ export default {
           name: 'returned',
           field: row => this.formatPrice(row.returned) + " " + row.products.measureTypes.nameBg,
           label: this.$t('xshop_captions.l_returned_amount'),
-          format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
@@ -484,7 +475,6 @@ export default {
           name: 'returnPrice',
           field: row => this.formatPrice(row.price * row.returned) + ' сўм',
           label: this.$t('xshop_captions.l_returned_summ'),
-          format: val => `${val}`,
           align: 'left',
           classes: 'col-1',
         },
@@ -493,7 +483,6 @@ export default {
           name: 'fullName',
           field: row => row.customers.fullName,
           label: this.$t('xshop_captions.l_fio'),
-          format: val => `${val}`,
           align: 'left',
           classes: 'col-1 text-bold',
         },
@@ -501,7 +490,6 @@ export default {
           name: 'phone',
           field: row => this.phone_format(row.customers.phone),
           label: this.$t('xshop_captions.l_phone'),
-          format: val => `${val}`,
           align: 'left',
           classes: 'col-1',
         },
@@ -509,7 +497,6 @@ export default {
           name: 'passport',
           field: row => `${row.customers.passportSeries} ${row.customers.passportNumber}`,
           label: this.$t('xshop_captions.l_pasport'),
-          format: val => `${val}`,
           align: 'left',
           classes: 'col-1',
         },
@@ -518,7 +505,6 @@ export default {
           name: 'modifyDate',
           field: row => row.modifiedDate,
           label: this.$t('xshop_captions.l_update_date'),
-          format: val => `${val}`,
           align: 'left',
           classes: 'col-1',
         },
@@ -526,7 +512,6 @@ export default {
           name: 'createdDate',
           field: row => row.createdDate,
           label: this.$t('xshop_captions.l_created_date'),
-          format: val => `${val}`,
           align: 'left',
           classes: 'col-1',
         },
@@ -534,7 +519,6 @@ export default {
           name: 'modifyBy',
           field: row => row.modifiedBy,
           label: "Ўзгартирган фойдаланувчи",
-          format: val => `${val}`,
           align: 'left',
           classes: 'col-1',
         },
@@ -542,7 +526,6 @@ export default {
           name: 'createdBy',
           field: row => row.createdBy,
           label: 'Яратган фойдаланувчи',
-          format: val => `${val}`,
           align: 'left',
           classes: 'col-1',
         },
@@ -634,6 +617,8 @@ export default {
         amount: null,
       }
       this.productData.push(productBeanDefault)
+      this.paymentType = null
+      this.payment = null
       this.showForm2();
     },
     showForm2() {
@@ -659,7 +644,6 @@ export default {
           this.refreshTable();
           this.print = true;
           this.loading = false;
-          productData = [];
         }).catch(error => {
         console.error(error);
       }).finally(() => {
@@ -668,13 +652,16 @@ export default {
     },
     printMe() {
       let a = 0;
-      for (let i=0;i<this.productData.length;i++){
+      for (let i = 0; i < this.productData.length; i++){
         a += this.productData[i].amount*this.productData[i].price;
       }
       this.totalTradeAmount = a;
       setTimeout(() => this.$htmlToPaper('print', this.options), 1000);
       this.print = false;
     },
+    closePrint() {
+      this.print = false;
+    }
   },
   watch: {
     model(newval) {
