@@ -49,4 +49,4 @@ export const urls = {
   DASHBOARD_TOP_DISTRIBUTOR: prf.BASE_API + "/dashboard/top-less-trade-distributors",
   DASHBOARD_CHART: prf.BASE_API + "/dashboard/income",
 }
-// 'http://65.108.83.140:8282/api/v1'
+

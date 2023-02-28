@@ -9,7 +9,7 @@
 import VueApexCharts from "vue-apexcharts";
 import {urls} from "src/utils/constants";
 
-export default {
+export default  {
   name: "DashboardChart",
   components: {
     apexchart: VueApexCharts,
@@ -53,8 +53,9 @@ export default {
     getData() {
       this.$axios.get(urls.DASHBOARD_CHART)
         .then(res => {
+          console.log(res.data)
           this.chartData.splice(0, this.chartData.length, ...res.data)
-          this.updateChart()
+          this.updateChart(this.chartData)
         }).catch(err => {
         this.showError(err)
       }).finally(() => {

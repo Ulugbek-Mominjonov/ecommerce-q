@@ -194,7 +194,6 @@ export default {
       this.$axios.get(urls.DASHBOARD_CARD_INFO)
         .then(res => {
           this.cardInfo = Object.assign({}, res.data);
-          console.log(this.cardInfo)
         }).catch(err => {
         this.showError(err)
       }).finally(() => {
@@ -223,7 +222,6 @@ export default {
       this.$axios.get(urls.DASHBOARD_DEBITOR_CUSTOMER + "?fullName=" + this.customerFullName)
         .then(res => {
           this.debitorCustomer.splice(0, this.debitorCustomer.length, ...res.data);
-          console.log(this.debitorCustomer)
         }).catch(err => {
         this.showError(err)
       }).finally(() => {
@@ -233,7 +231,6 @@ export default {
       this.$axios.get(urls.DASHBOARD_TOP_DISTRIBUTOR + "?fullName=" + this.distributorFullName)
         .then(res => {
           this.topDistributor.splice(0, this.topDistributor.length, ...res.data);
-          console.log(this.topDistributor)
         }).catch(err => {
         this.showError(err)
       }).finally(() => {

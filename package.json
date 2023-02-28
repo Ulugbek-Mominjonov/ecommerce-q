@@ -43,7 +43,7 @@
   "main": ".postcssrc.js",
   "repository": {
     "type": "git",
-    "url": "http://192.168.44.4/git/eco-control-site.git"
+    "url": "https://github.com/Ulugbek-Mominjonov/ecommerce-q.git"
   },
   "license": "ISC"
 }

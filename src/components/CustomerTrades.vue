@@ -73,7 +73,7 @@
           v-model="filter.customersId"
           emit-value
           map-options
-          :options="customersId"
+          :options="customers"
           option-value="id"
           option-label="fullName"
           :label="$t('xshop_captions.l_suppliers')"
@@ -466,7 +466,6 @@ export default {
           field: row => this.formatPrice(row.price * row.amount) + ' сўм',
           label: this.$t('xshop_captions.l_all'),
           format: val => `${val}`,
-
           align: 'left',
           classes: 'col-1',
         },
